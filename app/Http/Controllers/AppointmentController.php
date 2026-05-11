@@ -334,4 +334,101 @@ class AppointmentController extends Controller
 
         return back()->with('success', "⚡ ¡Corte Express registrado! La agenda se ha bloqueado por {$duracion} minutos.");
     }
+
+    public function validateTime(Request $request)
+    {
+        $date = $request->date;
+        $time = $request->time;
+        $servicioNombre = $request->servicio ?? ''; 
+
+        if (!$date || !$time) {
+            return response()->json(['valid' => false, 'message' => 'Por favor selecciona fecha y hora.']);
+        }
+
+        $tz = 'America/Mexico_City';
+        $fechaHoraSolicitada = \Carbon\Carbon::parse($date . ' ' . $time, $tz);
+        $ahora = \Carbon\Carbon::now($tz);
+        
+        if ($fechaHoraSolicitada->gt($ahora->copy()->addDays(60))) {
+            return response()->json(['valid' => false, 'message' => '🚫 Demasiado lejos. Máximo 2 meses de anticipación.']);
+        }
+
+        if ($fechaHoraSolicitada->isPast()) {
+            return response()->json(['valid' => false, 'message' => '🚫 Esta hora ya pasó. Por favor elige un horario futuro.']);
+        }
+
+        if ($fechaHoraSolicitada->isToday()) {
+            $limitePermitido = $ahora->copy()->addMinutes(30);
+            if ($fechaHoraSolicitada->lt($limitePermitido)) {
+                return response()->json(['valid' => false, 'message' => '⏱️ Debes agendar con al menos 30 minutos de anticipación.']);
+            }
+        }
+
+        // 🕒 REVISAMOS QUÉ DÍA ES (0 = Domingo, 6 = Sábado, 1-5 = Lunes a Viernes)
+        $diaSemana = $fechaHoraSolicitada->dayOfWeek; 
+        
+        if ($diaSemana == 0) {
+            $aperturaStr = Setting::where('key', 'apertura_domingo')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_domingo')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_domingo')->value('value') == 'true';
+        } elseif ($diaSemana == 6) {
+            $aperturaStr = Setting::where('key', 'apertura_sabado')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_sabado')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_sabado')->value('value') == 'true';
+        } else {
+            $aperturaStr = Setting::where('key', 'apertura_semana')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_semana')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_semana')->value('value') == 'true';
+        }
+
+        if ($isCerrado) {
+            return response()->json(['valid' => false, 'message' => '🚫 Ese día la barbería se encuentra cerrada.']);
+        }
+
+        $servicioDB = Service::where('nombre', $servicioNombre)->first();
+        $duracion = 45; 
+        if ($servicioDB) {
+            $duracion = $servicioDB->duracion_minutos;
+        } else {
+            $sLower = strtolower($servicioNombre);
+            if (str_contains($sLower, 'combo') || str_contains($sLower, 'diseño') || str_contains($sLower, 'greca')) $duracion = 60;
+            elseif (str_contains($sLower, 'barba') || str_contains($sLower, 'ceja')) $duracion = 30;
+        }
+
+        $horaFinCalculada = $fechaHoraSolicitada->copy()->addMinutes($duracion);
+        $horaAperturaSistema = \Carbon\Carbon::parse($date . ' ' . $aperturaStr . ':00', $tz);
+        $horaCierreSistema = \Carbon\Carbon::parse($date . ' ' . $cierreStr . ':00', $tz);
+
+        if ($fechaHoraSolicitada->lt($horaAperturaSistema)) {
+            return response()->json(['valid' => false, 'message' => "🚫 Ese día abrimos a las " . $horaAperturaSistema->format('h:i A') . "."]);
+        }
+
+        if ($horaFinCalculada->gt($horaCierreSistema)) {
+            return response()->json([
+                'valid' => false, 
+                'message' => "🚫 El servicio dura {$duracion} min y termina a las " . $horaFinCalculada->format('h:i A') . ". Cerramos a las " . $horaCierreSistema->format('h:i A') . "."
+            ]);
+        }
+
+        $citasDelDia = DB::table('appointments')
+            ->leftJoin('services', 'appointments.servicio', '=', 'services.nombre')
+            ->where('appointments.fecha', $date)
+            ->where('appointments.estado', '!=', 'cancelada')
+            ->get(['appointments.hora', 'appointments.duracion_minutos']);
+
+        $inicioNuevo = \Carbon\Carbon::parse($time);
+        $finNuevo = $inicioNuevo->copy()->addMinutes($duracion); 
+
+        foreach ($citasDelDia as $cita) {
+            $inicioExistente = \Carbon\Carbon::parse($cita->hora);
+            $duracionExistente = $cita->duracion_minutos ?? 45;
+            $finExistente = $inicioExistente->copy()->addMinutes($duracionExistente);
+
+            if ($inicioNuevo->lt($finExistente) && $finNuevo->gt($inicioExistente)) {
+                return response()->json(['valid' => false, 'message' => '⚠️ Horario ocupado de ' . $inicioExistente->format('H:i') . ' a ' . $finExistente->format('H:i') . '.']);
+            }
+        }
+
+        return response()->json(['valid' => true, 'message' => '✅ ¡Horario libre! Puedes confirmar tu cita.']);
+    }
 }
