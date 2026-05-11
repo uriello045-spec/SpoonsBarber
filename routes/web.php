@@ -1,0 +1,194 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use Illuminate\Foundation\Auth\EmailVerificationRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB; 
+use Carbon\Carbon; 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\ReferenceController;
+use App\Http\Controllers\ChatbotController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\GoogleLoginController;
+use App\Models\Service; 
+use App\Models\Setting; 
+
+// ─────────────────────────────────────────────────────────────
+// 🌐 RUTAS PÚBLICAS
+// ─────────────────────────────────────────────────────────────
+Route::get('/', function () { return redirect()->route('login'); })->name('home');
+Route::get('/catalogo', function () { return view('catalogo'); })->name('catalogo');
+
+Route::get('/email/verify', function () { return view('auth.verify-email'); })->middleware('auth')->name('verification.notice');
+Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
+    $request->fulfill();
+    return redirect()->route('dashboard');
+})->middleware(['auth', 'signed'])->name('verification.verify');
+Route::post('/email/verification-notification', function (Request $request) {
+    $request->user()->sendEmailVerificationNotification();
+    return back()->with('message', '¡Enlace enviado!');
+})->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+
+// ─────────────────────────────────────────────────────────────
+// 🔑 AUTENTICACIÓN Y GOOGLE
+// ─────────────────────────────────────────────────────────────
+Route::get('/registro', [AuthController::class, 'showRegister'])->name('register');
+Route::post('/registro', [AuthController::class, 'register'])->name('register.post');
+Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+Route::get('/olvide-mi-contrasena', [AuthController::class, 'showForgotPassword'])->middleware('guest')->name('password.request');
+Route::post('/olvide-mi-contrasena', [AuthController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
+Route::get('/restablecer-contrasena/{token}', [AuthController::class, 'showResetPassword'])->middleware('guest')->name('password.reset');
+Route::post('/restablecer-contrasena', [AuthController::class, 'resetPassword'])->middleware('guest')->name('password.update');
+
+Route::get('/login/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
+Route::get('/login/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('login.google.callback');
+
+Route::get('/loading', function () { return view('loading'); })->middleware(['auth'])->name('loading');
+Route::get('/dashboard', function () { return view('dashboard'); })->middleware(['auth', 'verified', 'no-cache'])->name('dashboard');
+
+// ─────────────────────────────────────────────────────────────
+// 📅 CLIENTES (Citas y Referencias)
+// ─────────────────────────────────────────────────────────────
+Route::middleware(['auth', 'verified', 'no-cache'])->group(function () {
+    Route::get('/citas', [AppointmentController::class, 'index'])->name('appointments.index');
+    Route::post('/citas', [AppointmentController::class, 'store'])->name('appointments.store');
+    Route::get('/citas/{id}/editar', [AppointmentController::class, 'edit'])->name('appointments.edit');
+    Route::put('/citas/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    Route::delete('/citas/{id}', [AppointmentController::class, 'destroy'])->name('appointments.destroy');
+
+    Route::get('/referencias', [ReferenceController::class, 'index'])->name('references.index');
+    Route::post('/referencias', [ReferenceController::class, 'store'])->name('references.store');
+
+    Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
+    Route::post('/chatbot', [ChatbotController::class, 'send'])->name('chatbot.send');
+
+    // 🌟 API MATEMÁTICA POR DÍA DE LA SEMANA 🌟
+    Route::post('/api/validate-appointment-time', function (Request $request) {
+        $date = $request->date;
+        $time = $request->time;
+        $servicioNombre = $request->servicio ?? ''; 
+
+        if (!$date || !$time) {
+            return response()->json(['valid' => false, 'message' => 'Por favor selecciona fecha y hora.']);
+        }
+
+        $tz = 'America/Mexico_City';
+        $fechaHoraSolicitada = Carbon::parse($date . ' ' . $time, $tz);
+        $ahora = Carbon::now($tz);
+        
+        if ($fechaHoraSolicitada->gt($ahora->copy()->addDays(60))) {
+            return response()->json(['valid' => false, 'message' => '🚫 Demasiado lejos. Máximo 2 meses de anticipación.']);
+        }
+
+        if ($fechaHoraSolicitada->isPast()) {
+            return response()->json(['valid' => false, 'message' => '🚫 Esta hora ya pasó. Por favor elige un horario futuro.']);
+        }
+
+        if ($fechaHoraSolicitada->isToday()) {
+            $limitePermitido = $ahora->copy()->addMinutes(30);
+            if ($fechaHoraSolicitada->lt($limitePermitido)) {
+                return response()->json(['valid' => false, 'message' => '⏱️ Debes agendar con al menos 30 minutos de anticipación.']);
+            }
+        }
+
+        // 🕒 REVISAMOS QUÉ DÍA ES (0 = Domingo, 6 = Sábado, 1-5 = Lunes a Viernes)
+        $diaSemana = $fechaHoraSolicitada->dayOfWeek; 
+        
+        if ($diaSemana == 0) {
+            $aperturaStr = Setting::where('key', 'apertura_domingo')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_domingo')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_domingo')->value('value') == 'true';
+        } elseif ($diaSemana == 6) {
+            $aperturaStr = Setting::where('key', 'apertura_sabado')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_sabado')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_sabado')->value('value') == 'true';
+        } else {
+            $aperturaStr = Setting::where('key', 'apertura_semana')->value('value') ?? '08:00';
+            $cierreStr = Setting::where('key', 'cierre_semana')->value('value') ?? '21:00';
+            $isCerrado = Setting::where('key', 'cerrado_semana')->value('value') == 'true';
+        }
+
+        if ($isCerrado) {
+            return response()->json(['valid' => false, 'message' => '🚫 Ese día la barbería se encuentra cerrada.']);
+        }
+
+        $servicioDB = Service::where('nombre', $servicioNombre)->first();
+        $duracion = 45; 
+        if ($servicioDB) {
+            $duracion = $servicioDB->duracion_minutos;
+        } else {
+            $sLower = strtolower($servicioNombre);
+            if (str_contains($sLower, 'combo') || str_contains($sLower, 'diseño') || str_contains($sLower, 'greca')) $duracion = 60;
+            elseif (str_contains($sLower, 'barba') || str_contains($sLower, 'ceja')) $duracion = 30;
+        }
+
+        $horaFinCalculada = $fechaHoraSolicitada->copy()->addMinutes($duracion);
+        $horaAperturaSistema = Carbon::parse($date . ' ' . $aperturaStr . ':00', $tz);
+        $horaCierreSistema = Carbon::parse($date . ' ' . $cierreStr . ':00', $tz);
+
+        if ($fechaHoraSolicitada->lt($horaAperturaSistema)) {
+            return response()->json(['valid' => false, 'message' => "🚫 Ese día abrimos a las " . $horaAperturaSistema->format('h:i A') . "."]);
+        }
+
+        if ($horaFinCalculada->gt($horaCierreSistema)) {
+            return response()->json([
+                'valid' => false, 
+                'message' => "🚫 El servicio dura {$duracion} min y termina a las " . $horaFinCalculada->format('h:i A') . ". Cerramos a las " . $horaCierreSistema->format('h:i A') . "."
+            ]);
+        }
+
+        $citasDelDia = DB::table('appointments')
+            ->leftJoin('services', 'appointments.servicio', '=', 'services.nombre')
+            ->where('appointments.fecha', $date)
+            ->where('appointments.estado', '!=', 'cancelada')
+            ->get(['appointments.hora', 'appointments.duracion_minutos']);
+
+        $inicioNuevo = Carbon::parse($time);
+        $finNuevo = $inicioNuevo->copy()->addMinutes($duracion); 
+
+        foreach ($citasDelDia as $cita) {
+            $inicioExistente = Carbon::parse($cita->hora);
+            $duracionExistente = $cita->duracion_minutos ?? 45;
+            $finExistente = $inicioExistente->copy()->addMinutes($duracionExistente);
+
+            if ($inicioNuevo->lt($finExistente) && $finNuevo->gt($inicioExistente)) {
+                return response()->json(['valid' => false, 'message' => '⚠️ Horario ocupado de ' . $inicioExistente->format('H:i') . ' a ' . $finExistente->format('H:i') . '.']);
+            }
+        }
+
+        return response()->json(['valid' => true, 'message' => '✅ ¡Horario libre! Puedes confirmar tu cita.']);
+    })->name('api.validate.time');
+});
+
+Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
+    Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
+    Route::post('/admin/toggle-shop', [AdminController::class, 'toggleShop'])->name('admin.toggleShop');
+    Route::post('/admin/citas/express', [AppointmentController::class, 'storeExpress'])->name('admin.appointments.express');
+    Route::get('/admin/estadisticas', [AdminController::class, 'statistics'])->name('admin.statistics');
+    Route::get('/admin/citas', [AppointmentController::class, 'adminIndex'])->name('admin.appointments');
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    
+    Route::get('/admin/chatbot', [AdminController::class, 'chatbotManager'])->name('admin.chatbot');
+    Route::post('/admin/chatbot', [AdminController::class, 'storeChatbotResponse'])->name('admin.chatbot.store');
+    Route::put('/admin/chatbot/{id}', [AdminController::class, 'updateChatbotResponse'])->name('admin.chatbot.update');
+    Route::delete('/admin/chatbot/{id}', [AdminController::class, 'deleteChatbotResponse'])->name('admin.chatbot.delete');
+
+    Route::get('/admin/barberos', [AdminController::class, 'barbers'])->name('admin.barbers.index');
+    Route::get('/admin/barberos/crear', [AdminController::class, 'barbersCreate'])->name('admin.barbers.create');
+    Route::post('/admin/barberos', [AdminController::class, 'barbersStore'])->name('admin.barbers.store');
+    Route::get('/admin/barberos/{id}/editar', [AdminController::class, 'barbersEdit'])->name('admin.barbers.edit');
+    Route::put('/admin/barberos/{id}', [AdminController::class, 'barbersUpdate'])->name('admin.barbers.update');
+    Route::delete('/admin/barberos/{id}', [AdminController::class, 'barbersDestroy'])->name('admin.barbers.destroy');
+
+    Route::post('/admin/galeria', [AdminController::class, 'storeGallery'])->name('admin.galeria.store');
+    Route::delete('/admin/galeria/{id}', [AdminController::class, 'destroyGallery'])->name('admin.galeria.destroy'); 
+    Route::post('/admin/servicios', [AdminController::class, 'storeService'])->name('admin.servicios.store');
+    Route::delete('/admin/servicios/{id}', [AdminController::class, 'destroyService'])->name('admin.servicios.destroy');
+    
+    Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
+    Route::post('/admin/verify-master', [AdminController::class, 'verifyMaster'])->middleware('throttle:5,1')->name('admin.verifyMaster');
+});
