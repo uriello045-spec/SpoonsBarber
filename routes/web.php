@@ -37,6 +37,7 @@ Route::get('/registro', [AuthController::class, 'showRegister'])->name('register
 Route::post('/registro', [AuthController::class, 'register'])->name('register.post');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
+// Se agregó el middleware no-cache aquí también por seguridad
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/olvide-mi-contrasena', [AuthController::class, 'showForgotPassword'])->middleware('guest')->name('password.request');
@@ -66,17 +67,21 @@ Route::middleware(['auth', 'verified', 'no-cache'])->group(function () {
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
     Route::post('/chatbot', [ChatbotController::class, 'send'])->name('chatbot.send');
 
-    // 🌟 API MATEMÁTICA POR DÍA DE LA SEMANA 🌟
     Route::post('/api/validate-appointment-time', [AppointmentController::class, 'validateTime'])->name('api.validate.time');
 });
 
+// ─────────────────────────────────────────────────────────────
+// 💈 ADMINISTRACIÓN (Barberos)
+// ─────────────────────────────────────────────────────────────
 Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
     Route::get('/admin', [AdminController::class, 'index'])->name('admin.dashboard');
     Route::post('/admin/toggle-shop', [AdminController::class, 'toggleShop'])->name('admin.toggleShop');
     Route::post('/admin/citas/express', [AppointmentController::class, 'storeExpress'])->name('admin.appointments.express');
     Route::get('/admin/estadisticas', [AdminController::class, 'statistics'])->name('admin.statistics');
     Route::get('/admin/citas', [AppointmentController::class, 'adminIndex'])->name('admin.appointments');
-    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('appointments.update');
+    
+    // AQUÍ ESTABA EL ERROR: Le puse 'admin.appointments.update' para que sea único
+    Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
     
     Route::get('/admin/chatbot', [AdminController::class, 'chatbotManager'])->name('admin.chatbot');
     Route::post('/admin/chatbot', [AdminController::class, 'storeChatbotResponse'])->name('admin.chatbot.store');
