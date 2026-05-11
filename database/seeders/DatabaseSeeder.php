@@ -13,6 +13,7 @@ class DatabaseSeeder extends Seeder
     {
         // Solo llamamos al que sí tiene código para evitar errores
         $this->call([
+            UserSeeder::class,
             ServiceSeeder::class,
         ]);
     }
