@@ -14,7 +14,8 @@ class UserSeeder extends Seeder
             'name' => 'Uriel SuperAdmin',
             'email' => 'uriel.lo.045@gmail.com', // El que quieras usar
             'password' => Hash::make('190060260-6'), // La que tú elijas
-            'role' => 'superadmin', // O 'superadmin' según tengas tus roles
+            'role' => 'barbero',
+            'is_superadmin' => true, // O 'superadmin' según tengas tus roles
         ]);
     }
 }
