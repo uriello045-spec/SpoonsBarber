@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\URL;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +20,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // Esto obliga a Laravel a cargar CSS y JS por HTTPS en Railway
+        if (config('app.env') === 'production' || config('app.debug') === false) {
+            URL::forceScheme('https');
+        }
     }
 }
