@@ -102,4 +102,15 @@ Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
     
     Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::post('/admin/verify-master', [AdminController::class, 'verifyMaster'])->middleware('throttle:5,1')->name('admin.verifyMaster');
+
+
+
+
+
+
+
+
+    Route::get('/diagnostico-correo', function () {
+    return response()->json(config('mail.mailers.smtp'));
+});
 });
