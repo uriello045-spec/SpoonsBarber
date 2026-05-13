@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Storage; 
 use App\Models\Appointment;
 use App\Models\Reference;
 use App\Models\ChatbotResponse;
@@ -12,8 +13,6 @@ use App\Models\User;
 use App\Models\Service; 
 use App\Models\Setting; 
 use App\Models\Gallery; 
-use Illuminate\Support\Facades\Storage; 
-use App\Http\Controllers\Controller; 
 
 class AdminController extends Controller
 {
@@ -23,7 +22,8 @@ class AdminController extends Controller
         $this->middleware(function ($request, $next) {
             /** @var \App\Models\User|null $user */
             $user = $request->user();
-            if ($user && $user->role !== 'barbero' && !$user->is_superadmin) {
+            // 🛠️ BLINDAJE 1: Permitir el paso si es barbero o superadmin
+            if ($user && $user->role !== 'barbero' && $user->role !== 'superadmin' && !$user->is_superadmin) {
                 abort(403, '🚨 ACCESO DENEGADO: Intento de intrusión detectado. Área exclusiva del staff.');
             }
             return $next($request);
@@ -143,8 +143,9 @@ class AdminController extends Controller
 
     public function barbersStore(Request $request)
     {
+        // 🛠️ BLINDAJE: Validación segura en array cuando hay Expresiones Regulares complejas
         $request->validate([
-            'name'     => 'required|string|min:3|max:50|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
+            'name'     => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u'],
             'email'    => 'required|email|unique:users,email',
             'phone'    => 'nullable|numeric|digits:10',
             'password' => 'required|string|min:8|max:20|confirmed',
@@ -187,7 +188,7 @@ class AdminController extends Controller
         }
 
         $request->validate([
-            'name'     => 'required|string|min:3|max:50|regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u',
+            'name'     => ['required', 'string', 'min:3', 'max:50', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/u'],
             'email'    => 'required|email|unique:users,email,' . $barber->id,
             'phone'    => 'nullable|numeric|digits:10',
             'password' => 'nullable|string|min:8|max:20', 
@@ -240,25 +241,24 @@ class AdminController extends Controller
                 return response()->json(['success' => false, 'message' => '🚨 El archivo es demasiado pesado o está corrupto.'], 400); 
             }
 
+            // 🛠️ BLINDAJE DE ALMACENAMIENTO: Usar el Storage oficial de Laravel
             $rutaTemporal = $file->getPathname();
-            if (empty($rutaTemporal) || !is_file($rutaTemporal)) {
-                return response()->json(['success' => false, 'message' => '🚨 Error de ruta temporal en el servidor.'], 500);
-            }
-
             $md5Subida = md5_file($rutaTemporal);
             $fotosExistentes = Gallery::where('activa', true)->get();
             
             foreach ($fotosExistentes as $fotoExistente) {
                 if (empty($fotoExistente->imagen)) continue;
-                $rutaFisica = public_path('storage/' . $fotoExistente->imagen);
-                if (is_file($rutaFisica) && md5_file($rutaFisica) === $md5Subida) {
-                    return response()->json(['success' => false, 'message' => '🚨 ¡Esa foto ya existe en la galería! Sube una imagen diferente.'], 400); 
+                
+                if (Storage::disk('public')->exists($fotoExistente->imagen)) {
+                    $rutaFisica = Storage::disk('public')->path($fotoExistente->imagen);
+                    if (md5_file($rutaFisica) === $md5Subida) {
+                        return response()->json(['success' => false, 'message' => '🚨 ¡Esa foto ya existe en la galería! Sube una imagen diferente.'], 400); 
+                    }
                 }
             }
 
-            $nombreArchivo = $file->hashName(); 
-            $file->move(public_path('storage/galeria'), $nombreArchivo);
-            $path = 'galeria/' . $nombreArchivo;
+            // Guardado nativo y seguro de Laravel
+            $path = $file->store('galeria', 'public');
 
             if(class_exists('\App\Models\Gallery')) {
                 Gallery::create(['imagen' => $path, 'activa' => true]);
@@ -274,8 +274,12 @@ class AdminController extends Controller
     {
         try {
             $foto = Gallery::findOrFail($id);
-            $rutaFisica = public_path('storage/' . $foto->imagen);
-            if (file_exists($rutaFisica)) unlink($rutaFisica);
+            
+            // 🛠️ BLINDAJE: Borrado seguro usando el Storage de Laravel
+            if ($foto->imagen && Storage::disk('public')->exists($foto->imagen)) {
+                Storage::disk('public')->delete($foto->imagen);
+            }
+            
             $foto->delete();
             return response()->json(['success' => true, 'message' => '¡Foto eliminada de la galería exitosamente!']);
         } catch (\Exception $e) {
@@ -305,22 +309,22 @@ class AdminController extends Controller
                 if (!$file->isValid()) return response()->json(['success' => false, 'message' => '🚨 Archivo bloqueado o muy pesado.'], 400); 
                 
                 $rutaTemporal = $file->getPathname();
-                if (empty($rutaTemporal) || !is_file($rutaTemporal)) return response()->json(['success' => false, 'message' => '🚨 Error de servidor.'], 500);
-
                 $md5Subida = md5_file($rutaTemporal);
                 $serviciosExistentes = Service::whereNotNull('imagen')->get();
                 
                 foreach ($serviciosExistentes as $servicioExistente) {
                     if (empty($servicioExistente->imagen)) continue;
-                    $rutaFisica = public_path('storage/' . $servicioExistente->imagen);
-                    if (is_file($rutaFisica) && md5_file($rutaFisica) === $md5Subida) {
-                        return response()->json(['success' => false, 'message' => '🚨 Esta foto ya está siendo usada en "' . $servicioExistente->nombre . '". Sube una diferente.'], 400); 
+                    
+                    if (Storage::disk('public')->exists($servicioExistente->imagen)) {
+                        $rutaFisica = Storage::disk('public')->path($servicioExistente->imagen);
+                        if (md5_file($rutaFisica) === $md5Subida) {
+                            return response()->json(['success' => false, 'message' => '🚨 Esta foto ya está siendo usada en "' . $servicioExistente->nombre . '". Sube una diferente.'], 400); 
+                        }
                     }
                 }
                 
-                $nombreArchivo = $file->hashName();
-                $file->move(public_path('storage/galeria'), $nombreArchivo);
-                $path = 'galeria/' . $nombreArchivo;
+                // Guardado seguro en disco público
+                $path = $file->store('galeria', 'public');
             }
 
             Service::create([
@@ -341,10 +345,12 @@ class AdminController extends Controller
     public function destroyService($id)
     {
         $servicio = Service::findOrFail($id);
-        if ($servicio->imagen) {
-            $rutaFisica = public_path('storage/' . $servicio->imagen);
-            if (file_exists($rutaFisica)) unlink($rutaFisica);
+        
+        // 🛠️ BLINDAJE: Borrado seguro usando el Storage
+        if ($servicio->imagen && Storage::disk('public')->exists($servicio->imagen)) {
+            Storage::disk('public')->delete($servicio->imagen);
         }
+        
         $servicio->delete();
 
         return response()->json(['success' => true, 'message' => 'Servicio eliminado correctamente de la Base de Datos.']);
@@ -385,9 +391,7 @@ class AdminController extends Controller
                 }
             }
 
-            // 🌟 MAGIA ULTRA CORREGIDA: BUSCAR CORTES POR CATEGORÍA 🌟
             if ($request->has('precio_corte')) {
-                // Actualiza absolutamente TODOS los que estén en categoría Clásico o Moderno
                 Service::whereIn('categoria', ['Clásico', 'Clasico', 'Moderno'])->update(['precio' => $request->precio_corte]);
             }
             if ($request->has('precio_barba')) {
