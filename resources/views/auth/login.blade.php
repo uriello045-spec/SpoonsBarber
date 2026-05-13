@@ -92,13 +92,13 @@
 
             <div class="mb-4">
                 <label class="block mb-1.5 text-gray-300 text-sm font-medium">Correo Electrónico</label>
-                <input type="email" name="email" required placeholder="tu@correo.com" 
+                <input type="email" name="email" required maxlength="80" placeholder="tu@correo.com" 
                     class="w-full p-3 rounded input-style text-base sm:text-sm">
             </div>
 
             <div class="mb-2">
                 <label class="block mb-1.5 text-gray-300 text-sm font-medium">Contraseña</label>
-                <input type="password" name="password" required placeholder="••••••••" 
+                <input type="password" name="password" required minlength="8" maxlength="20" placeholder="••••••••" 
                     class="w-full p-3 rounded input-style text-base sm:text-sm">
             </div>
 

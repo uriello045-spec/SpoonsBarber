@@ -45,7 +45,7 @@
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-yellow-100 dark:bg-[#d4af37]/10 rounded-full blur-2xl group-hover:bg-yellow-200 dark:group-hover:bg-[#d4af37]/20 transition-all duration-700"></div>
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest relative z-10 flex items-center gap-1">Cliente Estrella <span class="text-yellow-500 text-lg ml-1 drop-shadow-sm dark:drop-shadow-md">⭐</span></h3>
                 @if($topCliente)
-                    <p class="text-2xl font-black text-slate-800 dark:text-white mt-4 truncate relative z-10">{{ $topCliente->user->name }}</p>
+                    <p class="text-2xl font-black text-slate-800 dark:text-white mt-4 truncate relative z-10">{{ optional($topCliente->user)->name ?? 'Cliente Físico / Eliminado' }}</p>
                     <p class="text-xs font-bold text-yellow-600 dark:text-[#d4af37] mt-1 uppercase tracking-widest relative z-10">{{ $topCliente->total }} visitas</p>
                 @else
                     <p class="text-3xl font-black text-slate-300 dark:text-gray-700 mt-3 relative z-10">--</p>

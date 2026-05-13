@@ -178,8 +178,11 @@
         
         $color = ($cita->estado == 'pendiente') ? '#eab308' : '#3b82f6';
 
+        // 🛡️ BLINDAJE: Verificamos si el usuario existe antes de imprimir su nombre
+        $nombreCliente = $cita->user ? $cita->user->name : 'Cliente Físico';
+
         $eventosCalendario[] = [
-            'title' => ($cita->user->name ?? 'Físico') . ' - ' . $cita->servicio,
+            'title' => $nombreCliente . ' - ' . $cita->servicio,
             'start' => $start->toIso8601String(),
             'end'   => $end->toIso8601String(),
             'color' => $color
@@ -192,7 +195,6 @@
 </script>
 
 <script>
-    // 🌟 SEGURO ANTI-SPAM PARA EL BOTÓN EXPRESS 🌟
     const formExpress = document.getElementById('form-express');
     const btnExpress = document.getElementById('btn-express');
     

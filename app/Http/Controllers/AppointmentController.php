@@ -16,7 +16,8 @@ class AppointmentController extends Controller
     {
         $user = Auth::user();
 
-        if ($user->role === 'barbero') {
+        // 🛠️ CORRECCIÓN 1: Redirigir al panel de administración si es barbero O superadmin
+        if ($user->role === 'barbero' || $user->role === 'superadmin' || $user->is_superadmin) {
             return redirect()->route('admin.appointments');
         }
 
@@ -55,8 +56,11 @@ class AppointmentController extends Controller
 
     public function adminIndex()
     {
-        if (Auth::user()->role !== 'barbero') {
-            abort(403, 'Acceso solo para barberos.');
+        $user = Auth::user();
+
+        // 🛠️ CORRECCIÓN 2: Permitir el acceso si es barbero O superadmin
+        if ($user->role !== 'barbero' && $user->role !== 'superadmin' && !$user->is_superadmin) {
+            abort(403, 'Acceso solo para personal de la barbería.');
         }
 
         $appointments = Appointment::with('user')
@@ -180,7 +184,10 @@ class AppointmentController extends Controller
         $appointment = Appointment::findOrFail($id);
         $user = Auth::user();
 
-        if ($user->role === 'cliente' && $appointment->user_id !== $user->id) abort(403, 'No tienes permiso para editar esta cita.');
+        // 🛠️ NOTA: Aquí está bien, porque los súperadmin NO son rol 'cliente', entonces pueden editar
+        if ($user->role === 'cliente' && $appointment->user_id !== $user->id) {
+            abort(403, 'No tienes permiso para editar esta cita.');
+        }
 
         if ($request->has('estado') && !$request->has('fecha')) {
             $nuevoEstado = $request->input('estado');
@@ -305,16 +312,13 @@ class AppointmentController extends Controller
             $duracionExistente = $cita->duracion_minutos ?? 45;
             $finExistente = $inicioExistente->copy()->addMinutes($duracionExistente);
 
-            // Si la hora actual está dentro del bloque de una cita activa (Confirmada/Pendiente)
             if ($ahora->gte($inicioExistente) && $ahora->lt($finExistente)) {
-                // 🌟 REDONDEO LIMPIO: Calculamos los segundos de diferencia y dividimos entre 60 para tener minutos exactos sin decimales
                 $minutosRestantes = (int) ceil($ahora->diffInSeconds($finExistente) / 60);
                 
                 return back()->withErrors("🚨 ¡Agenda Bloqueada! Ya hay un servicio en curso que termina en aprox. {$minutosRestantes} min. Finalízalo para poder registrar otro.");
             }
         }
 
-        // Si la agenda está libre, procedemos a registrar...
         $walkInUser = \App\Models\User::firstOrCreate(
             ['email' => 'sucursal@spoonsbarber.com'],
             ['name' => 'Cliente Físico', 'password' => \Illuminate\Support\Facades\Hash::make(\Illuminate\Support\Str::random(16)), 'role' => 'cliente']
@@ -329,7 +333,7 @@ class AppointmentController extends Controller
             'hora' => $ahora->format('H:i'),
             'servicio' => $request->servicio,
             'duracion_minutos' => $duracion, 
-            'estado' => 'confirmada', // 🌟 Bloquea la agenda para internet automáticamente
+            'estado' => 'confirmada', 
         ]);
 
         return back()->with('success', "⚡ ¡Corte Express registrado! La agenda se ha bloqueado por {$duracion} minutos.");
@@ -364,7 +368,6 @@ class AppointmentController extends Controller
             }
         }
 
-        // 🕒 REVISAMOS QUÉ DÍA ES (0 = Domingo, 6 = Sábado, 1-5 = Lunes a Viernes)
         $diaSemana = $fechaHoraSolicitada->dayOfWeek; 
         
         if ($diaSemana == 0) {

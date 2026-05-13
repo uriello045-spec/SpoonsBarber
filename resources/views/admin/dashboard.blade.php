@@ -86,11 +86,11 @@
                     @forelse($citas as $cita)
                         <div class="flex items-center gap-4 p-4 rounded-2xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-100 dark:border-[#333] hover:border-yellow-400 dark:hover:border-[#d4af37]/50 transition-all group">
                             <div class="w-12 h-12 rounded-xl bg-white dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#444] flex items-center justify-center text-yellow-600 dark:text-[#d4af37] font-black text-xl shadow-sm dark:shadow-inner">
-                                {{ substr($cita->user->name, 0, 1) }}
+                                {{ $cita->user ? substr($cita->user->name, 0, 1) : 'C' }}
                             </div>
                             
                             <div class="flex-1 truncate">
-                                <h4 class="font-bold text-slate-800 dark:text-gray-200 group-hover:text-yellow-600 dark:group-hover:text-[#d4af37] transition-colors truncate">{{ $cita->user->name }}</h4>
+                                <h4 class="font-bold text-slate-800 dark:text-gray-200 group-hover:text-yellow-600 dark:group-hover:text-[#d4af37] transition-colors truncate">{{ $cita->user->name ?? 'Cliente Físico' }}</h4>
                                 <p class="text-xs font-medium text-slate-500 dark:text-gray-500 truncate">{{ $cita->servicio }}</p>
                             </div>
 
@@ -119,7 +119,7 @@
                     @forelse($reseñas as $r)
                         <div class="p-5 rounded-2xl bg-slate-50 dark:bg-[#0a0a0a] border border-slate-100 dark:border-[#333] hover:border-yellow-400 dark:hover:border-[#d4af37]/50 transition-all relative">
                             <div class="flex justify-between items-start mb-3">
-                                <span class="font-black text-slate-800 dark:text-[#d4af37] text-sm">{{ $r->user->name }}</span>
+                                <span class="font-black text-slate-800 dark:text-[#d4af37] text-sm">{{ $r->user->name ?? 'Usuario Anónimo' }}</span>
                                 <div class="flex text-yellow-400 dark:text-yellow-500 text-xs drop-shadow-sm dark:drop-shadow-md">
                                     @for($i=0; $i < $r->calificacion; $i++) ★ @endfor
                                     @for($i=$r->calificacion; $i < 5; $i++) <span class="text-slate-300 dark:text-gray-700">★</span> @endfor
