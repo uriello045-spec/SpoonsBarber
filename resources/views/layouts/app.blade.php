@@ -303,7 +303,7 @@
 
     {{-- 🌟 EL ESCUDO DE TÉRMINOS Y CONDICIONES (BLOQUEANTE) 🌟 --}}
     @auth
-        @if(!auth()->user()->terms_accepted)
+        @if(!auth()->user()->terms_accepted && !request()->routeIs('terminos', 'privacidad', 'cookies'))
             <form id="logout-form-modal" action="{{ route('logout') }}" method="POST" style="display: none;">
                 @csrf
             </form>
