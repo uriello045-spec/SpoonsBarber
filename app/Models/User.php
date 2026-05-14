@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Appointment;
 use App\Models\Reference;
 use App\Notifications\CustomResetPassword;
-use App\Notifications\CustomVerifyEmail; // <--- NUEVO: Importamos el correo de verificación
+use App\Notifications\CustomVerifyEmail; 
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -21,7 +21,9 @@ class User extends Authenticatable implements MustVerifyEmail
         'password',
         'role',
         'phone',
-        'is_superadmin', // 🌟 AÑADIDO: Permite guardar este dato
+        'is_superadmin', 
+        'google_id',      // <-- Aseguramos que google_id esté aquí
+        'terms_accepted', // 🌟 AÑADIDO: Permite guardar si aceptó términos
     ];
 
     protected $hidden = [
@@ -31,7 +33,8 @@ class User extends Authenticatable implements MustVerifyEmail
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'is_superadmin' => 'boolean', // 🌟 AÑADIDO: Le dice a Laravel que es True o False
+        'is_superadmin' => 'boolean', 
+        'terms_accepted' => 'boolean', // 🌟 AÑADIDO: Lo convierte a True/False automáticamente
     ];
 
     public function appointments()
@@ -44,21 +47,11 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Reference::class);
     }
 
-    // =====================================================================
-    // 🌟 CORREOS PERSONALIZADOS (ESPAÑOL Y DISEÑO BARBERÍA) 🌟
-    // =====================================================================
-    
-    /**
-     * 1. Sobreescribir correo de "Recuperar Contraseña"
-     */
     public function sendPasswordResetNotification($token)
     {
         $this->notify(new CustomResetPassword($token));
     }
 
-    /**
-     * 2. Sobreescribir correo de "Verificar Email" (NUEVO)
-     */
     public function sendEmailVerificationNotification()
     {
         $this->notify(new CustomVerifyEmail);

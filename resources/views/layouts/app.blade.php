@@ -284,7 +284,6 @@
             function openMenu() {
                 mobileMenu.classList.remove('mobile-menu-hidden');
                 menuOverlay.classList.remove('hidden');
-                // Pequeño retraso para que la transición de opacidad funcione
                 setTimeout(() => menuOverlay.classList.remove('opacity-0'), 10);
                 document.body.classList.add('overflow-hidden');
             }
@@ -292,7 +291,6 @@
             function closeMenu() {
                 mobileMenu.classList.add('mobile-menu-hidden');
                 menuOverlay.classList.add('opacity-0');
-                // Espera a que termine la animación para ocultarlo del DOM
                 setTimeout(() => menuOverlay.classList.add('hidden'), 300);
                 document.body.classList.remove('overflow-hidden');
             }
@@ -302,6 +300,70 @@
             if(menuOverlay) menuOverlay.addEventListener('click', closeMenu);
         });
     </script>
+
+    {{-- 🌟 EL ESCUDO DE TÉRMINOS Y CONDICIONES (BLOQUEANTE) 🌟 --}}
+    @auth
+        @if(!auth()->user()->terms_accepted)
+            <form id="logout-form-modal" action="{{ route('logout') }}" method="POST" style="display: none;">
+                @csrf
+            </form>
+
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    
+                    Swal.fire({
+                        title: '¡Bienvenido a Spoon\'s Barber Shop!',
+                        html: `
+                            <div style="text-align: justify; font-size: 15px; margin-top: 10px;">
+                                Para continuar y brindarte el mejor servicio, por favor revisa y acepta nuestros documentos legales:
+                                <br><br>
+                                <div style="display: flex; flex-direction: column; gap: 10px; background: ${isDark ? '#1a1a1a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#333' : '#e2e8f0'};">
+                                    <a href="/terminos" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: none;">📄 Términos y Condiciones</a>
+                                    <a href="/privacidad" target="_blank" style="color: #00ccff; font-weight: bold; text-decoration: none;">🔒 Aviso de Privacidad</a>
+                                    <a href="/cookies" target="_blank" style="color: #ff7300; font-weight: bold; text-decoration: none;">🍪 Política de Cookies</a>
+                                </div>
+                            </div>
+                        `,
+                        icon: 'warning',
+                        showCancelButton: true,
+                        confirmButtonText: '✅ Acepto todo, Continuar',
+                        cancelButtonText: '❌ No acepto (Salir)',
+                        confirmButtonColor: '#d4af37',
+                        cancelButtonColor: '#ef4444',
+                        allowOutsideClick: false, // Bloquea clic afuera
+                        allowEscapeKey: false,    // Bloquea tecla ESC
+                        background: isDark ? '#111111' : '#ffffff',
+                        color: isDark ? '#ffffff' : '#0f172a',
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetch("{{ route('terminos.aceptar') }}", {
+                                method: 'POST',
+                                headers: {
+                                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                                    'Content-Type': 'application/json',
+                                    'Accept': 'application/json'
+                                }
+                            }).then(() => {
+                                Swal.fire({
+                                    title: '¡Gracias!',
+                                    text: 'Tus preferencias han sido guardadas.',
+                                    icon: 'success',
+                                    timer: 1500,
+                                    showConfirmButton: false,
+                                    background: isDark ? '#111111' : '#ffffff',
+                                    color: isDark ? '#ffffff' : '#0f172a'
+                                }).then(() => location.reload());
+                            });
+                        } else {
+                            // Si le dan a cancelar, los deslogueamos de inmediato
+                            document.getElementById('logout-form-modal').submit();
+                        }
+                    });
+                });
+            </script>
+        @endif
+    @endauth
 
 </body>
 </html>

@@ -24,11 +24,15 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:100', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            // 🌟 AÑADIDO: Validación del checkbox de términos
+            'terms' => 'required|accepted',
         ], [
             'name.regex' => 'El nombre solo puede contener letras y espacios.',
             'email.unique' => 'Este correo ya está registrado.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
+            // 🌟 AÑADIDO: Mensaje de error personalizado
+            'terms.accepted' => 'Debes aceptar los Términos y Condiciones para registrarte.',
         ]);
 
         $user = User::create([
@@ -36,6 +40,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'cliente', 
+            // 🌟 AÑADIDO: Guardamos el consentimiento en la base de datos
+            'terms_accepted' => true,
         ]);
 
         event(new Registered($user));

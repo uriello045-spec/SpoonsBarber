@@ -15,10 +15,22 @@ use App\Models\Service;
 use App\Models\Setting; 
 
 // ─────────────────────────────────────────────────────────────
-// 🌐 RUTAS PÚBLICAS
+// 🌐 RUTAS PÚBLICAS Y LEGALES
 // ─────────────────────────────────────────────────────────────
 Route::get('/', function () { return redirect()->route('login'); })->name('home');
 Route::get('/catalogo', function () { return view('catalogo'); })->name('catalogo');
+
+// 🌟 RUTAS PARA LOS DOCUMENTOS LEGALES (Nuevas) 🌟
+Route::view('/terminos', 'legal.terminos')->name('terminos');
+Route::view('/privacidad', 'legal.privacidad')->name('privacidad');
+Route::view('/cookies', 'legal.cookies')->name('cookies');
+
+// 🌟 RUTA PARA EL SWEETALERT DE TÉRMINOS 🌟
+Route::post('/aceptar-terminos-rapido', function(\Illuminate\Http\Request $request) {
+    $request->user()->update(['terms_accepted' => true]);
+    return response()->json(['success' => true]);
+})->middleware('auth')->name('terminos.aceptar');
+
 
 Route::get('/email/verify', function () { return view('auth.verify-email'); })->middleware('auth')->name('verification.notice');
 Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request) {
@@ -37,7 +49,6 @@ Route::get('/registro', [AuthController::class, 'showRegister'])->name('register
 Route::post('/registro', [AuthController::class, 'register'])->name('register.post');
 Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login'])->name('login.post');
-// Se agregó el middleware no-cache aquí también por seguridad
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
 Route::get('/olvide-mi-contrasena', [AuthController::class, 'showForgotPassword'])->middleware('guest')->name('password.request');
@@ -80,7 +91,6 @@ Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
     Route::get('/admin/estadisticas', [AdminController::class, 'statistics'])->name('admin.statistics');
     Route::get('/admin/citas', [AppointmentController::class, 'adminIndex'])->name('admin.appointments');
     
-    // AQUÍ ESTABA EL ERROR: Le puse 'admin.appointments.update' para que sea único
     Route::put('/appointments/{id}', [AppointmentController::class, 'update'])->name('admin.appointments.update');
     
     Route::get('/admin/chatbot', [AdminController::class, 'chatbotManager'])->name('admin.chatbot');
@@ -102,13 +112,6 @@ Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
     
     Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::post('/admin/verify-master', [AdminController::class, 'verifyMaster'])->middleware('throttle:5,1')->name('admin.verifyMaster');
-
-
-
-
-
-
-
 
     Route::get('/diagnostico-correo', function () {
     return response()->json(config('mail.mailers.smtp'));
