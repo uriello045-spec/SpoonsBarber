@@ -21,11 +21,8 @@ Schedule::command('reminders:send')->everyMinute();
 // 2. 🌟 TAREA DE LIMPIEZA: Eliminar cuentas basura 🌟
 // Busca usuarios que no han verificado su correo después de 48 horas y los elimina.
 Schedule::call(function () {
-    $usuariosBasura = User::whereNull('email_verified_at')
+    // Versión optimizada: Borra directo desde la base de datos en una sola instrucción
+    User::whereNull('email_verified_at')
         ->where('created_at', '<', Carbon::now()->subDays(2))
-        ->get();
-
-    foreach ($usuariosBasura as $user) {
-        $user->delete();
-    }
+        ->delete();
 })->daily(); // Se ejecuta de forma silenciosa una vez al día en la madrugada
