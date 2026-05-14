@@ -530,6 +530,7 @@
                 ];
             @endphp
 
+            {{-- FOTOS DE LA BASE DE DATOS --}}
             @foreach($fotosDB as $index => $foto)
                 <div id="div-foto-{{ $foto->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">
@@ -552,18 +553,17 @@
                 </div>
             @endforeach
 
-            @if($fotosDB->isEmpty())
-                @foreach($fotosOriginales as $index => $img)
-                    <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
-                        <div class="glow-wrapper">
-                            <div class="glow-bg glow-gold"></div>
-                            <a href="{{ $img }}" data-fancybox="gallery" class="gallery-img-container border border-slate-200 dark:border-zinc-800">
-                                <img src="{{ $img }}" alt="Corte Barbería" loading="lazy">
-                            </a>
-                        </div>
+            {{-- 🌟 MODIFICACIÓN: FOTOS ORIGINALES SIEMPRE VISIBLES 🌟 --}}
+            @foreach($fotosOriginales as $index => $img)
+                <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
+                    <div class="glow-wrapper">
+                        <div class="glow-bg glow-gold"></div>
+                        <a href="{{ $img }}" data-fancybox="gallery" class="gallery-img-container border border-slate-200 dark:border-zinc-800">
+                            <img src="{{ $img }}" alt="Corte Barbería" loading="lazy">
+                        </a>
                     </div>
-                @endforeach
-            @endif
+                </div>
+            @endforeach
 
         </div>
 
