@@ -273,12 +273,25 @@ class AppointmentController extends Controller
         }
     }
 
+    // 🌟 AQUÍ ESTÁ LA MAGIA: LA FUNCIÓN DESTROY ACTUALIZADA 🌟
     public function destroy($id)
     {
         $appointment = Appointment::findOrFail($id);
-        if (Auth::user()->role === 'cliente' && $appointment->user_id !== Auth::id()) abort(403, 'No tienes permiso.');
+        
+        if (Auth::user()->role === 'cliente' && $appointment->user_id !== Auth::id()) {
+            abort(403, 'No tienes permiso.');
+        }
+
+        // Enviamos la notificación ANTES de borrar la cita
+        $appointment->load('user'); 
+        if ($appointment->user) {
+            $appointment->user->notify(new AppointmentStatusNotification($appointment, 'cancelada'));
+        }
+
+        // Ahora sí eliminamos
         $appointment->delete();
-        return back()->with('success', 'Cita eliminada.');
+        
+        return back()->with('success', 'Cita eliminada y cliente notificado.');
     }
     
     public function edit($id)
