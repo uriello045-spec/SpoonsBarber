@@ -20,7 +20,7 @@
             content: '';
             position: fixed; /* Fixed para que no se mueva al hacer scroll */
             top: 0; left: 0; width: 100%; height: 100%;
-            background: url("{{ asset('storage/galeria/foto1.jpeg') }}") center/cover no-repeat;
+            background: url("{{ asset('storage/app/public/galeria/foto1.jpeg') }}") center/cover no-repeat;
             opacity: 0.35; z-index: -1; pointer-events: none;
             animation: zoom 20s ease-in-out infinite alternate;
         }
