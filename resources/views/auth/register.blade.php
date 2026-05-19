@@ -54,7 +54,19 @@
         </filter>
     </svg>
 
-    <div class="bg-white/10 backdrop-blur-xl p-8 rounded-3xl w-full max-w-md border border-white/20 gold-glow relative z-10 mx-4 shadow-2xl">
+    <div class="bg-white/10 backdrop-blur-xl p-8 rounded-3xl w-full max-w-md border border-white/20 gold-glow relative z-10 mx-4 shadow-2xl mt-10 mb-10">
+
+        {{-- 🚨 ALERTA DE ERRORES DE VALIDACIÓN 🚨 --}}
+        @if ($errors->any())
+            <div class="bg-red-500/10 border border-red-500 text-red-400 text-sm p-4 rounded mb-6 backdrop-blur-sm">
+                <p class="font-bold mb-2">¡Ups! Revisa estos detalles antes de continuar:</p>
+                <ul class="list-disc pl-5">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <h2 class="text-3xl font-black mb-6 text-center text-white tracking-wide flex items-center justify-center gap-2">
             <span class="text-[#d4af37]">🧔</span> Registro
