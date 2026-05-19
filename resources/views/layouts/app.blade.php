@@ -268,7 +268,8 @@
         @yield('content')
     </main>
 
-    @if(Auth::check() && Auth::user()->role === 'cliente')
+    {{-- 🌟 EL CHATBOT (SOLO SE MUESTRA SI YA ACEPTARON TÉRMINOS) 🌟 --}}
+    @if(Auth::check() && Auth::user()->role === 'cliente' && Auth::user()->terms_accepted)
         @include('chatbot.index')
     @endif
 

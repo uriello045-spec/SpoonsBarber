@@ -37,6 +37,13 @@ class ChatbotController extends Controller
             return response()->json(['reply' => '¡Hey! Para agendar una cita necesitas iniciar sesión primero 😅.']);
         }
 
+        // 🛡️ ESCUDO LEGAL: VERIFICAR TÉRMINOS Y CONDICIONES
+        if (!$user->terms_accepted) {
+            return response()->json([
+                'reply' => '🔒 <b>¡Hola!</b> Antes de poder platicar y agendar tu cita, es necesario que aceptes nuestros Términos y Condiciones que aparecen en pantalla. ¡Te espero! 💈'
+            ]);
+        }
+
         // 🛡️ ESCUDO 1: LIMITADOR DE VELOCIDAD (RATE LIMITING)
         $llave = 'chatbot_user_' . $user->id;
 
