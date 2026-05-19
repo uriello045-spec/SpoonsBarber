@@ -6,9 +6,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Auth\Events\Registered;
-use Illuminate\Support\Facades\Password; // <--- Importado para recuperar contraseña
-use Illuminate\Support\Str; // <--- Importado para recuperar contraseña
-use Illuminate\Auth\Events\PasswordReset; // <--- Importado para recuperar contraseña
+use Illuminate\Support\Facades\Password; 
+use Illuminate\Support\Str; 
+use Illuminate\Auth\Events\PasswordReset; 
 use App\Models\User;
 
 class AuthController extends Controller
@@ -24,15 +24,12 @@ class AuthController extends Controller
             'name' => ['required', 'string', 'max:100', 'regex:/^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$/'],
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
-            // 🌟 AÑADIDO: Validación del checkbox de términos
-            'terms' => 'required|accepted',
+            // 🌟 ELIMINADA la validación de terms para dejar que el SweetAlert haga el trabajo adentro.
         ], [
             'name.regex' => 'El nombre solo puede contener letras y espacios.',
             'email.unique' => 'Este correo ya está registrado.',
             'password.confirmed' => 'Las contraseñas no coinciden.',
             'password.min' => 'La contraseña debe tener al menos 6 caracteres.',
-            // 🌟 AÑADIDO: Mensaje de error personalizado
-            'terms.accepted' => 'Debes aceptar los Términos y Condiciones para registrarte.',
         ]);
 
         $user = User::create([
@@ -40,8 +37,8 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'role' => 'cliente', 
-            // 🌟 AÑADIDO: Guardamos el consentimiento en la base de datos
-            'terms_accepted' => true,
+            // 🌟 IMPORTANTE: Nacen en FALSE para que el cartel les salte al iniciar sesión
+            'terms_accepted' => false,
         ]);
 
         event(new Registered($user));
