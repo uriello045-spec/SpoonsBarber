@@ -354,7 +354,8 @@
 
 <div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
-        <img src="{{ asset('storage/galeria/foto11.jpeg') }}" 
+        {{-- 🌟 AQUÍ SE CORRIGIÓ LA FOTO DEL FONDO DEL HEADER 🌟 --}}
+        <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
              alt="Barber Shop">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-black dark:via-black/10 dark:to-black/50 transition-colors duration-300"></div>
@@ -516,21 +517,22 @@
                     $fotosDB = \App\Models\Gallery::where('activa', true)->orderBy('created_at', 'desc')->get();
                 }
 
+                // 🌟 AQUÍ SE CORRIGIERON LAS RUTAS DE TUS FOTOS DE RELLENO 🌟
                 $fotosOriginales = [
-                    asset('storage/galeria/foto0.jpeg'),
-                    asset('storage/galeria/foto2.jpeg'),
-                    asset('storage/galeria/foto3.jpeg'),
-                    asset('storage/galeria/foto4.jpeg'),
-                    asset('storage/galeria/foto5.jpeg'),
-                    asset('storage/galeria/foto6.jpeg'),
-                    asset('storage/galeria/foto7.jpeg'),
-                    asset('storage/galeria/foto8.jpeg'),
-                    asset('storage/galeria/foto9.jpeg'),
-                    asset('storage/galeria/foto10.jpeg'),
+                    asset('img/galeria/foto0.jpeg'),
+                    asset('img/galeria/foto2.jpeg'),
+                    asset('img/galeria/foto3.jpeg'),
+                    asset('img/galeria/foto4.jpeg'),
+                    asset('img/galeria/foto5.jpeg'),
+                    asset('img/galeria/foto6.jpeg'),
+                    asset('img/galeria/foto7.jpeg'),
+                    asset('img/galeria/foto8.jpeg'),
+                    asset('img/galeria/foto9.jpeg'),
+                    asset('img/galeria/foto10.jpeg'),
                 ];
             @endphp
 
-            {{-- FOTOS DE LA BASE DE DATOS --}}
+            {{-- FOTOS DE LA BASE DE DATOS (Nuevas) --}}
             @foreach($fotosDB as $index => $foto)
                 <div id="div-foto-{{ $foto->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">
@@ -553,7 +555,7 @@
                 </div>
             @endforeach
 
-            {{-- 🌟 MODIFICACIÓN: FOTOS ORIGINALES SIEMPRE VISIBLES 🌟 --}}
+            {{-- FOTOS DE RELLENO SIEMPRE VISIBLES --}}
             @foreach($fotosOriginales as $index => $img)
                 <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">
@@ -704,7 +706,6 @@
     async function editarPrecios() {
         const isDark = document.documentElement.classList.contains('dark');
         
-        // 🌟 CAMBIO 1: El min ahora es 1 en lugar de 0 para forzar precios válidos
         const { value: formValues } = await Swal.fire({
             title: '💵 Editar Precios Base',
             html: `
@@ -746,7 +747,6 @@
                 const pCeja = parseFloat(document.getElementById('p_ceja').value);
                 const pGreca = parseFloat(document.getElementById('p_greca').value);
 
-                // 🌟 CAMBIO 2: Validamos que el precio sea ESTRICTAMENTE mayor a $0 (pCorte <= 0)
                 if (isNaN(pCorte) || pCorte <= 0 || pCorte > 9999 || 
                     isNaN(pBarba) || pBarba <= 0 || pBarba > 9999 || 
                     isNaN(pCeja) || pCeja <= 0 || pCeja > 9999 || 

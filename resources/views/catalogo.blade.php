@@ -129,9 +129,10 @@
             
             foreach($serviciosDB as $s) {
                 $numeroUnico = ($s->id % 28) + 1;
+                // 🌟 AQUÍ SE CORRIGIÓ LA RUTA PARA LAS IMÁGENES DE RELLENO "corte_" 🌟
                 $rutaImagen = ($s->imagen && !str_contains($s->imagen, 'fake')) 
                               ? asset('storage/' . $s->imagen) 
-                              : asset("storage/galeria/corte_{$numeroUnico}.png");
+                              : asset("img/galeria/corte_{$numeroUnico}.png");
 
                 $serviciosAMostrar[] = [
                     'id' => $s->id,
@@ -323,7 +324,7 @@
                 method: 'POST',
                 headers: { 
                     'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json' // 🛡️ EL ESCUDO PARA VER EL ERROR REAL
+                    'Accept': 'application/json' 
                 },
                 body: formData
             })
