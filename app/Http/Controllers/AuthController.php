@@ -63,8 +63,10 @@ class AuthController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
 
-            // 🌟 NUEVO: Todos pasan primero por la pantalla de carga tecnológica 🌟
-            return redirect()->route('loading');
+            // 🌟 CORRECCIÓN MAESTRA: Usamos intended()
+            // Laravel recordará si el cliente venía de un correo de verificación y procesará eso primero.
+            // Si el cliente entró normal a la página, entonces lo mandará a 'loading'.
+            return redirect()->intended(route('loading'));
         }
 
         return back()->withErrors([
