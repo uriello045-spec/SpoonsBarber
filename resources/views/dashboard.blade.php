@@ -20,7 +20,7 @@
     $horaApertura = getSetting('hora_apertura', '08:00');
     $horaCierre = getSetting('hora_cierre', '21:00');
 
-    // Horarios Reales (Relojes del sistema) - NUEVOS
+    // Horarios Reales (Relojes del sistema)
     $ap_semana = getSetting('apertura_semana', '08:00');
     $ci_semana = getSetting('cierre_semana', '21:00');
     $ce_semana = getSetting('cerrado_semana', 'false');
@@ -354,7 +354,6 @@
 
 <div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
-        {{-- 🌟 AQUÍ SE CORRIGIÓ LA FOTO DEL FONDO DEL HEADER 🌟 --}}
         <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
              alt="Barber Shop">
@@ -517,7 +516,6 @@
                     $fotosDB = \App\Models\Gallery::where('activa', true)->orderBy('created_at', 'desc')->get();
                 }
 
-                // 🌟 AQUÍ SE CORRIGIERON LAS RUTAS DE TUS FOTOS DE RELLENO 🌟
                 $fotosOriginales = [
                     asset('img/galeria/foto0.jpeg'),
                     asset('img/galeria/foto2.jpeg'),
@@ -534,6 +532,12 @@
 
             {{-- FOTOS DE LA BASE DE DATOS (Nuevas) --}}
             @foreach($fotosDB as $index => $foto)
+                @php 
+                    // 🛡️ Preparamos las variables limpias para evitar errores de VS Code
+                    $imgLimpia = str_replace('public/', '', $foto->imagen);
+                    $urlPublica = asset('img/' . $imgLimpia);
+                    $urlStorage = asset('storage/' . $imgLimpia);
+                @endphp
                 <div id="div-foto-{{ $foto->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">
                         <div class="glow-bg glow-gold"></div>
@@ -547,8 +551,12 @@
                                 </button>
                             @endif
 
-                            <a href="{{ asset('storage/' . $foto->imagen) }}" data-fancybox="gallery">
-                                <img src="{{ asset('storage/' . $foto->imagen) }}" alt="Corte Barbería" loading="lazy">
+                            {{-- 🛡️ Lógica Dual Integrada con variables limpias --}}
+                            <a href="{{ $urlPublica }}" data-fancybox="gallery" 
+                               onclick="if(this.querySelector('img').src.includes('storage')) this.href='{{ $urlStorage }}'">
+                                <img src="{{ $urlPublica }}" 
+                                     onerror="this.onerror=null; this.src='{{ $urlStorage }}';" 
+                                     alt="Corte Barbería" loading="lazy">
                             </a>
                         </div>
                     </div>
