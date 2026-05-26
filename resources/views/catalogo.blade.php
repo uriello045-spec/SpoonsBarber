@@ -131,11 +131,14 @@
                 $numeroUnico = ($s->id % 28) + 1;
                 $imagenOriginal = $s->imagen ?? '';
                 
-                // 🛡️ TODO APUNTA A STORAGE (Código limpio y directo)
-                $rutaLimpia = str_replace('public/', '', $imagenOriginal);
-                $rutaImagen = ($imagenOriginal && !str_contains($imagenOriginal, 'fake'))
-                              ? asset('storage/' . $rutaLimpia)
-                              : asset("storage/galeria/corte_{$numeroUnico}.png");
+                // 🛡️ Lógica Dual de Rutas en Variables Limpias
+                if ($imagenOriginal && !str_contains($imagenOriginal, 'fake')) {
+                    $rutaLimpia = str_replace('public/', '', $imagenOriginal);
+                    $rutaImagen = asset('img/' . $rutaLimpia);
+                } else {
+                    $rutaImagen = asset("img/galeria/corte_{$numeroUnico}.png");
+                    $rutaLimpia = '';
+                }
 
                 $serviciosAMostrar[] = [
                     'id' => $s->id,
@@ -144,6 +147,7 @@
                     'tiempo' => $s->duracion_minutos . ' min',
                     'cat' => $s->categoria,
                     'img' => $rutaImagen,
+                    'ruta_limpia' => $rutaLimpia,
                     'desc' => $s->descripcion ?? 'Corte profesional de la casa.'
                 ];
             }
@@ -173,6 +177,11 @@
             @endif
 
             @foreach($serviciosAMostrar as $index => $s)
+                @php
+                    // 🛡️ Variables limpias para que VS Code no marque error de sintaxis
+                    $fallbackStorage = asset('storage/' . $s['ruta_limpia']);
+                    $fallbackCorte = asset('img/galeria/corte_' . (($s['id'] % 28) + 1) . '.png');
+                @endphp
                 <div id="card-servicio-{{ $s['id'] }}" data-aos="fade-up" data-aos-delay="{{ ($index % 10) * 50 }}">
                     <div class="glow-wrapper">
                         <div class="glow-bg {{ strtolower($s['cat']) === 'clásico' || strtolower($s['cat']) === 'clasico' ? 'glow-clasico' : (strtolower($s['cat']) === 'moderno' ? 'glow-moderno' : 'glow-extra') }}"></div>
@@ -192,7 +201,9 @@
                             @endif
 
                             <div class="h-56 overflow-hidden relative z-10 bg-zinc-800">
+                                {{-- 🛡️ Lógica de Respaldo Integrada para Hostinger limpia --}}
                                 <img src="{{ $s['img'] }}" 
+                                     onerror="this.onerror=null; this.src='{{ $fallbackStorage }}'; setTimeout(() => { if(this.naturalWidth === 0) this.src='{{ $fallbackCorte }}'; }, 50);"
                                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
                                      alt="{{ $s['nombre'] }}">
                                 

@@ -354,8 +354,8 @@
 
 <div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
-        {{-- 🛡️ Todo apunta directamente a storage --}}
-        <img src="{{ asset('storage/galeria/foto11.jpeg') }}" 
+        {{-- 🛡️ SOLUCIÓN LARAVEL CLOUD: Storage::url() --}}
+        <img src="{{ Storage::url('galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
              alt="Barber Shop">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-black dark:via-black/10 dark:to-black/50 transition-colors duration-300"></div>
@@ -517,18 +517,18 @@
                     $fotosDB = \App\Models\Gallery::where('activa', true)->orderBy('created_at', 'desc')->get();
                 }
 
-                // 🛡️ TODO APUNTA A STORAGE (Código limpio y directo)
+                // 🛡️ SOLUCIÓN LARAVEL CLOUD: Usamos Storage::url()
                 $fotosOriginales = [
-                    asset('storage/galeria/foto0.jpeg'),
-                    asset('storage/galeria/foto2.jpeg'),
-                    asset('storage/galeria/foto3.jpeg'),
-                    asset('storage/galeria/foto4.jpeg'),
-                    asset('storage/galeria/foto5.jpeg'),
-                    asset('storage/galeria/foto6.jpeg'),
-                    asset('storage/galeria/foto7.jpeg'),
-                    asset('storage/galeria/foto8.jpeg'),
-                    asset('storage/galeria/foto9.jpeg'),
-                    asset('storage/galeria/foto10.jpeg'),
+                    Storage::url('galeria/foto0.jpeg'),
+                    Storage::url('galeria/foto2.jpeg'),
+                    Storage::url('galeria/foto3.jpeg'),
+                    Storage::url('galeria/foto4.jpeg'),
+                    Storage::url('galeria/foto5.jpeg'),
+                    Storage::url('galeria/foto6.jpeg'),
+                    Storage::url('galeria/foto7.jpeg'),
+                    Storage::url('galeria/foto8.jpeg'),
+                    Storage::url('galeria/foto9.jpeg'),
+                    Storage::url('galeria/foto10.jpeg'),
                 ];
             @endphp
 
@@ -536,7 +536,7 @@
             @foreach($fotosDB as $index => $foto)
                 @php 
                     $imgLimpia = str_replace('public/', '', $foto->imagen);
-                    $urlStorage = asset('storage/' . $imgLimpia);
+                    $urlStorage = Storage::url($imgLimpia);
                 @endphp
                 <div id="div-foto-{{ $foto->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">
@@ -551,7 +551,6 @@
                                 </button>
                             @endif
 
-                            {{-- 🛡️ Todo apunta directamente a storage --}}
                             <a href="{{ $urlStorage }}" data-fancybox="gallery">
                                 <img src="{{ $urlStorage }}" alt="Corte Barbería" loading="lazy">
                             </a>
