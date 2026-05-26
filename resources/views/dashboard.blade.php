@@ -354,7 +354,8 @@
 
 <div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
-        <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
+        {{-- 🛡️ Todo apunta directamente a storage --}}
+        <img src="{{ asset('storage/galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
              alt="Barber Shop">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-black dark:via-black/10 dark:to-black/50 transition-colors duration-300"></div>
@@ -516,26 +517,25 @@
                     $fotosDB = \App\Models\Gallery::where('activa', true)->orderBy('created_at', 'desc')->get();
                 }
 
+                // 🛡️ TODO APUNTA A STORAGE (Código limpio y directo)
                 $fotosOriginales = [
-                    asset('img/galeria/foto0.jpeg'),
-                    asset('img/galeria/foto2.jpeg'),
-                    asset('img/galeria/foto3.jpeg'),
-                    asset('img/galeria/foto4.jpeg'),
-                    asset('img/galeria/foto5.jpeg'),
-                    asset('img/galeria/foto6.jpeg'),
-                    asset('img/galeria/foto7.jpeg'),
-                    asset('img/galeria/foto8.jpeg'),
-                    asset('img/galeria/foto9.jpeg'),
-                    asset('img/galeria/foto10.jpeg'),
+                    asset('storage/galeria/foto0.jpeg'),
+                    asset('storage/galeria/foto2.jpeg'),
+                    asset('storage/galeria/foto3.jpeg'),
+                    asset('storage/galeria/foto4.jpeg'),
+                    asset('storage/galeria/foto5.jpeg'),
+                    asset('storage/galeria/foto6.jpeg'),
+                    asset('storage/galeria/foto7.jpeg'),
+                    asset('storage/galeria/foto8.jpeg'),
+                    asset('storage/galeria/foto9.jpeg'),
+                    asset('storage/galeria/foto10.jpeg'),
                 ];
             @endphp
 
             {{-- FOTOS DE LA BASE DE DATOS (Nuevas) --}}
             @foreach($fotosDB as $index => $foto)
                 @php 
-                    // 🛡️ Preparamos las variables limpias para evitar errores de VS Code
                     $imgLimpia = str_replace('public/', '', $foto->imagen);
-                    $urlPublica = asset('img/' . $imgLimpia);
                     $urlStorage = asset('storage/' . $imgLimpia);
                 @endphp
                 <div id="div-foto-{{ $foto->id }}" data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
@@ -551,12 +551,9 @@
                                 </button>
                             @endif
 
-                            {{-- 🛡️ Lógica Dual Integrada con variables limpias --}}
-                            <a href="{{ $urlPublica }}" data-fancybox="gallery" 
-                               onclick="if(this.querySelector('img').src.includes('storage')) this.href='{{ $urlStorage }}'">
-                                <img src="{{ $urlPublica }}" 
-                                     onerror="this.onerror=null; this.src='{{ $urlStorage }}';" 
-                                     alt="Corte Barbería" loading="lazy">
+                            {{-- 🛡️ Todo apunta directamente a storage --}}
+                            <a href="{{ $urlStorage }}" data-fancybox="gallery">
+                                <img src="{{ $urlStorage }}" alt="Corte Barbería" loading="lazy">
                             </a>
                         </div>
                     </div>
