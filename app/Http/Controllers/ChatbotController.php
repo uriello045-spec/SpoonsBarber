@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\RateLimiter;
 use App\Models\Appointment;
 use App\Models\Service; 
-use App\Models\Setting; // 🌟 IMPORTAMOS SETTING PARA LEER HORARIOS
+use App\Models\Setting; 
 use Carbon\Carbon;
 
 class ChatbotController extends Controller
@@ -18,6 +18,13 @@ class ChatbotController extends Controller
     public function index()
     {
         return view('chatbot.index');
+    }
+
+    // 🌟 NUEVO: Función para limpiar la memoria del bot si lo necesitas
+    public function reset()
+    {
+        session()->forget('chat_history');
+        return response()->json(['reply' => '🤖 ¡Memoria borrada! He olvidado nuestra plática anterior. ¿En qué te ayudo ahora?']);
     }
 
     public function send(Request $request)
@@ -44,7 +51,7 @@ class ChatbotController extends Controller
             ]);
         }
 
-        // 🛡️ ESCUDO 1: LIMITADOR DE VELOCIDAD (RATE LIMITING)
+        // 🛡️ ESCUDO 1: LIMITADOR DE VELOCIDAD (RATE LIMITING LOCAL)
         $llave = 'chatbot_user_' . $user->id;
 
         if (RateLimiter::tooManyAttempts($llave, 5)) {
@@ -184,29 +191,34 @@ REGLA PARA AGENDAR: Si el usuario pide un 'Skin Fade' o 'Corte moderno', debes u
 1. Obtén FECHA (hoy o mañana), HORA exacta y SERVICIO (Debe ser EXACTAMENTE uno de estos nombres: {$listaNombresStr}).
 2. Imprime EXACTAMENTE este código al final: 
 [AGENDAR|YYYY-MM-DD|HH:MM|NombreDelServicioOficial]
-(Hora en formato 24h, ej: 20:00).
+(Hora en formato 24h, ej: 20:00).";
 
-Usuario dijo: \"{$userMessage}\"";
+        // 🧠 OBTENER MEMORIA DEL CHAT DE LA SESIÓN
+        $history = session()->get('chat_history', []);
+
+        // Añadir el mensaje nuevo del usuario a la memoria (le inyectamos silenciosamente la fecha por si cambió)
+        $history[] = [
+            "role" => "user", 
+            "parts" => [["text" => "(INFO OCULTA ACTUALIZADA - Hora: {$horaActualTexto}) Mensaje del usuario: " . $userMessage]]
+        ];
 
         try {
-            // 🛡️ SOLUCIÓN AL ERROR 503: Intentar 3 veces antes de rendirse
+            // 🛡️ SOLUCIÓN AL ERROR 429/503: Retry (3 intentos), pasamos instrucciones de sistema y el historial.
             $response = Http::withoutVerifying()
-                ->retry(3, 500)
+                ->retry(3, 1500) // Intenta 3 veces esperando 1.5 segundos entre cada error de Google
                 ->withHeaders(['Content-Type' => 'application/json'])
                 ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
-                    "contents" => [
-                        [
-                            "parts" => [
-                                ["text" => $systemInstruction]
-                            ]
-                        ]
-                    ]
+                    "system_instruction" => [
+                        "parts" => [["text" => $systemInstruction]]
+                    ],
+                    "contents" => $history // 🧠 ENVIAMOS EL HISTORIAL PARA QUE NO OLVIDE
                 ]);
 
             if ($response->successful()) {
                 $reply = $response->json()['candidates'][0]['content']['parts'][0]['text'] ?? '¡Estoy pensando... 🤔';
-                $reply = str_replace(['**', '*'], '', trim($reply));
+                $replyClean = str_replace(['**', '*'], '', trim($reply));
 
+                // ✂️ VALIDACIÓN Y AGENDAMIENTO
                 if (preg_match('/\[AGENDAR\|([^|]+)\|([^|]+)\|([^\]]+)\]/', $reply, $matches)) {
                     $fecha = trim($matches[1]);
                     $hora = trim($matches[2]);
@@ -215,7 +227,7 @@ Usuario dijo: \"{$userMessage}\"";
                     $inicioNuevo = Carbon::parse($fecha . ' ' . $hora, $tz);
                     
                     if ($inicioNuevo->gt($ahora->copy()->addDays(60))) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Demasiado lejos:</b> No podemos agendar citas con más de 2 meses de anticipación.";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -223,7 +235,7 @@ Usuario dijo: \"{$userMessage}\"";
                     if ($inicioNuevo->isToday()) {
                         $limitePermitido = $ahora->copy()->addMinutes(30);
                         if ($inicioNuevo->lt($limitePermitido)) {
-                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                             $cleanReply .= "<br><br>⏱️ <b>¡Lo siento!</b> Necesitamos al menos 30 minutos de anticipación. Por favor, dime un horario un poco más tarde.";
                             return response()->json(['reply' => $cleanReply]);
                         }
@@ -231,7 +243,7 @@ Usuario dijo: \"{$userMessage}\"";
 
                     $servicioReal = Service::where('nombre', $servicio)->first();
                     if (!$servicioReal) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         $cleanReply .= "<br><br>🚨 <b>Error de seguridad:</b> El servicio que intentas agendar no existe en nuestro sistema. Por favor elige uno del catálogo.";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -241,7 +253,7 @@ Usuario dijo: \"{$userMessage}\"";
                     $horarioElegido = $horariosApertura[$diaElegido];
 
                     if ($horarioElegido['cerrado']) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Ese día la barbería está cerrada.</b> Por favor intenta elegir otro día.";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -253,13 +265,13 @@ Usuario dijo: \"{$userMessage}\"";
                     $horaCierreSistema = Carbon::parse($fecha . ' ' . $horarioElegido['fin'] . ':00', $tz);
 
                     if ($inicioNuevo->lt($horaAperturaSistema)) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Aún no abrimos a esa hora.</b><br>Ese día empezamos a trabajar a las " . $horaAperturaSistema->format('h:i A') . ".";
                         return response()->json(['reply' => $cleanReply]);
                     }
 
                     if ($finNuevo->gt($horaCierreSistema)) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>No es posible agendar a esa hora.</b><br>El servicio '{$servicio}' dura {$duracionNueva} min y terminaría a las " . $finNuevo->format('h:i A') . ".<br>Nosotros cerramos a las " . $horaCierreSistema->format('h:i A') . ".";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -296,26 +308,39 @@ Usuario dijo: \"{$userMessage}\"";
                             $mensajeExito = "<br><br>🎉 <b>¡Cita Confirmada!</b><br>Servicio: <b>{$servicio}</b><br>Fecha: " . $inicioNuevo->format('d/m/Y') . "<br>Hora: <b>" . $inicioNuevo->format('h:i A') . "</b>";
                         });
 
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        
+                        // Guardar respuesta final en la memoria
+                        $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
+                        session(['chat_history' => $history]);
+
                         return response()->json(['reply' => $cleanReply . $mensajeExito]);
 
                     } catch (\Exception $e) {
                         if ($e->getMessage() == 'ocupado') {
-                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $reply);
+                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                             $cleanReply .= "<br><br>⚠️ <b>¡Ups! Ese horario ya está ocupado.</b><br>Alguien más reservó ese bloque hace un segundo. ¿Te gustaría intentar en otra hora?";
+                            
+                            $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
+                            session(['chat_history' => $history]);
+
                             return response()->json(['reply' => $cleanReply]);
                         }
                         throw $e; 
                     }
                 }
 
-                return response()->json(['reply' => $reply]);
+                // Si no mandó a agendar nada, guardamos la respuesta normal en la memoria
+                $history[] = ["role" => "model", "parts" => [["text" => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]]];
+                session(['chat_history' => $history]);
+
+                return response()->json(['reply' => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]);
             }
 
             return response()->json(['reply' => 'Error de conexión (' . $response->status() . '). Intenta más tarde. 🔧']);
         } catch (\Exception $e) {
             Log::error('Error en chatbot: ' . $e->getMessage());
-            return response()->json(['reply' => 'Error técnico, pero ya estoy reintentando. ']);
+            return response()->json(['reply' => 'Error técnico, pero estoy intentando restablecer la conexión. Por favor, envía tu mensaje de nuevo.']);
         }
     }
 }

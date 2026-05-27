@@ -354,8 +354,8 @@
 
 <div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
-        {{-- 🛡️ SOLUCIÓN LARAVEL CLOUD: Storage::url() --}}
-        <img src="{{ Storage::url('galeria/foto11.jpeg') }}" 
+        {{-- 🛡️ FOTO ESTÁTICA: Usamos asset() puro porque debe ir en public/img/galeria/ --}}
+        <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
              alt="Barber Shop">
         <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-black dark:via-black/10 dark:to-black/50 transition-colors duration-300"></div>
@@ -517,22 +517,22 @@
                     $fotosDB = \App\Models\Gallery::where('activa', true)->orderBy('created_at', 'desc')->get();
                 }
 
-                // 🛡️ SOLUCIÓN LARAVEL CLOUD: Usamos Storage::url()
+                // 🛡️ FOTOS ESTÁTICAS: Usamos asset() puro, seguras en public/img/galeria
                 $fotosOriginales = [
-                    Storage::url('galeria/foto0.jpeg'),
-                    Storage::url('galeria/foto2.jpeg'),
-                    Storage::url('galeria/foto3.jpeg'),
-                    Storage::url('galeria/foto4.jpeg'),
-                    Storage::url('galeria/foto5.jpeg'),
-                    Storage::url('galeria/foto6.jpeg'),
-                    Storage::url('galeria/foto7.jpeg'),
-                    Storage::url('galeria/foto8.jpeg'),
-                    Storage::url('galeria/foto9.jpeg'),
-                    Storage::url('galeria/foto10.jpeg'),
+                    asset('img/galeria/foto0.jpeg'),
+                    asset('img/galeria/foto2.jpeg'),
+                    asset('img/galeria/foto3.jpeg'),
+                    asset('img/galeria/foto4.jpeg'),
+                    asset('img/galeria/foto5.jpeg'),
+                    asset('img/galeria/foto6.jpeg'),
+                    asset('img/galeria/foto7.jpeg'),
+                    asset('img/galeria/foto8.jpeg'),
+                    asset('img/galeria/foto9.jpeg'),
+                    asset('img/galeria/foto10.jpeg'),
                 ];
             @endphp
 
-            {{-- FOTOS DE LA BASE DE DATOS (Nuevas) --}}
+            {{-- FOTOS DE LA BASE DE DATOS (Las que sube el barbero usan Storage::url) --}}
             @foreach($fotosDB as $index => $foto)
                 @php 
                     $imgLimpia = str_replace('public/', '', $foto->imagen);
@@ -559,7 +559,7 @@
                 </div>
             @endforeach
 
-            {{-- FOTOS DE RELLENO SIEMPRE VISIBLES --}}
+            {{-- FOTOS DE RELLENO SIEMPRE VISIBLES (Usan asset) --}}
             @foreach($fotosOriginales as $index => $img)
                 <div data-aos="fade-up" data-aos-delay="{{ $index * 50 }}">
                     <div class="glow-wrapper">

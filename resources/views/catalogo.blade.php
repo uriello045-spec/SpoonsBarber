@@ -131,14 +131,13 @@
                 $numeroUnico = ($s->id % 28) + 1;
                 $imagenOriginal = $s->imagen ?? '';
                 
-                // 🛡️ Lógica Dual de Rutas en Variables Limpias
-                if ($imagenOriginal && !str_contains($imagenOriginal, 'fake')) {
-                    $rutaLimpia = str_replace('public/', '', $imagenOriginal);
-                    $rutaImagen = asset('img/' . $rutaLimpia);
-                } else {
-                    $rutaImagen = asset("img/galeria/corte_{$numeroUnico}.png");
-                    $rutaLimpia = '';
-                }
+                // 🛡️ SOLUCIÓN: Rutas estables. Dinámica -> Storage::url / Estática -> asset puro
+                $rutaLimpia = str_replace('public/', '', $imagenOriginal);
+                $esDinamica = ($imagenOriginal && !str_contains($imagenOriginal, 'fake'));
+                
+                $rutaImagen = $esDinamica
+                              ? Storage::url($rutaLimpia) 
+                              : asset("img/galeria/corte_{$numeroUnico}.png");
 
                 $serviciosAMostrar[] = [
                     'id' => $s->id,
@@ -178,8 +177,6 @@
 
             @foreach($serviciosAMostrar as $index => $s)
                 @php
-                    // 🛡️ Variables limpias para que VS Code no marque error de sintaxis
-                    $fallbackStorage = asset('storage/' . $s['ruta_limpia']);
                     $fallbackCorte = asset('img/galeria/corte_' . (($s['id'] % 28) + 1) . '.png');
                 @endphp
                 <div id="card-servicio-{{ $s['id'] }}" data-aos="fade-up" data-aos-delay="{{ ($index % 10) * 50 }}">
@@ -201,9 +198,9 @@
                             @endif
 
                             <div class="h-56 overflow-hidden relative z-10 bg-zinc-800">
-                                {{-- 🛡️ Lógica de Respaldo Integrada para Hostinger limpia --}}
+                                {{-- 🛡️ ESCUDO: Si la dinámica falla, el fallback con asset puro la salva --}}
                                 <img src="{{ $s['img'] }}" 
-                                     onerror="this.onerror=null; this.src='{{ $fallbackStorage }}'; setTimeout(() => { if(this.naturalWidth === 0) this.src='{{ $fallbackCorte }}'; }, 50);"
+                                     onerror="this.onerror=null; this.src='{{ $fallbackCorte }}';"
                                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
                                      alt="{{ $s['nombre'] }}">
                                 
