@@ -20,10 +20,11 @@ class ChatbotController extends Controller
         return view('chatbot.index');
     }
 
-    // 🌟 NUEVO: Función para limpiar la memoria del bot si lo necesitas
+    // 🌟 Función para limpiar la memoria del bot
     public function reset()
     {
         session()->forget('chat_history');
+        session()->save();
         return response()->json(['reply' => '🤖 ¡Memoria borrada! He olvidado nuestra plática anterior. ¿En qué te ayudo ahora?']);
     }
 
@@ -51,7 +52,7 @@ class ChatbotController extends Controller
             ]);
         }
 
-        // 🛡️ ESCUDO 1: LIMITADOR DE VELOCIDAD (RATE LIMITING LOCAL)
+        // 🛡️ ESCUDO 1: LIMITADOR DE VELOCIDAD
         $llave = 'chatbot_user_' . $user->id;
 
         if (RateLimiter::tooManyAttempts($llave, 5)) {
@@ -166,6 +167,7 @@ class ChatbotController extends Controller
 
         $horaActualTexto = $ahora->format('H:i'); 
 
+        // 🌟 INSTRUCCIONES MEJORADAS PARA QUE NO OLVIDE EL CONTEXTO
         $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. 
 Habla SIEMPRE en español, amigable y profesional. Usa etiquetas <br> y emojis para listas (NUNCA uses asteriscos).
 
@@ -174,44 +176,39 @@ DATOS DE TIEMPO REAL:
 - Hoy ({$hoy->format('Y-m-d')}): {$mensajeEstadoHoy} 
 - Mañana ({$manana->format('Y-m-d')}): {$mensajeEstadoManana}
 
-🚨 REGLAS SUPREMAS:
-1. SI EL ESTADO DE HOY DICE 'YA NO SE RECIBEN CITAS' o 'CERRADO': 
-   - Prohibido decir 'el resto del día está libre'. 
-   - Debes decir: 'Por hoy ya estamos cerrados. ¿Te gustaría agendar para otro día?'.
-2. AM/PM: Si el usuario dice 'a las 8' y no especifica:
-   - Si la mañana ya pasó, ASUME LA NOCHE.
-   - Si la noche ya está ocupada o cerrada, SUGIERE MAÑANA.
+🚨 REGLAS SUPREMAS DE MEMORIA Y CONVERSACIÓN:
+1. REVISA EL HISTORIAL DE LA CONVERSACIÓN: Si el usuario ya te dijo el DÍA y la HORA en mensajes anteriores, NO se los vuelvas a preguntar. Recuérdalos.
+2. Si ya tienes el Día y la Hora, pero falta el Corte, solo pregunta: '¿Qué corte te gustaría realizarte?' y en cuanto te lo diga, PROCEDE A AGENDAR.
+3. SI EL ESTADO DE HOY DICE 'YA NO SE RECIBEN CITAS' o 'CERRADO', debes decir: 'Por hoy ya estamos cerrados. ¿Te gustaría agendar para mañana?'.
+4. Si el usuario pide un servicio informal ('Corte moderno', 'fade'), asócialo al nombre oficial que más se le parezca.
 
-🌟 NUESTROS SERVICIOS Y PRECIOS OFICIALES (Lee esto para cotizar): 🌟
+🌟 NUESTROS SERVICIOS Y PRECIOS OFICIALES: 🌟
 {$textoServiciosDinamicos}
 
-REGLA PARA AGENDAR: Si el usuario pide un 'Skin Fade' o 'Corte moderno', debes usar el nombre oficial de la lista que más se le parezca.
-
-🔥 INSTRUCCIÓN SECRETA PARA AGENDAR:
-1. Obtén FECHA (hoy o mañana), HORA exacta y SERVICIO (Debe ser EXACTAMENTE uno de estos nombres: {$listaNombresStr}).
-2. Imprime EXACTAMENTE este código al final: 
+🔥 INSTRUCCIÓN SECRETA PARA AGENDAR (SOLO cuando tengas FECHA, HORA y SERVICIO):
+Imprime EXACTAMENTE este código al final de tu respuesta: 
 [AGENDAR|YYYY-MM-DD|HH:MM|NombreDelServicioOficial]
 (Hora en formato 24h, ej: 20:00).";
 
         // 🧠 OBTENER MEMORIA DEL CHAT DE LA SESIÓN
         $history = session()->get('chat_history', []);
 
-        // Añadir el mensaje nuevo del usuario a la memoria (le inyectamos silenciosamente la fecha por si cambió)
+        // Añadir solo el mensaje limpio del usuario para no confundir a la IA
         $history[] = [
             "role" => "user", 
-            "parts" => [["text" => "(INFO OCULTA ACTUALIZADA - Hora: {$horaActualTexto}) Mensaje del usuario: " . $userMessage]]
+            "parts" => [["text" => $userMessage]]
         ];
 
         try {
-            // 🛡️ SOLUCIÓN AL ERROR 429/503: Retry (3 intentos), pasamos instrucciones de sistema y el historial.
+            // 🛡️ Retry (3 intentos), pasamos instrucciones de sistema y el historial completo.
             $response = Http::withoutVerifying()
-                ->retry(3, 1500) // Intenta 3 veces esperando 1.5 segundos entre cada error de Google
+                ->retry(3, 1500)
                 ->withHeaders(['Content-Type' => 'application/json'])
-                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
                     "system_instruction" => [
                         "parts" => [["text" => $systemInstruction]]
                     ],
-                    "contents" => $history // 🧠 ENVIAMOS EL HISTORIAL PARA QUE NO OLVIDE
+                    "contents" => $history
                 ]);
 
             if ($response->successful()) {
@@ -310,9 +307,10 @@ REGLA PARA AGENDAR: Si el usuario pide un 'Skin Fade' o 'Corte moderno', debes u
 
                         $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
                         
-                        // Guardar respuesta final en la memoria
+                        // Guardar respuesta final en la memoria con un push asegurado
                         $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
-                        session(['chat_history' => $history]);
+                        session()->put('chat_history', $history);
+                        session()->save();
 
                         return response()->json(['reply' => $cleanReply . $mensajeExito]);
 
@@ -322,7 +320,8 @@ REGLA PARA AGENDAR: Si el usuario pide un 'Skin Fade' o 'Corte moderno', debes u
                             $cleanReply .= "<br><br>⚠️ <b>¡Ups! Ese horario ya está ocupado.</b><br>Alguien más reservó ese bloque hace un segundo. ¿Te gustaría intentar en otra hora?";
                             
                             $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
-                            session(['chat_history' => $history]);
+                            session()->put('chat_history', $history);
+                            session()->save();
 
                             return response()->json(['reply' => $cleanReply]);
                         }
@@ -332,7 +331,8 @@ REGLA PARA AGENDAR: Si el usuario pide un 'Skin Fade' o 'Corte moderno', debes u
 
                 // Si no mandó a agendar nada, guardamos la respuesta normal en la memoria
                 $history[] = ["role" => "model", "parts" => [["text" => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]]];
-                session(['chat_history' => $history]);
+                session()->put('chat_history', $history);
+                session()->save();
 
                 return response()->json(['reply' => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]);
             }

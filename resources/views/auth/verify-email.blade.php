@@ -29,9 +29,11 @@
         @endif
 
         <div class="flex flex-col gap-4">
-            <form method="POST" action="{{ route('verification.send') }}">
+            {{-- 🛡️ Agregamos un onsubmit al formulario para disparar la función JS --}}
+            <form method="POST" action="{{ route('verification.send') }}" onsubmit="disableButton()">
                 @csrf
-                <button type="submit" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-[#d4af37] dark:to-[#b8962e] hover:from-yellow-500 hover:to-yellow-600 dark:hover:from-[#e0c15a] dark:hover:to-[#c9a43b] text-slate-900 dark:text-black font-black px-6 py-3.5 rounded-xl transition-all shadow-md transform hover:-translate-y-1 flex justify-center items-center gap-2">
+                {{-- 🛡️ Agregamos un id="btn-reenviar" para poder controlarlo con JS --}}
+                <button type="submit" id="btn-reenviar" class="w-full bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-[#d4af37] dark:to-[#b8962e] hover:from-yellow-500 hover:to-yellow-600 dark:hover:from-[#e0c15a] dark:hover:to-[#c9a43b] text-slate-900 dark:text-black font-black px-6 py-3.5 rounded-xl transition-all shadow-md transform hover:-translate-y-1 flex justify-center items-center gap-2">
                     🔄 Reenviar Enlace
                 </button>
             </form>
@@ -44,5 +46,19 @@
             </form>
         </div>
     </div>
+
+    {{-- 🛡️ Script para deshabilitar el botón y mostrar estado de carga --}}
+    <script>
+        function disableButton() {
+            const btn = document.getElementById('btn-reenviar');
+            // Deshabilita el botón para evitar múltiples clics
+            btn.disabled = true;
+            // Cambia la apariencia para que parezca desactivado y cargando
+            btn.classList.add('opacity-70', 'cursor-not-allowed');
+            btn.classList.remove('hover:-translate-y-1'); 
+            // Cambia el texto
+            btn.innerHTML = '⏳ Enviando...';
+        }
+    </script>
 </body>
 </html>

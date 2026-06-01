@@ -155,10 +155,12 @@
 
     <div class="container mx-auto px-4">
         
+        {{-- 🛡️ BOTONES DE FILTRADO INTERACTIVOS --}}
         <div class="flex justify-center gap-4 mb-10 flex-wrap" data-aos="fade-up">
-            <span class="px-4 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200">🟡 Clásicos</span>
-            <span class="px-4 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800 border border-cyan-200">🔵 Modernos</span>
-            <span class="px-4 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200">🔥 Extras</span>
+            <button onclick="filtrarCatalogo('todos')" class="px-4 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800 border border-slate-300 hover:scale-105 hover:bg-slate-300 transition-all shadow-sm">🌟 Todos</button>
+            <button onclick="filtrarCatalogo('clasico')" class="px-4 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200 hover:scale-105 hover:bg-yellow-200 transition-all shadow-sm">🟡 Clásicos</button>
+            <button onclick="filtrarCatalogo('moderno')" class="px-4 py-1 rounded-full text-xs font-bold bg-cyan-100 text-cyan-800 border border-cyan-200 hover:scale-105 hover:bg-cyan-200 transition-all shadow-sm">🔵 Modernos</button>
+            <button onclick="filtrarCatalogo('extra')" class="px-4 py-1 rounded-full text-xs font-bold bg-orange-100 text-orange-800 border border-orange-200 hover:scale-105 hover:bg-orange-200 transition-all shadow-sm">🔥 Extras</button>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -178,8 +180,11 @@
             @foreach($serviciosAMostrar as $index => $s)
                 @php
                     $fallbackCorte = asset('img/galeria/corte_' . (($s['id'] % 28) + 1) . '.png');
+                    $categoriaLimpia = str_replace('á', 'a', strtolower($s['cat']));
                 @endphp
-                <div id="card-servicio-{{ $s['id'] }}" data-aos="fade-up" data-aos-delay="{{ ($index % 10) * 50 }}">
+                
+                {{-- 🛡️ Agregamos clase "servicio-card" y "data-categoria" para el filtro JS --}}
+                <div id="card-servicio-{{ $s['id'] }}" class="servicio-card" data-categoria="{{ $categoriaLimpia }}" data-aos="fade-up" data-aos-delay="{{ ($index % 10) * 50 }}">
                     <div class="glow-wrapper">
                         <div class="glow-bg {{ strtolower($s['cat']) === 'clásico' || strtolower($s['cat']) === 'clasico' ? 'glow-clasico' : (strtolower($s['cat']) === 'moderno' ? 'glow-moderno' : 'glow-extra') }}"></div>
                         
@@ -224,8 +229,9 @@
                                 <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{{ $s['desc'] }}</p>
                                 
                                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-100 dark:border-zinc-800">
-                                    <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">⏱ {{ $s['tiempo'] }}</span>
-                                    <a href="{{ route('appointments.index') }}" class="text-sm font-bold text-yellow-600 dark:text-yellow-500 hover:underline transition-colors">Reservar Ahora ➜</a>
+                                    {{-- 🛡️ Se aclara que es el tiempo del corte --}}
+                                    <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">⏱ Tiempo del corte: {{ $s['tiempo'] }}</span>
+                                    <a href="{{ route('appointments.index', ['servicio' => $s['nombre']]) }}" class="text-sm font-bold text-yellow-600 dark:text-yellow-500 hover:underline transition-colors">Reservar Ahora ➜</a>
                                 </div>
                             </div>
                         </div>
@@ -244,6 +250,24 @@
 <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 <script>
     AOS.init({ once: true, duration: 800, offset: 50 });
+
+    // 🛡️ Lógica para filtrar el catálogo al apretar los botones
+    function filtrarCatalogo(categoriaSeleccionada) {
+        const tarjetas = document.querySelectorAll('.servicio-card');
+        
+        tarjetas.forEach(tarjeta => {
+            const categoriaTarjeta = tarjeta.getAttribute('data-categoria');
+            
+            if (categoriaSeleccionada === 'todos' || categoriaTarjeta.includes(categoriaSeleccionada)) {
+                tarjeta.style.display = 'block';
+                // Añadimos una pequeña animación para que se vea suave al reaparecer
+                tarjeta.classList.add('animate-pulse');
+                setTimeout(() => tarjeta.classList.remove('animate-pulse'), 500);
+            } else {
+                tarjeta.style.display = 'none';
+            }
+        });
+    }
 
     async function agregarServicioNuevo() {
         const isDark = document.documentElement.classList.contains('dark');
