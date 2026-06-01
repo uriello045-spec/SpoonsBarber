@@ -204,7 +204,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
             $response = Http::withoutVerifying()
                 ->retry(3, 1500)
                 ->withHeaders(['Content-Type' => 'application/json'])
-                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={$apiKey}", [
+                ->post("https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key={$apiKey}", [
                     "system_instruction" => [
                         "parts" => [["text" => $systemInstruction]]
                     ],
