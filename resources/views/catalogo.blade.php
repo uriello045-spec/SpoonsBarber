@@ -125,13 +125,17 @@
         $serviciosAMostrar = [];
         
         if(class_exists('\App\Models\Service')) {
-            $serviciosDB = \App\Models\Service::all();
+            // 🛡️ SOLUCIÓN: Ordenamos estrictamente por ID ascendente para garantizar el orden de los 28 cortes
+            $serviciosDB = \App\Models\Service::orderBy('id', 'asc')->get();
+            
+            $contadorEstricto = 1; // 🛡️ SOLUCIÓN: Un contador independiente para emparejar foto 1 con corte 1
             
             foreach($serviciosDB as $s) {
-                $numeroUnico = ($s->id % 28) + 1;
+                // Ciclo exacto de 1 a 28
+                $numeroUnico = $contadorEstricto <= 28 ? $contadorEstricto : (($contadorEstricto - 1) % 28) + 1;
+                
                 $imagenOriginal = $s->imagen ?? '';
                 
-                // 🛡️ SOLUCIÓN: Rutas estables. Dinámica -> Storage::url / Estática -> asset puro
                 $rutaLimpia = str_replace('public/', '', $imagenOriginal);
                 $esDinamica = ($imagenOriginal && !str_contains($imagenOriginal, 'fake'));
                 
@@ -147,15 +151,18 @@
                     'cat' => $s->categoria,
                     'img' => $rutaImagen,
                     'ruta_limpia' => $rutaLimpia,
-                    'desc' => $s->descripcion ?? 'Corte profesional de la casa.'
+                    'desc' => $s->descripcion ?? 'Corte profesional de la casa.',
+                    'numero_unico' => $numeroUnico // Lo guardamos para el fallback
                 ];
+                
+                $contadorEstricto++;
             }
         }
     @endphp
 
     <div class="container mx-auto px-4">
         
-        {{-- 🛡️ BOTONES DE FILTRADO INTERACTIVOS --}}
+        {{-- BOTONES DE FILTRADO INTERACTIVOS --}}
         <div class="flex justify-center gap-4 mb-10 flex-wrap" data-aos="fade-up">
             <button onclick="filtrarCatalogo('todos')" class="px-4 py-1 rounded-full text-xs font-bold bg-slate-200 text-slate-800 border border-slate-300 hover:scale-105 hover:bg-slate-300 transition-all shadow-sm">🌟 Todos</button>
             <button onclick="filtrarCatalogo('clasico')" class="px-4 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-200 hover:scale-105 hover:bg-yellow-200 transition-all shadow-sm">🟡 Clásicos</button>
@@ -179,11 +186,10 @@
 
             @foreach($serviciosAMostrar as $index => $s)
                 @php
-                    $fallbackCorte = asset('img/galeria/corte_' . (($s['id'] % 28) + 1) . '.png');
+                    $fallbackCorte = asset('img/galeria/corte_' . $s['numero_unico'] . '.png');
                     $categoriaLimpia = str_replace('á', 'a', strtolower($s['cat']));
                 @endphp
                 
-                {{-- 🛡️ Agregamos clase "servicio-card" y "data-categoria" para el filtro JS --}}
                 <div id="card-servicio-{{ $s['id'] }}" class="servicio-card" data-categoria="{{ $categoriaLimpia }}" data-aos="fade-up" data-aos-delay="{{ ($index % 10) * 50 }}">
                     <div class="glow-wrapper">
                         <div class="glow-bg {{ strtolower($s['cat']) === 'clásico' || strtolower($s['cat']) === 'clasico' ? 'glow-clasico' : (strtolower($s['cat']) === 'moderno' ? 'glow-moderno' : 'glow-extra') }}"></div>
@@ -203,7 +209,6 @@
                             @endif
 
                             <div class="h-56 overflow-hidden relative z-10 bg-zinc-800">
-                                {{-- 🛡️ ESCUDO: Si la dinámica falla, el fallback con asset puro la salva --}}
                                 <img src="{{ $s['img'] }}" 
                                      onerror="this.onerror=null; this.src='{{ $fallbackCorte }}';"
                                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
@@ -229,7 +234,6 @@
                                 <p class="text-slate-600 dark:text-slate-400 text-sm mb-6 flex-grow leading-relaxed">{{ $s['desc'] }}</p>
                                 
                                 <div class="flex items-center justify-between mt-auto pt-4 border-t border-slate-100 dark:border-zinc-800">
-                                    {{-- 🛡️ Se aclara que es el tiempo del corte --}}
                                     <span class="text-xs font-semibold text-slate-500 flex items-center gap-1">⏱ Tiempo del corte: {{ $s['tiempo'] }}</span>
                                     <a href="{{ route('appointments.index', ['servicio' => $s['nombre']]) }}" class="text-sm font-bold text-yellow-600 dark:text-yellow-500 hover:underline transition-colors">Reservar Ahora ➜</a>
                                 </div>
@@ -251,7 +255,7 @@
 <script>
     AOS.init({ once: true, duration: 800, offset: 50 });
 
-    // 🛡️ Lógica para filtrar el catálogo al apretar los botones
+    // 🛡️ SOLUCIÓN: Lógica de filtrado inmune a conflictos con la animación AOS
     function filtrarCatalogo(categoriaSeleccionada) {
         const tarjetas = document.querySelectorAll('.servicio-card');
         
@@ -260,13 +264,18 @@
             
             if (categoriaSeleccionada === 'todos' || categoriaTarjeta.includes(categoriaSeleccionada)) {
                 tarjeta.style.display = 'block';
-                // Añadimos una pequeña animación para que se vea suave al reaparecer
-                tarjeta.classList.add('animate-pulse');
-                setTimeout(() => tarjeta.classList.remove('animate-pulse'), 500);
+                // Forzamos visibilidad absoluta para ganarle al hide de AOS
+                tarjeta.style.opacity = '1';
+                tarjeta.style.transform = 'translateY(0)';
             } else {
                 tarjeta.style.display = 'none';
             }
         });
+
+        // Refrescar AOS para recalcular alturas
+        setTimeout(() => {
+            if (typeof AOS !== 'undefined') AOS.refresh();
+        }, 100);
     }
 
     async function agregarServicioNuevo() {
