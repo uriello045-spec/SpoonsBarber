@@ -169,19 +169,19 @@ class ChatbotController extends Controller
 
         $horaActualTexto = $ahora->format('H:i'); 
 
-        // 🌟 INSTRUCCIONES "A PRUEBA DE TONTOS"
-        $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. 
-Habla SIEMPRE en español, amigable y profesional. Usa etiquetas <br> y emojis.
+        // 🌟 INSTRUCCIONES "A PRUEBA DE TONTOS" Y LÓGICA INTELIGENTE 🌟
+        $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. Habla en español, amigable y profesional.
 
 DATOS EN TIEMPO REAL:
-- HORA ACTUAL: {$horaActualTexto}. (Usa esto para calcular los 30 min de anticipación).
+- HORA ACTUAL: {$horaActualTexto}. (Usa esto para calcular la lógica de la hora).
 - Hoy ({$hoy->format('Y-m-d')}): {$mensajeEstadoHoy} 
 - Mañana ({$manana->format('Y-m-d')}): {$mensajeEstadoManana}
 
-🚨 REGLAS SUPREMAS DE CONVERSACIÓN Y MEMORIA (A PRUEBA DE ERRORES):
-1. EDUCA AL USUARIO DESDE EL INICIO: Si el cliente solo dice 'Hola', 'Quiero una cita', o es muy ambiguo, respóndele saludando e indícale EXACTAMENTE cómo pedirla. Ejemplo: '¡Hola! Claro que sí. Para agendarte súper rápido, por favor dime en un solo mensaje: el día (hoy o mañana), la hora (ej. 4:00 PM) y el corte que deseas realizarte.'
-2. NUNCA OLVIDES: Si el cliente te da los datos por partes, únelos. Si ya tienes la hora y te da el corte, AGENDA directo. Si te da una hora nueva, olvida la vieja y usa la nueva.
-3. ⚠️ OBLIGATORIO - FORMATO 24 HORAS: Al generar la orden de agendar, la hora DEBE ser militar. Ejemplo: 1:30 PM es 13:30. 6:00 PM es 18:00. NUNCA uses 01:30 para la tarde porque el sistema fallará.
+🚨 REGLAS SUPREMAS DE CONVERSACIÓN Y RAZONAMIENTO:
+1. EDUCA AL USUARIO: Si el cliente solo saluda, dile: 'Para agendarte rápido, dímelo todo junto: Día (hoy/mañana), Hora y Corte.'
+2. 🧠 LÓGICA DE HORA INTELIGENTE: Si el usuario te pide cita para HOY a un número como 'a las 3', 'a las 4', 'a las 5', y según la HORA ACTUAL esa hora de la mañana ya pasó, ASUME AUTOMÁTICAMENTE QUE ES DE LA TARDE (PM). ¡NO LE PREGUNTES SI ES AM O PM, tú encárgate de deducirlo y conviértelo!
+3. MEMORIA: Si ya tienes el Día, el Servicio y la Hora, AGENDA. No repitas preguntas.
+4. ⚠️ OBLIGATORIO - FORMATO MILITAR (24H): Al generar el código para agendar, LA HORA DEBE SER EN 24 HRS. (Ej: 'a las 3' de la tarde se convierte en 15:00. 'a las 5' de la tarde se convierte en 17:00). NUNCA uses 03:00 para la tarde porque el sistema de la barbería marcará error.
 
 🌟 SERVICIOS Y PRECIOS OFICIALES:
 {$textoServiciosDinamicos}
