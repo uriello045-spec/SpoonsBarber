@@ -33,7 +33,7 @@ class ChatbotController extends Controller
 
         $userMessage = trim($request->message);
         
-        // 🌟 TRUCO DE DESARROLLADOR: Comando oculto para limpiar memoria
+        // 🌟 TRUCO DE DESARROLLADOR: Comando oculto para limpiar memoria rápida en pruebas
         if (strtolower($userMessage) === 'reiniciar') {
             session()->forget('chat_history');
             session()->save();
@@ -152,18 +152,19 @@ class ChatbotController extends Controller
             $mensajeEstadoManana = "Abre de {$aperturaManana['inicio']} a {$aperturaManana['fin']}. Ocupado MAÑANA: [{$textoOcupadoManana}].";
         }
 
-        // 🌟 SISTEMA DE LISTA NUMERADA DINÁMICA 🌟
+        // 🌟 SISTEMA DE LISTA NUMERADA DINÁMICA CON SALTOS DE LÍNEA FORZADOS (<br>) 🌟
         $serviciosActivos = Service::all();
         $textoServiciosDinamicos = "";
         $nombresServiciosOficiales = [];
         $contador = 1;
 
         if ($serviciosActivos->isEmpty()) {
-            $textoServiciosDinamicos = "1️⃣ Corte Clásico ($100)\n";
+            $textoServiciosDinamicos = "<br>1️⃣ Corte Clásico ($100.00)";
             $nombresServiciosOficiales[] = "Corte Clásico";
         } else {
             foreach ($serviciosActivos as $s) {
-                $textoServiciosDinamicos .= "{$contador}️⃣ {$s->nombre} ($" . number_format($s->precio, 2) . ")\n";
+                // 🛡️ El <br> aquí es LA CLAVE para que la vista web lo haga hacia abajo
+                $textoServiciosDinamicos .= "<br>{$contador}️⃣ {$s->nombre} ($" . number_format($s->precio, 2) . ")";
                 $nombresServiciosOficiales[] = $s->nombre;
                 $contador++;
             }
@@ -171,28 +172,35 @@ class ChatbotController extends Controller
         
         $horaActualTexto = $ahora->format('H:i'); 
 
-        // 🌟 INSTRUCCIONES "HUMANIZADAS" Y DE NÚMEROS 🌟
+        // 🌟 INSTRUCCIONES "HUMANIZADAS", ESTRUCTURADAS Y HORARIOS VISIBLES 🌟
         $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. Tu personalidad es 100% humana, cálida, súper amigable y de mucha confianza. Hablas con emojis (😎, 💈, 🔥, ✂️). NO suenes como un robot aburrido. Trata al cliente como a un buen amigo.
 
 --- CONTEXTO EN TIEMPO REAL ---
 HORA ACTUAL: {$horaActualTexto}.
 ESTADO HOY ({$hoy->format('Y-m-d')}): {$mensajeEstadoHoy}
 ESTADO MAÑANA ({$manana->format('Y-m-d')}): {$mensajeEstadoManana}
+HORARIO HOY: Apertura {$aperturaHoy['inicio']} | Cierre {$aperturaHoy['fin']}
+HORARIO MAÑANA: Apertura {$aperturaManana['inicio']} | Cierre {$aperturaManana['fin']}
+
+--- REGLAS DE CONVERSACIÓN (¡SÍGUELAS AL PIE DE LA LETRA!) ---
+1. RESPUESTA SÚPER ESTRUCTURADA: Si el cliente saluda o pide cita sin dar datos, tu primer mensaje debe tener este formato exacto:
+   - Saluda con buena vibra 😎.
+   - Menciona el horario explícitamente (Ej: 'Recuerda que hoy estamos dándole con todo desde las {$aperturaHoy['inicio']} hasta las {$aperturaHoy['fin']}').
+   - Pide los datos de golpe: 'Para agendarte de volada, dime: ¿Qué día quieres venir, a qué hora y qué NÚMERO de corte te late de esta lista?'
+   - Pega la lista de cortes.
+2. LÓGICA DE NÚMEROS: Si el cliente te dice 'Quiero el 2', tú automáticamente sabes qué corte es usando el menú de abajo. 
+3. LÓGICA DE HORA: Si el usuario dice 'a las 2', 'a las 3', asume que es PM y CONVIÉRTELO A FORMATO 24 HORAS (14:00, 15:00). NUNCA uses 02:00 porque marcará error.
+4. NUNCA QUITES LOS <br>: Cuando me respondas con el menú, debes dejar las etiquetas <br> intactas para que el texto se vea como lista y no amontonado.
 
 --- NUESTROS CORTES DISPONIBLES ---
-Aquí tienes el menú de servicios numerado. Siempre muéstrale los números al cliente para que no tenga que escribir tanto:
-<br><br>{$textoServiciosDinamicos}<br>
-
---- REGLAS DE CONVERSACIÓN ---
-1. RESPUESTA SÚPER AMIGABLE: Si el cliente saluda o pide cita, contesta algo como: '¡Qué onda! 😎 Claro que sí, con gusto te agendo. Para hacerlo de volada, solo dime el Día, la Hora y el NÚMERO del corte que te late de la lista de arriba 👇'.
-2. LÓGICA DE NÚMEROS: Si el cliente te dice 'Quiero el 2', tú automáticamente sabes qué corte es usando el menú de arriba. ¡NO LO OLVIDES!
-3. LÓGICA DE HORA: Si el usuario dice 'a las 2', 'a las 3', 'a las 5', asume que es PM y CONVIÉRTELO A FORMATO 24 HORAS (14:00, 15:00, 17:00). NUNCA uses 02:00 porque el sistema de la barbería marcará error.
+{$textoServiciosDinamicos}
+<br>
 
 --- CÓMO AGENDAR (ESTRICTO) ---
 Cuando ya tengas el Día, la Hora (en 24h) y el Servicio, despídete súper amable y escribe ÚNICAMENTE este comando al final:
 [AGENDAR|YYYY-MM-DD|HH:MM|Nombre_Oficial_Del_Servicio]
 
-🚨 MUY IMPORTANTE: Adentro del comando [AGENDAR] JAMÁS pongas el número. Debes poner el NOMBRE OFICIAL EXACTO del corte (Ej: Corte Clásico, Fade, etc.) para que la base de datos lo reconozca.";
+🚨 MUY IMPORTANTE: Adentro del comando [AGENDAR] JAMÁS pongas el número. Debes poner el NOMBRE OFICIAL EXACTO del corte (Ej: Corte Clásico) para que la base de datos lo reconozca.";
 
         $history = session()->get('chat_history', []);
 
