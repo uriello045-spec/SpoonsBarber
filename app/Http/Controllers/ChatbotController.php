@@ -33,7 +33,7 @@ class ChatbotController extends Controller
 
         $userMessage = trim($request->message);
         
-        // 🌟 TRUCO DE DESARROLLADOR: Comando oculto para limpiar memoria rápida en pruebas
+        // 🌟 TRUCO DE DESARROLLADOR: Comando oculto para limpiar memoria
         if (strtolower($userMessage) === 'reiniciar') {
             session()->forget('chat_history');
             session()->save();
@@ -152,43 +152,47 @@ class ChatbotController extends Controller
             $mensajeEstadoManana = "Abre de {$aperturaManana['inicio']} a {$aperturaManana['fin']}. Ocupado MAÑANA: [{$textoOcupadoManana}].";
         }
 
+        // 🌟 SISTEMA DE LISTA NUMERADA DINÁMICA 🌟
         $serviciosActivos = Service::all();
         $textoServiciosDinamicos = "";
         $nombresServiciosOficiales = [];
+        $contador = 1;
 
         if ($serviciosActivos->isEmpty()) {
-            $textoServiciosDinamicos = "<br>💈 Corte Clásico: $100 (Dura 45 min)\n";
+            $textoServiciosDinamicos = "1️⃣ Corte Clásico ($100)\n";
             $nombresServiciosOficiales[] = "Corte Clásico";
         } else {
             foreach ($serviciosActivos as $s) {
-                $textoServiciosDinamicos .= "<br>💈 {$s->nombre}: $" . number_format($s->precio, 2) . " (Dura {$s->duracion_minutos} min)\n";
+                $textoServiciosDinamicos .= "{$contador}️⃣ {$s->nombre} ($" . number_format($s->precio, 2) . ")\n";
                 $nombresServiciosOficiales[] = $s->nombre;
+                $contador++;
             }
         }
-        $listaNombresStr = implode(", ", $nombresServiciosOficiales);
-
+        
         $horaActualTexto = $ahora->format('H:i'); 
 
-        // 🌟 INSTRUCCIONES "A PRUEBA DE TONTOS" Y LÓGICA INTELIGENTE 🌟
-        $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. Habla en español, amigable y profesional.
+        // 🌟 INSTRUCCIONES "HUMANIZADAS" Y DE NÚMEROS 🌟
+        $systemInstruction = "Eres el asistente virtual de Spoon’s Barber Shop. Tu personalidad es 100% humana, cálida, súper amigable y de mucha confianza. Hablas con emojis (😎, 💈, 🔥, ✂️). NO suenes como un robot aburrido. Trata al cliente como a un buen amigo.
 
-DATOS EN TIEMPO REAL:
-- HORA ACTUAL: {$horaActualTexto}. (Usa esto para calcular la lógica de la hora).
-- Hoy ({$hoy->format('Y-m-d')}): {$mensajeEstadoHoy} 
-- Mañana ({$manana->format('Y-m-d')}): {$mensajeEstadoManana}
+--- CONTEXTO EN TIEMPO REAL ---
+HORA ACTUAL: {$horaActualTexto}.
+ESTADO HOY ({$hoy->format('Y-m-d')}): {$mensajeEstadoHoy}
+ESTADO MAÑANA ({$manana->format('Y-m-d')}): {$mensajeEstadoManana}
 
-🚨 REGLAS SUPREMAS DE CONVERSACIÓN Y RAZONAMIENTO:
-1. EDUCA AL USUARIO: Si el cliente solo saluda, dile: 'Para agendarte rápido, dímelo todo junto: Día (hoy/mañana), Hora y Corte.'
-2. 🧠 LÓGICA DE HORA INTELIGENTE: Si el usuario te pide cita para HOY a un número como 'a las 3', 'a las 4', 'a las 5', y según la HORA ACTUAL esa hora de la mañana ya pasó, ASUME AUTOMÁTICAMENTE QUE ES DE LA TARDE (PM). ¡NO LE PREGUNTES SI ES AM O PM, tú encárgate de deducirlo y conviértelo!
-3. MEMORIA: Si ya tienes el Día, el Servicio y la Hora, AGENDA. No repitas preguntas.
-4. ⚠️ OBLIGATORIO - FORMATO MILITAR (24H): Al generar el código para agendar, LA HORA DEBE SER EN 24 HRS. (Ej: 'a las 3' de la tarde se convierte en 15:00. 'a las 5' de la tarde se convierte en 17:00). NUNCA uses 03:00 para la tarde porque el sistema de la barbería marcará error.
+--- NUESTROS CORTES DISPONIBLES ---
+Aquí tienes el menú de servicios numerado. Siempre muéstrale los números al cliente para que no tenga que escribir tanto:
+<br><br>{$textoServiciosDinamicos}<br>
 
-🌟 SERVICIOS Y PRECIOS OFICIALES:
-{$textoServiciosDinamicos}
+--- REGLAS DE CONVERSACIÓN ---
+1. RESPUESTA SÚPER AMIGABLE: Si el cliente saluda o pide cita, contesta algo como: '¡Qué onda! 😎 Claro que sí, con gusto te agendo. Para hacerlo de volada, solo dime el Día, la Hora y el NÚMERO del corte que te late de la lista de arriba 👇'.
+2. LÓGICA DE NÚMEROS: Si el cliente te dice 'Quiero el 2', tú automáticamente sabes qué corte es usando el menú de arriba. ¡NO LO OLVIDES!
+3. LÓGICA DE HORA: Si el usuario dice 'a las 2', 'a las 3', 'a las 5', asume que es PM y CONVIÉRTELO A FORMATO 24 HORAS (14:00, 15:00, 17:00). NUNCA uses 02:00 porque el sistema de la barbería marcará error.
 
-🔥 INSTRUCCIÓN SECRETA PARA AGENDAR (SOLO cuando tengas FECHA, HORA EN FORMATO 24H y SERVICIO EXACTO de la lista):
-Imprime EXACTAMENTE este código al final de tu respuesta: 
-[AGENDAR|YYYY-MM-DD|HH:MM|NombreDelServicioOficial]";
+--- CÓMO AGENDAR (ESTRICTO) ---
+Cuando ya tengas el Día, la Hora (en 24h) y el Servicio, despídete súper amable y escribe ÚNICAMENTE este comando al final:
+[AGENDAR|YYYY-MM-DD|HH:MM|Nombre_Oficial_Del_Servicio]
+
+🚨 MUY IMPORTANTE: Adentro del comando [AGENDAR] JAMÁS pongas el número. Debes poner el NOMBRE OFICIAL EXACTO del corte (Ej: Corte Clásico, Fade, etc.) para que la base de datos lo reconozca.";
 
         $history = session()->get('chat_history', []);
 
@@ -213,7 +217,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                 $replyClean = str_replace(['**', '*'], '', trim($reply));
 
                 // ✂️ VALIDACIÓN Y AGENDAMIENTO
-                if (preg_match('/\[AGENDAR\|([^|]+)\|([^|]+)\|([^\]]+)\]/', $reply, $matches)) {
+                if (preg_match('/\[AGENDAR\s*\|\s*([^|]+)\s*\|\s*([^|]+)\s*\|\s*([^\]]+)\s*\]/i', $reply, $matches)) {
                     $fecha = trim($matches[1]);
                     $hora = trim($matches[2]);
                     $servicio = trim($matches[3]);
@@ -221,13 +225,13 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     $inicioNuevo = Carbon::parse($fecha . ' ' . $hora, $tz);
                     
                     if ($inicioNuevo->gt($ahora->copy()->addDays(60))) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Demasiado lejos:</b> No podemos agendar citas con más de 2 meses de anticipación.";
                         return response()->json(['reply' => $cleanReply]);
                     }
 
                     if ($inicioNuevo->isPast()) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Esa hora ya pasó.</b> Por favor elige un horario futuro.";
                         
                         $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
@@ -240,7 +244,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     if ($inicioNuevo->isToday()) {
                         $limitePermitido = $ahora->copy()->addMinutes(30);
                         if ($inicioNuevo->lt($limitePermitido)) {
-                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                             $cleanReply .= "<br><br>⏱️ <b>¡Lo siento!</b> Necesitamos al menos 30 minutos de anticipación. Por favor, dime un horario un poco más tarde (después de las " . $limitePermitido->format('h:i A') . ").";
                             
                             $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
@@ -253,8 +257,8 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
 
                     $servicioReal = Service::where('nombre', $servicio)->first();
                     if (!$servicioReal) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
-                        $cleanReply .= "<br><br>🚨 <b>Error de catálogo:</b> El servicio que intentas agendar no existe en nuestro sistema.";
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
+                        $cleanReply .= "<br><br>🚨 <b>Ups:</b> Parece que me diste un número que no existe en la lista. Échale un ojo de nuevo al catálogo.";
                         return response()->json(['reply' => $cleanReply]);
                     }
 
@@ -262,7 +266,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     $horarioElegido = $horariosApertura[$diaElegido];
 
                     if ($horarioElegido['cerrado']) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Ese día la barbería está cerrada.</b> Por favor intenta elegir otro día.";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -274,7 +278,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     $horaCierreSistema = Carbon::parse($fecha . ' ' . $horarioElegido['fin'] . ':00', $tz);
 
                     if ($inicioNuevo->lt($horaAperturaSistema)) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>Aún no abrimos a esa hora.</b> Empezamos a las " . $horaAperturaSistema->format('h:i A') . ".";
                         
                         $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
@@ -285,7 +289,7 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     }
 
                     if ($finNuevo->gt($horaCierreSistema)) {
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         $cleanReply .= "<br><br>🚫 <b>No es posible agendar a esa hora.</b> El servicio termina después de nuestra hora de cierre (" . $horaCierreSistema->format('h:i A') . ").";
                         return response()->json(['reply' => $cleanReply]);
                     }
@@ -319,10 +323,10 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                                 'estado' => 'pendiente'
                             ]);
 
-                            $mensajeExito = "<br><br>🎉 <b>¡Cita Confirmada!</b><br>Servicio: <b>{$servicio}</b><br>Fecha: " . $inicioNuevo->format('d/m/Y') . "<br>Hora: <b>" . $inicioNuevo->format('h:i A') . "</b>";
+                            $mensajeExito = "<br><br>🎉 <b>¡Listo, quedó tu cita!</b> 😎<br>✂️ Servicio: <b>{$servicio}</b><br>📅 Fecha: " . $inicioNuevo->format('d/m/Y') . "<br>⏰ Hora: <b>" . $inicioNuevo->format('h:i A') . "</b><br><br>¡Te esperamos con toda la actitud! 🔥";
                         });
 
-                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
+                        $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
                         
                         $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
                         session()->put('chat_history', $history);
@@ -332,8 +336,8 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
 
                     } catch (\Exception $e) {
                         if ($e->getMessage() == 'ocupado') {
-                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean);
-                            $cleanReply .= "<br><br>⚠️ <b>¡Ups! Ese horario ya está ocupado.</b> Alguien más reservó hace un segundo. ¿Te gustaría intentar en otra hora?";
+                            $cleanReply = preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean);
+                            $cleanReply .= "<br><br>⚠️ <b>¡Ups! Te ganaron ese horario.</b> Alguien más reservó hace un segundo. ¿Te gustaría intentar en otra hora? 😅";
                             
                             $history[] = ["role" => "model", "parts" => [["text" => $cleanReply]]];
                             session()->put('chat_history', $history);
@@ -345,17 +349,17 @@ Imprime EXACTAMENTE este código al final de tu respuesta:
                     }
                 }
 
-                $history[] = ["role" => "model", "parts" => [["text" => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]]];
+                $history[] = ["role" => "model", "parts" => [["text" => preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean)]]];
                 session()->put('chat_history', $history);
                 session()->save();
 
-                return response()->json(['reply' => preg_replace('/\[AGENDAR\|.*\]/', '', $replyClean)]);
+                return response()->json(['reply' => preg_replace('/\[AGENDAR\|.*\]/i', '', $replyClean)]);
             }
 
             return response()->json(['reply' => 'Error de conexión (' . $response->status() . '). Intenta más tarde. 🔧']);
         } catch (\Exception $e) {
             Log::error('Error en chatbot: ' . $e->getMessage());
-            return response()->json(['reply' => 'Error técnico, pero estoy intentando restablecer la conexión. Por favor, envía tu mensaje de nuevo.']);
+            return response()->json(['reply' => 'Uy, tuvimos un pequeño error técnico 😅. Por favor, envía tu mensaje de nuevo.']);
         }
     }
 }
