@@ -221,7 +221,7 @@ Cuando ya tengas el Día, la Hora (en 24h) y el Servicio, despídete súper amab
                 ]);
 
             if ($response->successful()) {
-                $reply = $response->json()['candidates'][0]['content']['parts'][0]['text'] ?? '¡Estoy pensando... 🤔';
+                $reply = $response->json()['candidates'][0]['content']['parts'][0]['text'] ?? '¡Estoy pensando... 🤔🤔';
                 $replyClean = str_replace(['**', '*'], '', trim($reply));
 
                 // ✂️ VALIDACIÓN Y AGENDAMIENTO
