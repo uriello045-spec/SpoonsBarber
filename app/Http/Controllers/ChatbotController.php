@@ -152,19 +152,19 @@ class ChatbotController extends Controller
             $mensajeEstadoManana = "Abre de {$aperturaManana['inicio']} a {$aperturaManana['fin']}. Ocupado MAÑANA: [{$textoOcupadoManana}].";
         }
 
-        // 🌟 SISTEMA DE LISTA NUMERADA DINÁMICA CON SALTOS DE LÍNEA FORZADOS (<br>) 🌟
+        // 🌟 SISTEMA DE LISTA NUMERADA SIN EMOJIS ROTOS (USANDO BOLD HTML) 🌟
         $serviciosActivos = Service::all();
         $textoServiciosDinamicos = "";
         $nombresServiciosOficiales = [];
         $contador = 1;
 
         if ($serviciosActivos->isEmpty()) {
-            $textoServiciosDinamicos = "<br>1️⃣ Corte Clásico ($100.00)";
+            $textoServiciosDinamicos = "<br>👉 <b>1.</b> Corte Clásico ($100.00)";
             $nombresServiciosOficiales[] = "Corte Clásico";
         } else {
             foreach ($serviciosActivos as $s) {
-                // 🛡️ El <br> aquí es LA CLAVE para que la vista web lo haga hacia abajo
-                $textoServiciosDinamicos .= "<br>{$contador}️⃣ {$s->nombre} ($" . number_format($s->precio, 2) . ")";
+                // 🛡️ Cambiamos el bloque azul por un número fuerte con flechita para que el 10, 11, etc. se vean perfectos
+                $textoServiciosDinamicos .= "<br>👉 <b>{$contador}.</b> {$s->nombre} ($" . number_format($s->precio, 2) . ")";
                 $nombresServiciosOficiales[] = $s->nombre;
                 $contador++;
             }
