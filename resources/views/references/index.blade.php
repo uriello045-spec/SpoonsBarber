@@ -222,8 +222,29 @@
                             <span class="text-yellow-600/50 dark:text-yellow-700 text-xs mt-1 ml-0.5 font-bold">/5</span>
                         </div>
                     </div>
+                    
                     <div class="mt-4 bg-slate-50 dark:bg-[#111] p-4 rounded-2xl border border-slate-100 dark:border-[#222]">
-                        <p class="text-slate-600 dark:text-gray-300 leading-relaxed font-medium italic">"{{ $ref->comentario }}"</p>
+                        @php
+                            // 🛡️ DICCIONARIO ANTI-TROLLS CENSURA AUTOMÁTICA
+                            $groserias = [
+                                'pinche', 'puto', 'puta', 'pendejo', 'pendeja', 'mierda', 
+                                'verga', 'cabron', 'cabrona', 'culo', 'idiota', 'estupido'
+                            ];
+                            $comentarioLimpio = str_ireplace($groserias, '*****', $ref->comentario);
+                        @endphp
+                        
+                        <p class="text-slate-600 dark:text-gray-300 leading-relaxed font-medium italic">"{{ $comentarioLimpio }}"</p>
+                        
+                        {{-- 🛡️ BOTÓN DE ELIMINAR: Solo visible para el Barbero o Superadmin --}}
+                        @if(auth()->check() && (auth()->user()->role === 'barbero' || auth()->user()->is_superadmin))
+                            <div class="mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-700/50 flex justify-end">
+                                <button type="button" 
+                                        onclick="eliminarResena('{{ $ref->id }}')" 
+                                        class="text-xs bg-red-500/10 text-red-500 border border-red-500/30 hover:bg-red-500 hover:text-white px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1">
+                                    🗑️ Eliminar
+                                </button>
+                            </div>
+                        @endif
                     </div>
                 </div>
             @empty
@@ -245,6 +266,7 @@
     </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     // 🛡️ LÓGICA ANTI-DEDO NERVIOSO Y VALIDACIÓN
     document.addEventListener('DOMContentLoaded', function () {
@@ -264,7 +286,13 @@
 
                 if (!formValid) {
                     e.preventDefault();
-                    alert("Por favor, selecciona una calificación de estrellas antes de enviar.");
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Calificación requerida',
+                        text: 'Por favor, selecciona una calificación de estrellas antes de enviar.',
+                        background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
+                        color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                    });
                     return false;
                 }
 
@@ -275,6 +303,61 @@
             });
         }
     });
+
+    // 🗑️ LÓGICA DE ELIMINACIÓN DE RESEÑAS
+    function eliminarResena(id) {
+        Swal.fire({
+            title: '¿Borrar esta reseña?',
+            text: "La eliminarás permanentemente del sistema.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#e11d48',
+            confirmButtonText: 'Sí, borrar',
+            cancelButtonText: 'Cancelar',
+            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
+            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                fetch(`/referencias/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success) {
+                        Swal.fire({
+                            icon: 'success',
+                            title: '¡Eliminado!',
+                            text: 'La reseña fue borrada de la base de datos.',
+                            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
+                            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                        }).then(() => location.reload());
+                    } else {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error',
+                            text: data.message || 'No se pudo eliminar la reseña.',
+                            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
+                            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                        });
+                    }
+                })
+                .catch(error => {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error de conexión',
+                        text: 'Hubo un problema al intentar comunicarse con el servidor.',
+                        background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
+                        color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                    });
+                });
+            }
+        });
+    }
 </script>
 
 @endsection

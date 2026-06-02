@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Reference;
-use App\Models\Appointment; // 👈 Importamos el modelo de citas
+use App\Models\Appointment;
 use Illuminate\Support\Facades\Auth;
 
 class ReferenceController extends Controller
@@ -81,5 +81,23 @@ class ReferenceController extends Controller
         ]);
 
         return back()->with('success', '¡Gracias por compartir tu experiencia con nosotros!');
+    }
+
+    // 🗑️ MÉTODO PARA ELIMINAR RESEÑAS TROLL
+    public function destroy($id)
+    {
+        // Verificación extra de seguridad en el backend
+        if (Auth::user()->role !== 'barbero' && !Auth::user()->is_superadmin) {
+            return response()->json(['success' => false, 'message' => 'No tienes permisos para realizar esta acción.']);
+        }
+
+        $resena = Reference::find($id); 
+        
+        if($resena) {
+            $resena->delete();
+            return response()->json(['success' => true]);
+        }
+        
+        return response()->json(['success' => false, 'message' => 'No se encontró la reseña en el sistema.']);
     }
 }
