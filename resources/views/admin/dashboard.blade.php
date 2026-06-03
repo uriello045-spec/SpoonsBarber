@@ -135,8 +135,65 @@
                     @endforelse
                 </div>
             </div>
-
         </div>
+
+        {{-- 🛡️ MÓDULO DE RESPALDOS PARA SUPERADMIN --}}
+        @if(auth()->user()->is_superadmin)
+            <div class="mt-8 bg-slate-800 dark:bg-[#111] rounded-3xl p-8 border border-slate-700 dark:border-[#222] text-center shadow-xl relative overflow-hidden" data-aos="fade-up">
+                <div class="absolute top-0 right-0 w-32 h-32 bg-indigo-500 opacity-10 rounded-bl-full pointer-events-none"></div>
+                <h3 class="text-2xl font-black text-white mb-2 flex items-center justify-center gap-2">
+                    🛡️ Respaldo de Seguridad
+                </h3>
+                <p class="text-slate-400 text-sm mb-6 max-w-lg mx-auto">
+                    Crea una copia de seguridad manual de toda la base de datos (se comprimirá en un archivo .zip interno para protección contra pérdida de datos).
+                </p>
+                <button onclick="generarRespaldo()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl shadow-lg transition-transform hover:scale-105 border border-indigo-500">
+                    💾 Generar Respaldo Ahora
+                </button>
+            </div>
+
+            <script>
+                function generarRespaldo() {
+                    const isDark = document.documentElement.classList.contains('dark');
+                    Swal.fire({
+                        title: 'Empacando Base de Datos...',
+                        text: 'Esto puede tomar unos segundos. Por favor, no cierres la ventana.',
+                        allowOutsideClick: false,
+                        background: isDark ? '#111111' : '#ffffff',
+                        color: isDark ? '#ffffff' : '#0f172a',
+                        didOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
+
+                    fetch('{{ route("admin.backup") }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Accept': 'application/json'
+                        }
+                    })
+                    .then(res => res.json())
+                    .then(data => {
+                        if(data.success) {
+                            Swal.fire({
+                                title: '¡Protegido!', 
+                                text: data.message, 
+                                icon: 'success',
+                                background: isDark ? '#111111' : '#ffffff',
+                                color: isDark ? '#ffffff' : '#0f172a'
+                            });
+                        } else {
+                            Swal.fire('Error', data.message, 'error');
+                        }
+                    })
+                    .catch(error => {
+                        Swal.fire('Error', 'Hubo un problema al conectar con el servidor.', 'error');
+                    });
+                }
+            </script>
+        @endif
+
     </div>
 </div>
 @endsection

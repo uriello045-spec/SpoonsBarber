@@ -74,7 +74,7 @@ Route::middleware(['auth', 'verified', 'no-cache'])->group(function () {
 
     Route::get('/referencias', [ReferenceController::class, 'index'])->name('references.index');
     Route::post('/referencias', [ReferenceController::class, 'store'])->name('references.store');
-    Route::delete('/referencias/{id}', [ReferenceController::class, 'destroy'])->name('references.destroy'); // 👈 NUEVA RUTA DE BORRADO
+    Route::delete('/referencias/{id}', [ReferenceController::class, 'destroy'])->name('references.destroy'); 
 
     Route::get('/chatbot', [ChatbotController::class, 'index'])->name('chatbot.index');
     Route::post('/chatbot', [ChatbotController::class, 'send'])->name('chatbot.send');
@@ -114,7 +114,10 @@ Route::middleware(['auth', 'role:barbero', 'no-cache'])->group(function () {
     Route::post('/admin/settings', [AdminController::class, 'updateSettings'])->name('admin.settings.update');
     Route::post('/admin/verify-master', [AdminController::class, 'verifyMaster'])->middleware('throttle:5,1')->name('admin.verifyMaster');
 
+    // 🛡️ RUTA DE RESPALDOS MANUALES PARA EL SUPERADMIN
+    Route::post('/admin/backup', [AdminController::class, 'crearRespaldo'])->name('admin.backup');
+
     Route::get('/diagnostico-correo', function () {
-    return response()->json(config('mail.mailers.smtp'));
-});
+        return response()->json(config('mail.mailers.smtp'));
+    });
 });

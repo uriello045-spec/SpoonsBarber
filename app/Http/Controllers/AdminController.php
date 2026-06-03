@@ -427,4 +427,25 @@ class AdminController extends Controller
             return response()->json(['success' => false, 'message' => 'Ocurrió un error en el servidor.'], 500);
         }
     }
+
+    // 🛡️ FUNCIÓN DE RESPALDO MANUAL (NUEVA)
+    public function crearRespaldo(Request $request)
+    {
+        /** @var \App\Models\User $user */
+        $user = $request->user();
+        
+        // Blindaje extra: Solo el SuperAdmin real puede hacer respaldos
+        if (!$user->is_superadmin) {
+            return response()->json(['success' => false, 'message' => 'Solo el SuperAdmin puede realizar esta acción.'], 403);
+        }
+
+        try {
+            // Ejecutamos el comando de respaldo de Spatie directamente desde Laravel
+            \Illuminate\Support\Facades\Artisan::call('backup:run', ['--only-db' => true]);
+            
+            return response()->json(['success' => true, 'message' => '¡Base de datos empacada y protegida exitosamente!']);
+        } catch (\Exception $e) {
+            return response()->json(['success' => false, 'message' => 'Error interno al comprimir: ' . $e->getMessage()], 500);
+        }
+    }
 }

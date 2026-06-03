@@ -2,9 +2,9 @@
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Support\Facades\Schedule; // <--- AGREGADO: Importante para programar tareas
-use App\Models\User; // 🌟 AÑADIDO: Para buscar usuarios en la base de datos
-use Carbon\Carbon;   // 🌟 AÑADIDO: Para calcular las fechas y el tiempo
+use Illuminate\Support\Facades\Schedule; 
+use App\Models\User; 
+use Carbon\Carbon;  
 
 Artisan::command('inspire', function () {
     $this->comment(Inspiring::quote());
@@ -26,3 +26,11 @@ Schedule::call(function () {
         ->where('created_at', '<', Carbon::now()->subDays(2))
         ->delete();
 })->daily(); // Se ejecuta de forma silenciosa una vez al día en la madrugada
+
+// 3. 🛡️ RESPALDOS AUTOMÁTICOS DE SEGURIDAD 🛡️
+// Empaca y comprime la base de datos completa (.sql adentro de un .zip) todos los días a las 2:00 AM
+Schedule::command('backup:run --only-db')->dailyAt('02:00');
+
+// Limpia los archivos .zip muy viejos para que Hostinger no se llene (Se ejecuta cada 3 meses). 
+// NOTA: Esto solo borra las copias viejas (los .zip de hace mucho tiempo), NO borra NADA de tu base de datos actual. ¡Tus estadísticas quedan 100% a salvo!
+Schedule::command('backup:clean')->quarterly();
