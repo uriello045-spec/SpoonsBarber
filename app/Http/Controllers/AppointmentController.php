@@ -6,9 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\Appointment;
 use App\Models\Service; 
 use App\Models\Setting; 
+use App\Models\User; 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB; 
+use Illuminate\Support\Facades\Notification; 
+use Illuminate\Support\Facades\Log; 
 use App\Notifications\AppointmentStatusNotification;
+use App\Notifications\NuevaCitaBarberoNotification; 
 
 class AppointmentController extends Controller
 {
@@ -16,7 +20,6 @@ class AppointmentController extends Controller
     {
         $user = Auth::user();
 
-        // 🛠️ CORRECCIÓN 1: Redirigir al panel de administración si es barbero O superadmin
         if ($user->role === 'barbero' || $user->role === 'superadmin' || $user->is_superadmin) {
             return redirect()->route('admin.appointments');
         }
@@ -58,7 +61,6 @@ class AppointmentController extends Controller
     {
         $user = Auth::user();
 
-        // 🛠️ CORRECCIÓN 2: Permitir el acceso si es barbero O superadmin
         if ($user->role !== 'barbero' && $user->role !== 'superadmin' && !$user->is_superadmin) {
             abort(403, 'Acceso solo para personal de la barbería.');
         }
@@ -146,7 +148,8 @@ class AppointmentController extends Controller
         $finNuevo = $inicioNuevo->copy()->addMinutes($duracion);
 
         try {
-            DB::transaction(function () use ($request, $inicioNuevo, $finNuevo, $duracion) {
+            // 🌟 CORRECCIÓN DEL ERROR ROJO: Retornamos directamente el resultado de la transacción
+            $citaCreada = DB::transaction(function () use ($request, $inicioNuevo, $finNuevo, $duracion) {
                 $citasDelDia = Appointment::leftJoin('services', 'appointments.servicio', '=', 'services.nombre')
                     ->where('appointments.fecha', $request->fecha)
                     ->where('appointments.estado', '!=', 'cancelada')
@@ -163,7 +166,7 @@ class AppointmentController extends Controller
                     }
                 }
 
-                Appointment::create([
+                return Appointment::create([
                     'user_id' => Auth::id(), 
                     'fecha' => $request->fecha, 
                     'hora' => $request->hora,
@@ -173,18 +176,28 @@ class AppointmentController extends Controller
                 ]);
             });
 
+            try {
+                $barberos = User::where('role', 'barbero')->where('is_superadmin', false)->get();
+                
+                if ($barberos->isNotEmpty()) {
+                    Notification::send($barberos, new NuevaCitaBarberoNotification($citaCreada));
+                }
+            } catch (\Exception $e) {
+                Log::error('Fallo al enviar correo a barberos: ' . $e->getMessage());
+            }
+
             return back()->with('success', 'Cita agendada correctamente.');
         } catch (\Exception $e) {
             return back()->withErrors($e->getMessage())->withInput();
         }
     }
 
-    public function update(Request $request, $id)
+    // 🌟 CORRECCIÓN DE LA LÍNEA AZUL: Agregamos el tipo "string" a $id
+    public function update(Request $request, string $id)
     {
         $appointment = Appointment::findOrFail($id);
         $user = Auth::user();
 
-        // 🛠️ NOTA: Aquí está bien, porque los súperadmin NO son rol 'cliente', entonces pueden editar
         if ($user->role === 'cliente' && $appointment->user_id !== $user->id) {
             abort(403, 'No tienes permiso para editar esta cita.');
         }
@@ -273,8 +286,8 @@ class AppointmentController extends Controller
         }
     }
 
-    // 🌟 AQUÍ ESTÁ LA MAGIA: LA FUNCIÓN DESTROY ACTUALIZADA 🌟
-    public function destroy($id)
+    // 🌟 CORRECCIÓN DE LA LÍNEA AZUL: Agregamos el tipo "string" a $id
+    public function destroy(string $id)
     {
         $appointment = Appointment::findOrFail($id);
         
@@ -282,19 +295,18 @@ class AppointmentController extends Controller
             abort(403, 'No tienes permiso.');
         }
 
-        // Enviamos la notificación ANTES de borrar la cita
         $appointment->load('user'); 
         if ($appointment->user) {
             $appointment->user->notify(new AppointmentStatusNotification($appointment, 'cancelada'));
         }
 
-        // Ahora sí eliminamos
         $appointment->delete();
         
         return back()->with('success', 'Cita eliminada y cliente notificado.');
     }
     
-    public function edit($id)
+    // 🌟 CORRECCIÓN DE LA LÍNEA AZUL: Agregamos el tipo "string" a $id
+    public function edit(string $id)
     {
         $appointment = Appointment::where('id', $id)->where('user_id', Auth::id())->firstOrFail();
         $services = Service::all();
@@ -315,7 +327,6 @@ class AppointmentController extends Controller
         $tz = 'America/Mexico_City';
         $ahora = \Carbon\Carbon::now($tz);
 
-        // 🛡️ ESCUDO 1: Verificar si el barbero ya está ocupado en este preciso momento
         $citasDeHoy = Appointment::where('fecha', $ahora->format('Y-m-d'))
             ->whereNotIn('estado', ['cancelada', 'completada'])
             ->get();
