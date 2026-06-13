@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-black py-20 transition-colors duration-300">
+<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 py-20 transition-colors duration-300">
     <div class="container mx-auto px-4 max-w-4xl">
-        <div class="bg-white dark:bg-zinc-900 p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-zinc-800">
+        <div class="bg-white dark:bg-zinc-800 p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-zinc-700">
             
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">Aviso de Privacidad</h1>
-                <p class="text-cyan-600 dark:text-cyan-500 font-bold">Spoon's Barber Shop</p>
+                <p class="text-cyan-600 dark:text-cyan-400 font-bold">Spoon's Barber Shop</p>
                 <p class="text-sm text-slate-500 mt-2">Última actualización: {{ date('F Y') }}</p>
             </div>
 
@@ -35,7 +35,7 @@
             </div>
             
             <div class="mt-12 text-center">
-                <a href="{{ url('/') }}" class="inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105">Entendido</a>
+                <a href="{{ url('/') }}" class="inline-block bg-cyan-600 hover:bg-cyan-700 text-white font-bold py-3 px-8 rounded-full transition-transform transform hover:scale-105 shadow-md">Entendido</a>
             </div>
         </div>
     </div>

@@ -16,14 +16,14 @@
         .btn-salir:hover { transform: scale(1.05); }
         
         /* ==========================================================
-           🌟 TÍTULO ANIMADO (ESTILO BRUTALISTA / GLITCH DORADO) 🌟
+           🌟 TÍTULO ANIMADO (ESTILO BRUTALISTA / GLITCH AZUL NEÓN) 🌟
            ========================================================== */
         .logo-text { 
             font-weight: 900; 
-            color: #ffd700; 
+            color: #3b82f6; /* Azul base */
             position: relative;
             letter-spacing: 1px;
-            animation: textChaosGold 4s ease-in-out infinite;
+            animation: textChaosBlue 4s ease-in-out infinite;
             user-select: none;
         }
 
@@ -31,7 +31,7 @@
             content: attr(data-text);
             position: absolute;
             top: 0; left: 0;
-            color: rgba(255, 215, 0, 0.5); 
+            color: rgba(59, 130, 246, 0.5); /* Sombra azul */
             animation: textGhost 2s linear infinite;
             z-index: -1;
         }
@@ -40,28 +40,28 @@
             content: attr(data-text);
             position: absolute;
             top: 0; left: 0;
-            color: rgba(255, 140, 0, 0.4); 
+            color: rgba(96, 165, 250, 0.4); /* Sombra azul clara */
             animation: textGhost2 1.5s linear infinite reverse;
             z-index: -1;
         }
 
-        @keyframes textChaosGold {
-            0%, 85%, 100% { transform: translate(0) scale(1); filter: saturate(1); text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(212, 175, 55, 0.5), 6px 6px 0 rgba(255, 215, 0, 0.3), 0 0 15px rgba(212, 175, 55, 0.6); }
-            5% { transform: translate(-2px, 1px) scale(0.98); filter: saturate(1.5); text-shadow: 3px 1px 0 #000, 5px 3px 0 rgba(255, 215, 0, 0.7), 7px 5px 0 rgba(255, 140, 0, 0.5), 0 0 25px rgba(255, 215, 0, 0.9); }
-            10% { transform: translate(2px, -2px) scale(1.02); filter: saturate(1.8); text-shadow: 1px 3px 0 #000, 3px 5px 0 rgba(255, 200, 0, 0.7), 5px 7px 0 rgba(212, 175, 55, 0.5), 0 0 20px rgba(255, 200, 0, 0.8); }
-            15% { transform: translate(-1px, 2px) scale(0.99); filter: saturate(1.3); text-shadow: 3px 2px 0 #000, 5px 4px 0 rgba(255, 165, 0, 0.7), 7px 6px 0 rgba(255, 215, 0, 0.5), 0 0 18px rgba(255, 165, 0, 0.9); }
-            20% { transform: translate(1px, -1px) scale(1.01); filter: saturate(1.1); text-shadow: 2px 3px 0 #000, 4px 5px 0 rgba(212, 175, 55, 0.6), 6px 7px 0 rgba(255, 140, 0, 0.4), 0 0 15px rgba(212, 175, 55, 0.8); }
+        @keyframes textChaosBlue {
+            0%, 85%, 100% { transform: translate(0) scale(1); filter: saturate(1); text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(37, 99, 235, 0.5), 6px 6px 0 rgba(59, 130, 246, 0.3), 0 0 15px rgba(37, 99, 235, 0.6); }
+            5% { transform: translate(-2px, 1px) scale(0.98); filter: saturate(1.5); text-shadow: 3px 1px 0 #000, 5px 3px 0 rgba(59, 130, 246, 0.7), 7px 5px 0 rgba(96, 165, 250, 0.5), 0 0 25px rgba(59, 130, 246, 0.9); }
+            10% { transform: translate(2px, -2px) scale(1.02); filter: saturate(1.8); text-shadow: 1px 3px 0 #000, 3px 5px 0 rgba(37, 99, 235, 0.7), 5px 7px 0 rgba(29, 78, 216, 0.5), 0 0 20px rgba(37, 99, 235, 0.8); }
+            15% { transform: translate(-1px, 2px) scale(0.99); filter: saturate(1.3); text-shadow: 3px 2px 0 #000, 5px 4px 0 rgba(96, 165, 250, 0.7), 7px 6px 0 rgba(59, 130, 246, 0.5), 0 0 18px rgba(96, 165, 250, 0.9); }
+            20% { transform: translate(1px, -1px) scale(1.01); filter: saturate(1.1); text-shadow: 2px 3px 0 #000, 4px 5px 0 rgba(37, 99, 235, 0.6), 6px 7px 0 rgba(96, 165, 250, 0.4), 0 0 15px rgba(37, 99, 235, 0.8); }
         }
 
         @keyframes textGhost { 0% { transform: translate(0); opacity: 0.3; } 25% { transform: translate(1px, -1px); opacity: 0.6; } 50% { transform: translate(-1px, 1px); opacity: 0.2; } 75% { transform: translate(2px, 1px); opacity: 0.5; } 100% { transform: translate(0); opacity: 0.3; } }
         @keyframes textGhost2 { 0% { transform: translate(0); opacity: 0.2; } 33% { transform: translate(-2px, 1px); opacity: 0.5; } 66% { transform: translate(1px, -2px); opacity: 0.1; } 100% { transform: translate(0); opacity: 0.2; } }
 
         /* ==========================================================
-           🌟 BOTONES NEÓN DORADOS (INICIO, CITAS, RESEÑAS) 🌟
+           🌟 BOTONES NEÓN AZULES (INICIO, CITAS, RESEÑAS) 🌟
            ========================================================== */
         .nav-neon-btn {
-            --glow-color: #d4af37; 
-            --glow-spread-color: rgba(212, 175, 55, 0.4);
+            --glow-color: #2563eb; /* Azul brillante */
+            --glow-spread-color: rgba(37, 99, 235, 0.4);
             --btn-color: #ffffff; 
             
             border: 2px solid var(--glow-color);
@@ -84,9 +84,9 @@
         }
 
         .dark .nav-neon-btn {
-            --glow-color: #ffd700; 
-            --glow-spread-color: rgba(255, 215, 0, 0.4);
-            --btn-color: #121212; 
+            --glow-color: #3b82f6; /* Azul brillante modo oscuro */
+            --glow-spread-color: rgba(59, 130, 246, 0.4);
+            --btn-color: #18181b; /* Gris muy oscuro casi negro */
         }
 
         .nav-neon-btn::after {
@@ -107,13 +107,20 @@
             border: 2px solid var(--glow-color); padding: 0.6em 1.5em; color: var(--glow-color); font-size: 14px; font-weight: bold; background-color: var(--btn-color); border-radius: 1em; outline: none; box-shadow: 0 0 0.5em 0.1em var(--glow-color), 0 0 1.5em 0.2em var(--glow-spread-color), inset 0 0 0.3em 0.1em var(--glow-color); text-shadow: 0 0 0.3em var(--glow-color); position: relative; transition: all 0.3s; text-decoration: none; display: inline-block; text-transform: uppercase; letter-spacing: 1px; cursor: pointer; text-align: center;
         }
 
-        .dark .nav-neon-btn-red { --glow-color: #ff4d4d; --glow-spread-color: rgba(255, 77, 77, 0.4); --btn-color: #121212; }
+        .dark .nav-neon-btn-red { --glow-color: #ff4d4d; --glow-spread-color: rgba(255, 77, 77, 0.4); --btn-color: #18181b; }
         .nav-neon-btn-red::after { pointer-events: none; content: ""; position: absolute; top: 110%; left: 0; height: 100%; width: 100%; background-color: var(--glow-spread-color); filter: blur(1.5em); opacity: .6; transform: perspective(1.5em) rotateX(35deg) scale(1, .6); }
         .nav-neon-btn-red:hover { color: var(--btn-color); background-color: var(--glow-color); box-shadow: 0 0 0.8em 0.2em var(--glow-color), 0 0 2em 0.5em var(--glow-spread-color), inset 0 0 0.5em 0.2em var(--glow-color); }
         .nav-neon-btn-red:active { box-shadow: 0 0 0.4em 0.1em var(--glow-color), 0 0 1em 0.3em var(--glow-spread-color), inset 0 0 0.3em 0.1em var(--glow-color); transform: scale(0.95); }
 
+        /* 🛡️ CORRECCIÓN AQUÍ: Evitamos que el botón desaparezca al deshabilitarse */
         .nav-neon-btn-red:disabled {
-            opacity: 0.5; cursor: not-allowed; pointer-events: none; box-shadow: none;
+            opacity: 0.9; 
+            cursor: wait; 
+            pointer-events: none; 
+            background-color: var(--glow-color); 
+            color: var(--btn-color);
+            box-shadow: 0 0 0.5em 0.1em var(--glow-color);
+            text-shadow: none;
         }
 
         /* ==========================================================
@@ -179,11 +186,11 @@
     </script>
 </head>
 
-<body class="font-sans antialiased bg-slate-50 text-slate-900 dark:bg-[#050505] dark:text-white transition-colors duration-300 relative">
+<body class="font-sans antialiased bg-slate-50 text-slate-900 dark:bg-zinc-900 dark:text-white transition-colors duration-300 relative">
 
-    <nav class="sticky top-0 z-50 px-4 md:px-6 py-4 flex justify-between items-center shadow-sm 
+    <nav class="sticky top-0 z-50 px-4 md:px-6 py-4 flex justify-between items-center shadow-md 
                 bg-white border-b border-slate-200 
-                dark:bg-[#0a0a0a] dark:border-[#222] transition-colors duration-300">
+                dark:bg-zinc-800/90 dark:border-zinc-700 backdrop-blur-sm transition-colors duration-300">
         
         <a href="{{ route('dashboard') }}" class="flex items-center gap-2 md:gap-3">
             <span class="text-2xl md:text-3xl">✂️</span>
@@ -199,12 +206,12 @@
                         <span class="text-xs font-black uppercase tracking-widest">Super Admin</span>
                     </div>
                 @elseif(Auth::user()->role === 'barbero')
-                    <div class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-[#d4af37] to-[#b8860b] border border-yellow-300/50 text-black px-4 py-1.5 rounded-full shadow-[0_0_15px_rgba(212,175,55,0.4)] transform hover:scale-105 transition-all">
+                    <div class="hidden sm:flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-500 border border-blue-400/50 text-white px-4 py-1.5 rounded-full shadow-[0_0_15px_rgba(59,130,246,0.4)] transform hover:scale-105 transition-all">
                         <span class="text-sm">💈</span>
                         <span class="text-xs font-black uppercase tracking-widest">Barbero</span>
                     </div>
                 @elseif(Auth::user()->role === 'cliente')
-                    <div class="hidden sm:flex items-center gap-2 bg-slate-200 dark:bg-[#1a1a1a] border border-slate-300 dark:border-[#333] text-slate-700 dark:text-gray-300 px-4 py-1.5 rounded-full">
+                    <div class="hidden sm:flex items-center gap-2 bg-slate-200 dark:bg-zinc-800 border border-slate-300 dark:border-zinc-600 text-slate-700 dark:text-gray-300 px-4 py-1.5 rounded-full">
                         <span class="text-sm">👤</span>
                         <span class="text-xs font-bold truncate max-w-[100px]">{{ Auth::user()->name }}</span>
                     </div>
@@ -224,21 +231,22 @@
                 </label>
             </div>
 
+            {{-- 🛡️ CORRECCIÓN: Agregamos setTimeout para evitar que cancele el formulario --}}
             <form action="{{ route('logout') }}" method="POST" class="hidden md:inline m-0">
                 @csrf
                 <button type="submit" class="nav-neon-btn-red"
-                        onclick="this.disabled=true; this.innerHTML='Saliendo... ⏳'; this.closest('form').submit();">
+                        onclick="setTimeout(() => { this.disabled=true; this.innerHTML='Saliendo... ⏳'; }, 50);">
                     Salir
                 </button>
             </form>
 
-            <button id="hamburger-btn" class="md:hidden text-[#d4af37] text-3xl focus:outline-none p-1 ml-2" aria-label="Abrir menú">
+            <button id="hamburger-btn" class="md:hidden text-blue-500 text-3xl focus:outline-none p-1 ml-2" aria-label="Abrir menú">
                 ☰
             </button>
         </div>
     </nav>
 
-    <div id="mobile-menu" class="fixed inset-y-0 right-0 z-[100] w-3/4 max-w-sm bg-white dark:bg-[#0a0a0a] border-l border-slate-200 dark:border-[#222] p-8 flex flex-col mobile-menu-hidden transition-all duration-300 shadow-2xl">
+    <div id="mobile-menu" class="fixed inset-y-0 right-0 z-[100] w-3/4 max-w-sm bg-white dark:bg-zinc-800 border-l border-slate-200 dark:border-zinc-700 p-8 flex flex-col mobile-menu-hidden transition-all duration-300 shadow-2xl">
         
         <button id="close-menu-btn" class="self-end text-slate-800 dark:text-gray-400 text-4xl mb-8 focus:outline-none" aria-label="Cerrar menú">
             &times;
@@ -249,11 +257,12 @@
             <a href="{{ route('appointments.index') }}" class="nav-neon-btn w-full">Citas</a>
             <a href="{{ route('references.index') }}" class="nav-neon-btn w-full">Reseñas</a>
             
-            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-gray-800">
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-zinc-700">
+                {{-- 🛡️ CORRECCIÓN MÓVIL: Mismo setTimeout --}}
                 <form action="{{ route('logout') }}" method="POST" class="w-full m-0">
                     @csrf
                     <button type="submit" class="nav-neon-btn-red w-full"
-                            onclick="this.disabled=true; this.innerHTML='Saliendo... ⏳'; this.closest('form').submit();">
+                            onclick="setTimeout(() => { this.disabled=true; this.innerHTML='Saliendo... ⏳'; }, 50);">
                         Salir
                     </button>
                 </form>
@@ -319,10 +328,10 @@
                             <div style="text-align: justify; font-size: 15px; margin-top: 10px;">
                                 Para continuar y brindarte el mejor servicio, por favor revisa y acepta nuestros documentos legales:
                                 <br><br>
-                                <div style="display: flex; flex-direction: column; gap: 10px; background: ${isDark ? '#1a1a1a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#333' : '#e2e8f0'};">
-                                    <a href="/terminos" target="_blank" style="color: #d4af37; font-weight: bold; text-decoration: none;">📄 Términos y Condiciones</a>
-                                    <a href="/privacidad" target="_blank" style="color: #00ccff; font-weight: bold; text-decoration: none;">🔒 Aviso de Privacidad</a>
-                                    <a href="/cookies" target="_blank" style="color: #ff7300; font-weight: bold; text-decoration: none;">🍪 Política de Cookies</a>
+                                <div style="display: flex; flex-direction: column; gap: 10px; background: ${isDark ? '#27272a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
+                                    <a href="/terminos" target="_blank" style="color: #3b82f6; font-weight: bold; text-decoration: none;">📄 Términos y Condiciones</a>
+                                    <a href="/privacidad" target="_blank" style="color: #06b6d4; font-weight: bold; text-decoration: none;">🔒 Aviso de Privacidad</a>
+                                    <a href="/cookies" target="_blank" style="color: #8b5cf6; font-weight: bold; text-decoration: none;">🍪 Política de Cookies</a>
                                 </div>
                             </div>
                         `,
@@ -330,11 +339,11 @@
                         showCancelButton: true,
                         confirmButtonText: '✅ Acepto todo, Continuar',
                         cancelButtonText: '❌ No acepto (Salir)',
-                        confirmButtonColor: '#d4af37',
+                        confirmButtonColor: '#3b82f6', // Botón azul
                         cancelButtonColor: '#ef4444',
                         allowOutsideClick: false, // Bloquea clic afuera
                         allowEscapeKey: false,    // Bloquea tecla ESC
-                        background: isDark ? '#111111' : '#ffffff',
+                        background: isDark ? '#18181b' : '#ffffff', // Fondo gris oscuro
                         color: isDark ? '#ffffff' : '#0f172a',
                     }).then((result) => {
                         if (result.isConfirmed) {
@@ -352,7 +361,7 @@
                                     icon: 'success',
                                     timer: 1500,
                                     showConfirmButton: false,
-                                    background: isDark ? '#111111' : '#ffffff',
+                                    background: isDark ? '#18181b' : '#ffffff',
                                     color: isDark ? '#ffffff' : '#0f172a'
                                 }).then(() => location.reload());
                             });

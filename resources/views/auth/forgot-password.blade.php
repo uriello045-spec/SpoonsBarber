@@ -9,7 +9,7 @@
 
     <style>
         body {
-            background-color: #0a0a0a; /* Fondo ultra oscuro */
+            background-color: #18181b; /* Gris plata oscuro */
             font-family: 'Poppins', sans-serif;
             min-height: 100vh;
             display: flex;
@@ -20,52 +20,51 @@
             overflow: hidden;
         }
 
-        /* Opcional: El fondo con textura/imagen sutil que usaste en el login */
         body::before {
             content: '';
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
             background: url("{{ asset('storage/galeria/foto1.jpeg') }}") center/cover no-repeat;
-            opacity: 0.15;
+            opacity: 0.10;
             z-index: -1;
             pointer-events: none;
         }
 
         .recovery-card {
-            background: #181818;
-            border: 1px solid #2a2a2a;
+            background: #27272a; /* Gris acorde */
+            border: 1px solid #3f3f46;
             border-radius: 20px;
             padding: 40px 35px;
             width: 90%;
             max-width: 420px;
-            /* Resplandor dorado tenue detrás de la tarjeta */
-            box-shadow: 0 0 30px rgba(212, 175, 55, 0.08), 0 10px 30px rgba(0,0,0,0.8);
+            /* Resplandor Azul tenue detrás de la tarjeta */
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.08), 0 10px 30px rgba(0,0,0,0.8);
             z-index: 10;
         }
 
         .input-style {
-            background: #111111;
-            border: 1px solid #333;
+            background: #18181b;
+            border: 1px solid #3f3f46;
             color: #f1f1f1;
             transition: all 0.3s ease;
         }
 
         .input-style:focus {
-            border-color: #d4af37;
-            box-shadow: 0 0 10px rgba(212, 175, 55, 0.2);
+            border-color: #3b82f6;
+            box-shadow: 0 0 10px rgba(59, 130, 246, 0.2);
             outline: none;
         }
 
-        .btn-gold {
-            background: linear-gradient(135deg, #d4af37, #b8962e);
-            color: #111;
+        .btn-blue {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: #ffffff;
             font-weight: 800;
             transition: all 0.3s ease;
         }
 
-        .btn-gold:hover {
-            background: linear-gradient(135deg, #e0c15a, #c9a43b);
-            box-shadow: 0 0 15px rgba(212, 175, 55, 0.4);
+        .btn-blue:hover {
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
             transform: translateY(-2px);
         }
     </style>
@@ -104,7 +103,7 @@
                 @enderror
             </div>
 
-            <button type="submit" class="w-full btn-gold text-sm py-3.5 rounded-xl mb-6">
+            <button type="submit" class="w-full btn-blue text-sm py-3.5 rounded-xl mb-6">
                 Enviar Enlace ✨
             </button>
         </form>
@@ -112,7 +111,7 @@
         <div class="text-center mt-2">
             <p class="text-gray-400 text-xs">
                 ¿Recordaste tu contraseña? 
-                <a href="{{ route('login') }}" class="text-[#d4af37] font-bold hover:underline transition-all">
+                <a href="{{ route('login') }}" class="text-[#3b82f6] font-bold hover:underline transition-all">
                     Volver al Login
                 </a>
             </p>

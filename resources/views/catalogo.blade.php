@@ -22,7 +22,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 4px;
-        background: #ffd700;
+        background: #3b82f6; /* Azul neón general */
         border-radius: 2px;
     }
 
@@ -58,13 +58,14 @@
         overflow: hidden;
     }
     .dark .glow-card {
-        background-color: #18181b;
+        background-color: #18181b; /* Gris plata oscuro */
         border: 1px solid rgba(255,255,255,0.05);
     }
     .glow-wrapper:hover .glow-card {
         transform: translateY(-5px);
     }
 
+    /* 🌟 RESTAURADOS: Colores originales al pasar el mouse 🌟 */
     .glow-clasico { background: linear-gradient(to bottom, #d4af37, #b8860b); } 
     .glow-moderno { background: linear-gradient(to right, #984fff, #00ccff); } 
     .glow-extra { background: linear-gradient(to right, #ff7300, #ff0055); } 
@@ -75,19 +76,19 @@
         font-weight: bold;
         border-radius: 10px;
         transition: 0.5s;
-        background: #1e1e1e;
+        background: #18181b;
         cursor: pointer;
-        color: greenyellow;
-        box-shadow: 0 0 10px #363636;
+        color: #3b82f6;
+        box-shadow: 0 0 10px #27272a, inset 0 0 10px #27272a;
         display: inline-block;
         text-transform: uppercase;
         text-decoration: none;
     }
 
     .jelly-button:hover {
-        background: #000;
+        background: #111827;
         color: #fff;
-        box-shadow: 0 0 15px greenyellow;
+        box-shadow: 0 0 15px #3b82f6;
     }
     
     .btn-container {
@@ -100,15 +101,25 @@
     .swal2-popup .swal2-input, .swal2-popup .swal2-textarea, .swal2-popup .swal2-select {
         color: #111827 !important; 
         background-color: #f9fafb !important;
+        border: 1px solid #d1d5db !important;
     }
 
     html.dark .swal2-popup .swal2-input, html.dark .swal2-popup .swal2-textarea, html.dark .swal2-popup .swal2-select {
         color: #ffffff !important; 
-        background-color: #374151 !important; 
+        background-color: #27272a !important; 
+        border: 1px solid #3f3f46 !important;
+    }
+
+    html.dark .swal2-popup .swal2-input:focus, 
+    html.dark .swal2-popup .swal2-textarea:focus, 
+    html.dark .swal2-popup .swal2-select:focus {
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
+        outline: none !important;
     }
 </style>
 
-<div class="bg-slate-50 dark:bg-black transition-colors duration-300 min-h-screen pt-20 pb-20">
+<div class="bg-slate-50 dark:bg-zinc-900 transition-colors duration-300 min-h-screen pt-20 pb-20">
     
     <div class="container mx-auto px-4 text-center mb-16">
         <div class="section-title-wrapper" data-aos="zoom-in">
@@ -125,17 +136,13 @@
         $serviciosAMostrar = [];
         
         if(class_exists('\App\Models\Service')) {
-            // 🛡️ SOLUCIÓN: Ordenamos estrictamente por ID ascendente para garantizar el orden de los 28 cortes
             $serviciosDB = \App\Models\Service::orderBy('id', 'asc')->get();
-            
-            $contadorEstricto = 1; // 🛡️ SOLUCIÓN: Un contador independiente para emparejar foto 1 con corte 1
+            $contadorEstricto = 1; 
             
             foreach($serviciosDB as $s) {
-                // Ciclo exacto de 1 a 28
                 $numeroUnico = $contadorEstricto <= 28 ? $contadorEstricto : (($contadorEstricto - 1) % 28) + 1;
                 
                 $imagenOriginal = $s->imagen ?? '';
-                
                 $rutaLimpia = str_replace('public/', '', $imagenOriginal);
                 $esDinamica = ($imagenOriginal && !str_contains($imagenOriginal, 'fake'));
                 
@@ -152,7 +159,7 @@
                     'img' => $rutaImagen,
                     'ruta_limpia' => $rutaLimpia,
                     'desc' => $s->descripcion ?? 'Corte profesional de la casa.',
-                    'numero_unico' => $numeroUnico // Lo guardamos para el fallback
+                    'numero_unico' => $numeroUnico
                 ];
                 
                 $contadorEstricto++;
@@ -175,7 +182,7 @@
             @if(auth()->check() && auth()->user()->role === 'barbero')
                 <div data-aos="fade-up" class="cursor-pointer" onclick="agregarServicioNuevo()">
                     <div class="glow-wrapper h-full">
-                        <div class="glow-bg glow-gold"></div>
+                        <div class="glow-bg glow-clasico"></div>
                         <div class="glow-card rounded-2xl h-full border-2 border-dashed border-yellow-500 flex flex-col items-center justify-center bg-yellow-50 dark:bg-yellow-900/10 text-yellow-600 dark:text-yellow-400 transition hover:bg-yellow-100 dark:hover:bg-yellow-900/20 min-h-[400px]">
                             <span class="text-6xl mb-3">✂️<span class="text-4xl">+</span></span>
                             <span class="font-black text-lg text-center px-4">Agregar Nuevo Servicio</span>
@@ -255,7 +262,6 @@
 <script>
     AOS.init({ once: true, duration: 800, offset: 50 });
 
-    // 🛡️ SOLUCIÓN: Lógica de filtrado inmune a conflictos con la animación AOS
     function filtrarCatalogo(categoriaSeleccionada) {
         const tarjetas = document.querySelectorAll('.servicio-card');
         
@@ -264,7 +270,6 @@
             
             if (categoriaSeleccionada === 'todos' || categoriaTarjeta.includes(categoriaSeleccionada)) {
                 tarjeta.style.display = 'block';
-                // Forzamos visibilidad absoluta para ganarle al hide de AOS
                 tarjeta.style.opacity = '1';
                 tarjeta.style.transform = 'translateY(0)';
             } else {
@@ -272,7 +277,6 @@
             }
         });
 
-        // Refrescar AOS para recalcular alturas
         setTimeout(() => {
             if (typeof AOS !== 'undefined') AOS.refresh();
         }, 100);
@@ -305,7 +309,7 @@
                 
                 <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 5px; margin-top: 15px;">
                     <label style="font-size: 13px; color: gray;">Descripción (Opcional)</label>
-                    <span id="char-count" style="font-size: 11px; color: #d4af37; font-weight: bold;">0 / 120</span>
+                    <span id="char-count" style="font-size: 11px; color: #3b82f6; font-weight: bold;">0 / 120</span>
                 </div>
                 <textarea id="swal-desc" class="swal2-textarea" style="margin-top:0; resize: none; height: 80px;" placeholder="Descripción breve..." maxlength="120"
                           onkeydown="if(['<', '>'].includes(event.key)) event.preventDefault();"
@@ -318,8 +322,8 @@
             showCancelButton: true,
             confirmButtonText: 'Guardar',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#d4af37',
-            background: isDark ? '#111111' : '#ffffff',
+            confirmButtonColor: '#3b82f6',
+            background: isDark ? '#18181b' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const nombre = document.getElementById('swal-nombre').value.trim();
@@ -397,6 +401,7 @@
     }
 
     function eliminarServicio(id, nombre) {
+        const isDark = document.documentElement.classList.contains('dark');
         Swal.fire({
             title: '¿Eliminar Servicio?',
             text: `¿Estás seguro de borrar "${nombre}"?`,
@@ -404,8 +409,9 @@
             showCancelButton: true,
             confirmButtonColor: '#e11d48',
             confirmButtonText: 'Sí, eliminar',
-            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+            cancelButtonColor: isDark ? '#3f3f46' : '#cbd5e1',
+            background: isDark ? '#18181b' : '#ffffff',
+            color: isDark ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(`/admin/servicios/${id}`, {

@@ -3,30 +3,29 @@
 @section('content')
 
 @php
-    // Verificamos si la cita ya fue aceptada/confirmada
     $estaBloqueada = in_array(strtolower($appointment->estado), ['aceptada', 'confirmada', 'completada', 'cancelada']);
 @endphp
 
-<div class="min-h-screen w-full bg-slate-50 dark:bg-[#050505] flex items-center justify-center p-4 font-sans transition-colors duration-300">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 flex items-center justify-center p-4 font-sans transition-colors duration-300">
     
     <div class="w-full max-w-lg" data-aos="fade-up">
         
-        <div class="bg-white dark:bg-[#111111] rounded-3xl shadow-xl dark:shadow-2xl border border-slate-200 dark:border-[#222] overflow-hidden relative transition-colors duration-300">
+        <div class="bg-white dark:bg-zinc-800 rounded-3xl shadow-xl dark:shadow-2xl border border-slate-200 dark:border-zinc-700 overflow-hidden relative transition-colors duration-300">
             
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 dark:via-[#d4af37] to-transparent opacity-80"></div>
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 dark:via-[#3b82f6] to-transparent opacity-80"></div>
 
-            <div class="bg-slate-50 dark:bg-gradient-to-b dark:from-[#1a1a1a] dark:to-[#111111] px-8 py-8 text-center border-b border-slate-100 dark:border-[#222] transition-colors duration-300">
-                <h2 class="text-3xl font-black text-slate-900 dark:text-[#d4af37] tracking-tight">
+            <div class="bg-slate-50 dark:bg-gradient-to-b dark:from-zinc-900 dark:to-zinc-800 px-8 py-8 text-center border-b border-slate-100 dark:border-zinc-700 transition-colors duration-300">
+                <h2 class="text-3xl font-black text-slate-900 dark:text-[#3b82f6] tracking-tight">
                     Editar Cita
                 </h2>
-                <p class="text-slate-500 dark:text-gray-500 text-[10px] mt-2 font-bold tracking-widest uppercase">Modificando detalles del servicio</p>
+                <p class="text-slate-500 dark:text-gray-400 text-[10px] mt-2 font-bold tracking-widest uppercase">Modificando detalles del servicio</p>
             </div>
 
             <div class="p-8">
                 
                 @if($estaBloqueada)
-                    <div class="bg-amber-50 dark:bg-[#332200] border border-amber-200 dark:border-[#664400] rounded-xl p-4 mb-6 text-center shadow-sm">
-                        <p class="text-amber-700 dark:text-yellow-400 font-bold text-sm flex items-center justify-center gap-2">
+                    <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/50 rounded-xl p-4 mb-6 text-center shadow-sm">
+                        <p class="text-amber-700 dark:text-amber-500 font-bold text-sm flex items-center justify-center gap-2">
                             <span>⚠️</span> Esta cita ya fue procesada y no puede ser modificada.
                         </p>
                     </div>
@@ -39,35 +38,35 @@
                     <div class="space-y-6">
                         
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">
                                 Fecha de la cita
                             </label>
                             <input type="date" name="fecha" id="fecha" value="{{ \Carbon\Carbon::parse($appointment->fecha)->format('Y-m-d') }}" required 
                                    {{ $estaBloqueada ? 'disabled' : '' }}
-                                   class="w-full bg-slate-50 dark:bg-[#0a0a0a] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-5 py-4 
-                                          focus:bg-white dark:focus:bg-[#111] focus:border-yellow-500 dark:focus:border-[#d4af37] focus:ring-2 focus:ring-yellow-500/20 dark:focus:ring-[#d4af37]/20 outline-none transition-all dark:[color-scheme:dark] font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-5 py-4 
+                                          focus:bg-white dark:focus:bg-zinc-800 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all dark:[color-scheme:dark] font-medium disabled:opacity-50 disabled:cursor-not-allowed">
                             <p id="mensaje-error-fecha" class="hidden text-[11px] mt-2 font-black text-red-500 dark:text-[#ff4444] drop-shadow-[0_0_5px_rgba(239,68,68,0.8)] transition-all duration-300"></p>
                         </div>
 
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">
                                 Hora
                             </label>
                             <input type="time" name="hora" id="hora" min="08:00" max="21:00" value="{{ \Carbon\Carbon::parse($appointment->hora)->format('H:i') }}" required 
                                    {{ $estaBloqueada ? 'disabled' : '' }}
-                                   class="w-full bg-slate-50 dark:bg-[#0a0a0a] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-5 py-4 
-                                          focus:bg-white dark:focus:bg-[#111] focus:border-yellow-500 dark:focus:border-[#d4af37] focus:ring-2 focus:ring-yellow-500/20 dark:focus:ring-[#d4af37]/20 outline-none transition-all dark:[color-scheme:dark] font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-5 py-4 
+                                          focus:bg-white dark:focus:bg-zinc-800 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all dark:[color-scheme:dark] font-medium disabled:opacity-50 disabled:cursor-not-allowed">
                             <p id="mensaje-error-hora" class="hidden text-[11px] mt-2 font-black tracking-wide transition-all duration-300"></p>
                         </div>
 
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">
                                 Servicio Reservado
                             </label>
                             <div class="relative">
                                 <select name="servicio" required {{ $estaBloqueada ? 'disabled' : '' }}
-                                        class="w-full bg-slate-50 dark:bg-[#0a0a0a] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-5 py-4 
-                                               focus:bg-white dark:focus:bg-[#111] focus:border-yellow-500 dark:focus:border-[#d4af37] focus:ring-2 focus:ring-yellow-500/20 dark:focus:ring-[#d4af37]/20 outline-none transition-all appearance-none cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed">
+                                        class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-5 py-4 
+                                               focus:bg-white dark:focus:bg-zinc-800 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all appearance-none cursor-pointer font-medium disabled:opacity-50 disabled:cursor-not-allowed">
                                     <option value="" disabled>Selecciona un servicio...</option>
                                     @foreach($services as $servicio)
                                         <option value="{{ $servicio->nombre }}" {{ $appointment->servicio == $servicio->nombre ? 'selected' : '' }}>
@@ -85,13 +84,13 @@
 
                     <div class="flex flex-col-reverse md:flex-row gap-4 mt-10">
                         <a href="{{ route('appointments.index') }}" 
-                           class="flex-1 text-center bg-white dark:bg-[#111] hover:bg-slate-100 dark:hover:bg-[#1a1a1a] text-slate-600 dark:text-gray-400 hover:text-slate-900 dark:hover:text-white font-bold px-6 py-4 rounded-xl transition-all border border-slate-300 dark:border-[#333] hover:border-slate-400 dark:hover:border-[#555]">
+                           class="flex-1 text-center bg-white dark:bg-zinc-800 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-600 dark:text-gray-300 hover:text-slate-900 dark:hover:text-white font-bold px-6 py-4 rounded-xl transition-all border border-slate-300 dark:border-zinc-600 hover:border-slate-400 dark:hover:border-zinc-500">
                             {{ $estaBloqueada ? 'Volver a Mis Citas' : 'Cancelar' }}
                         </a>
 
                         @if(!$estaBloqueada)
                             <button type="submit" id="btn-submit-cita"
-                                    class="flex-1 bg-yellow-400 dark:bg-gradient-to-r dark:from-[#d4af37] dark:to-[#b8860b] hover:bg-yellow-500 dark:hover:from-[#ffd700] dark:hover:to-[#d4af37] text-slate-900 dark:text-black font-black px-6 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:shadow-xl dark:hover:shadow-[0_0_20px_rgba(212,175,55,0.4)] transform hover:-translate-y-1 transition-all duration-300">
+                                    class="flex-1 bg-blue-600 dark:bg-gradient-to-r dark:from-[#3b82f6] dark:to-[#2563eb] hover:bg-blue-700 dark:hover:from-[#60a5fa] dark:hover:to-[#3b82f6] text-white dark:text-white font-black px-6 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(59,130,246,0.2)] hover:shadow-xl dark:hover:shadow-[0_0_20px_rgba(59,130,246,0.4)] transform hover:-translate-y-1 transition-all duration-300">
                                 Guardar Cambios
                             </button>
                         @endif
@@ -115,7 +114,6 @@
         const btnSubmit = document.getElementById("btn-submit-cita");
         const formEditar = document.getElementById("form-editar-cita");
 
-        // Guardamos los valores originales de la cita para el "truco"
         const originalFecha = "{{ \Carbon\Carbon::parse($appointment->fecha)->format('Y-m-d') }}";
         const originalHora = "{{ \Carbon\Carbon::parse($appointment->hora)->format('H:i') }}";
 
@@ -140,7 +138,6 @@
             mensajeErrorHora.classList.add('hidden');
             mensajeErrorHora.className = 'hidden text-[11px] mt-2 font-black tracking-wide transition-all duration-300';
 
-            // 1. VALIDAR FECHA 
             if (fechaSeleccionada) {
                 const anioSeleccionado = parseInt(fechaSeleccionada.split('-')[0]);
                 const anioActual = new Date().getFullYear();
@@ -152,7 +149,6 @@
                 }
             }
 
-            // 2. VALIDAR HORA 
             if (horaSeleccionada) {
                 if (horaSeleccionada < "08:00" || horaSeleccionada > "21:00") {
                     mensajeErrorHora.innerHTML = '🚫 Abrimos de 08:00 AM a 09:00 PM. Elige un horario válido.';
@@ -162,7 +158,6 @@
                 }
             }
 
-            // 3. VALIDAR HORA PASADA
             if (fechaSeleccionada && horaSeleccionada) {
                 const hoyDate = new Date();
                 const strHoy = hoyDate.getFullYear() + "-" + String(hoyDate.getMonth() + 1).padStart(2, '0') + "-" + String(hoyDate.getDate()).padStart(2, '0');
@@ -191,16 +186,14 @@
                 return;
             }
 
-            // 4. EL TRUCO
             if (fechaSeleccionada === originalFecha && horaSeleccionada === originalHora) {
                 btnSubmit.disabled = false;
                 btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed');
                 return; 
             }
 
-            // 5. VALIDACIÓN AJAX
             mensajeErrorHora.innerHTML = '⏳ Verificando disponibilidad...';
-            mensajeErrorHora.className = 'text-[11px] mt-2 font-black text-blue-500 dark:text-[#3399ff] transition-all duration-300';
+            mensajeErrorHora.className = 'text-[11px] mt-2 font-black text-blue-500 dark:text-[#3b82f6] transition-all duration-300';
             mensajeErrorHora.classList.remove('hidden');
             btnSubmit.disabled = true;
             btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
@@ -237,7 +230,6 @@
         if(inputHora && !inputHora.disabled) inputHora.addEventListener('change', validateTimeAndDate);
         if(inputFecha && !inputFecha.disabled) inputFecha.addEventListener('change', validateTimeAndDate);
 
-        // Alerta SweetAlert para editar
         if(formEditar && btnSubmit) {
             formEditar.addEventListener('submit', function(e) {
                 e.preventDefault();
@@ -248,17 +240,17 @@
                     text: "Se actualizarán los detalles de tu cita.",
                     icon: 'question',
                     showCancelButton: true,
-                    confirmButtonColor: '#d4af37', 
-                    cancelButtonColor: isDark ? '#1a1a1a' : '#f1f5f9', 
+                    confirmButtonColor: '#3b82f6', 
+                    cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', 
                     confirmButtonText: 'Sí, guardar',
                     cancelButtonText: 'Cancelar',
-                    background: isDark ? '#111111' : '#ffffff', 
+                    background: isDark ? '#18181b' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a', 
-                    iconColor: isDark ? '#d4af37' : '#ca8a04', 
+                    iconColor: isDark ? '#3b82f6' : '#2563eb', 
                     customClass: {
-                        popup: isDark ? 'border border-[#333] rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl',
+                        popup: isDark ? 'border border-zinc-700 rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl',
                         cancelButton: isDark ? 'text-white' : 'text-slate-700 border border-slate-300',
-                        confirmButton: 'text-black font-bold'
+                        confirmButton: 'text-white font-bold'
                     }
                 }).then((result) => {
                     if (result.isConfirmed) {

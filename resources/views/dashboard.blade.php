@@ -61,7 +61,7 @@
         transform: translateX(-50%);
         width: 80px;
         height: 4px;
-        background: #ffd700;
+        background: #3b82f6;
         border-radius: 2px;
     }
 
@@ -83,12 +83,12 @@
 
     .tspan-white { fill: #000000; transition: all 0.4s ease; }
     .dark .tspan-white { fill: #ffffff; }
-    .tspan-gold { fill: #eab308; transition: all 0.4s ease; }
+    .tspan-blue { fill: #3b82f6; transition: all 0.4s ease; }
 
     .title-container:hover .tspan-white,
-    .title-container:hover .tspan-gold {
+    .title-container:hover .tspan-blue {
         fill: transparent; 
-        stroke: url(#gold-white-gradient); 
+        stroke: url(#blue-white-gradient); 
         stroke-dasharray: 80 30; 
         animation: drawStroke 3s linear infinite;
     }
@@ -169,7 +169,7 @@
         flex-direction: column; position: relative; text-decoration: none; cursor: pointer; margin-top: 20px;
     }
     .dark .wrap {
-        --bg: #000000;
+        --bg: #18181b;
     }
 
     .wrap::before {
@@ -187,11 +187,11 @@
     .button {
         position: relative; overflow: hidden; width: 280px; height: 80px; background-color: var(--bg);
         z-index: 2; border: transparent; border-radius: var(--radius);
-        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -6px 1px -4px #ff7300, inset 0 -15px 6px -8px #ff6600;
+        box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.9), inset 0 -6px 1px -4px #3b82f6, inset 0 -15px 6px -8px #2563eb;
         transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     }
     .dark .button {
-        box-shadow: inset 0 1px 1px rgb(255 255 255 / 20%), inset 0 -6px 1px -4px #ff7300, inset 0 -15px 6px -8px #ff6600;
+        box-shadow: inset 0 1px 1px rgb(255 255 255 / 20%), inset 0 -6px 1px -4px #3b82f6, inset 0 -15px 6px -8px #2563eb;
     }
 
     .button::before {
@@ -202,7 +202,7 @@
 
     .button::after {
         content: ""; position: absolute; left: 0; right: 0; margin: auto; top: 101%;
-        height: 30px; width: 180px; border-radius: 50px 50px 0 0; background: #ff7300;
+        height: 30px; width: 180px; border-radius: 50px 50px 0 0; background: #3b82f6;
         filter: contrast(10) blur(7px); transition: all 0.3s ease; opacity: 1;
     }
 
@@ -222,34 +222,34 @@
         background: linear-gradient(180deg, #ffffff 5%, #f3f4f6 100%);
         transition: all 0.4s ease; 
         box-shadow: inset 0 1px 2px rgba(255,255,255,0.8), 0 2px 4px rgba(0,0,0,0.05);
-        font-family: sans-serif; font-weight: 900; font-size: 1.25rem; letter-spacing: 2px; color: #ff7a3c; text-shadow: 0 0 10px rgba(255, 122, 60, 0.3);
+        font-family: sans-serif; font-weight: 900; font-size: 1.25rem; letter-spacing: 2px; color: #3b82f6; text-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
     }
     .dark .button .inner {
         background: linear-gradient(180deg, #1c1c1c 0%, #0a0a0a 100%);
         box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 2px 5px rgba(0,0,0,0.5);
-        color: #ff7a3c; text-shadow: 0 0 10px #ce7c02;
+        color: #60a5fa; text-shadow: 0 0 10px #2563eb;
     }
 
     .bg {
         background-color: #d1d5db; position: absolute; inset: -7px; border-radius: calc(var(--radius) * 1.25);
         box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; overflow: hidden; z-index: 1;
     }
-    .dark .bg { background-color: black; box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.3); }
+    .dark .bg { background-color: #18181b; box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.3); }
 
     .bg::before {
         content: ""; position: absolute; border-radius: inherit; box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.05); inset: 0; z-index: 1;
     }
-    .dark .bg::before { box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px black, inset 0 0 0 1px black; }
+    .dark .bg::before { box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px #18181b, inset 0 0 0 1px #18181b; }
 
     .bg .shine-1, .bg .shine-2::before {
-        content: ""; position: absolute; z-index: 0; transition: all 0.3s ease; background: rgb(255, 115, 0); width: 10px; height: 10px;
+        content: ""; position: absolute; z-index: 0; transition: all 0.3s ease; background: rgb(59, 130, 246); width: 10px; height: 10px;
         left: 0; right: 0; bottom: 0; margin: auto; border-radius: 50%; filter: blur(2px); transform: translateY(0) scale(0); animation: bg 2.4s linear infinite;
     }
     .bg .shine-2 { transition: all 0.5s linear; opacity: 0; }
 
     .led {
         position: absolute; z-index: 10; top: 100%; border-radius: 50%; width: 8px; height: 8px; margin-top: 15px; transition: all 0.4s ease;
-        background-color: #f35f3a; box-shadow: 0 -10px 35px 17px #ff5100, inset 0 1px 2px 0px rgba(255, 255, 255, 0.6), 0 0 0px 3px rgb(0 0 0 / 60%), 0 0 2px 4px rgba(152, 81, 0, 0.8);
+        background-color: #3b82f6; box-shadow: 0 -10px 35px 17px #2563eb, inset 0 1px 2px 0px rgba(255, 255, 255, 0.6), 0 0 0px 3px rgb(0 0 0 / 60%), 0 0 2px 4px rgba(30, 58, 138, 0.8);
     }
     .noise {
         position: absolute; top: -20px; bottom: -20px; left: 0; right: 0; opacity: 0.04;
@@ -272,7 +272,7 @@
     /* Active States */
     .wrap:active .button { transform: scale(0.98); filter: contrast(1.1); }
     .wrap:active .button::before { box-shadow: 0 -10px 10px 10px rgba(0,0,0,0.1); }
-    .dark .wrap:active .button::before { box-shadow: 0 -10px 10px 10px black; }
+    .dark .wrap:active .button::before { box-shadow: 0 -10px 10px 10px #18181b; }
     
     .wrap:active .button .inner {
         background: linear-gradient(180deg, #e5e7eb 5%, #d1d5db 100%);
@@ -294,19 +294,19 @@
         border: none;
         border-radius: 10px;
         transition: 0.5s;
-        background: #1e1e1e;
+        background: #18181b;
         cursor: pointer;
-        color: greenyellow;
-        box-shadow: 0 0 10px #363636, inset 0 0 10px #363636;
+        color: #3b82f6;
+        box-shadow: 0 0 10px #27272a, inset 0 0 10px #27272a;
         display: inline-block;
         letter-spacing: 1px;
     }
 
     .jelly-button:hover {
         animation: jelly-anim 0.5s 1 linear;
-        background: #000;
+        background: #111827;
         color: #fff;
-        box-shadow: 0 0 15px greenyellow;
+        box-shadow: 0 0 15px #3b82f6;
     }
 
     @keyframes jelly-anim {
@@ -338,15 +338,15 @@
     .dark .swal2-popup .swal2-textarea, 
     .dark .swal2-popup .swal2-file {
         color: #ffffff !important; 
-        background-color: #374151 !important; 
-        border: 1px solid #4b5563 !important; 
+        background-color: #27272a !important; 
+        border: 1px solid #3f3f46 !important; 
     }
 
     .swal2-popup .swal2-input:focus, 
     .swal2-popup .swal2-textarea:focus,
     .swal2-popup .swal2-select:focus {
-        border-color: #d4af37 !important;
-        box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3) !important;
+        border-color: #3b82f6 !important;
+        box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3) !important;
         outline: none !important;
     }
 
@@ -356,9 +356,9 @@
     <div class="absolute inset-0">
         {{-- 🛡️ FOTO ESTÁTICA: Usamos asset() puro porque debe ir en public/img/galeria/ --}}
         <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
-             class="w-full h-full object-cover opacity-20 dark:opacity-40 transition-opacity duration-300" 
+             class="w-full h-full object-cover opacity-20 dark:opacity-20 transition-opacity duration-300" 
              alt="Barber Shop">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-black dark:via-black/10 dark:to-black/50 transition-colors duration-300"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-zinc-900 dark:via-zinc-900/10 dark:to-zinc-900/50 transition-colors duration-300"></div>
     </div>
 
     <div class="relative container mx-auto px-4 flex flex-col items-center text-center py-20" data-aos="fade-down">
@@ -366,15 +366,15 @@
         <div class="title-container mb-6">
             <svg class="w-full h-auto drop-shadow-sm" viewBox="0 0 800 120">
                 <defs>
-                    <linearGradient id="gold-white-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <linearGradient id="blue-white-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                         <stop offset="0%" stop-color="#ffffff" />
-                        <stop offset="50%" stop-color="#ffd700" />
+                        <stop offset="50%" stop-color="#3b82f6" />
                         <stop offset="100%" stop-color="#ffffff" />
                     </linearGradient>
                 </defs>
                 <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="hero-svg-text" style="font-family: inherit;">
                     <tspan class="tspan-white">Spoon’s </tspan>
-                    <tspan class="tspan-gold">Barber Shop</tspan>
+                    <tspan class="tspan-blue">Barber Shop</tspan>
                 </text>
             </svg>
         </div>
@@ -413,7 +413,7 @@
     </div>
 </div>
 
-<section class="py-20 bg-slate-50 dark:bg-black transition-colors duration-300">
+<section class="py-20 bg-slate-50 dark:bg-zinc-900 transition-colors duration-300">
     <div class="container mx-auto px-4 max-w-6xl">
         <div class="text-center">
             <div class="section-title-wrapper" data-aos="zoom-in">
@@ -426,9 +426,9 @@
                 <div class="glow-wrapper">
                     <div class="glow-bg glow-purple-cyan"></div>
                     <div class="glow-card h-full p-6 flex flex-col items-center text-center rounded-2xl shadow-sm transition-colors duration-300 relative">
-                        <h4 class="text-2xl mb-4 font-bold">📍 Ubicación</h4>
+                        <h4 class="text-2xl mb-4 font-bold text-[#3b82f6]">📍 Ubicación</h4>
                         <p class="mb-6 text-lg text-slate-600 dark:text-slate-300">Av. Hermenegildo Galeana #150<br>Metepec, Estado de México</p>
-                        <div class="w-full aspect-video rounded-lg overflow-hidden shadow-inner border border-slate-200 dark:border-slate-700">
+                        <div class="w-full aspect-video rounded-lg overflow-hidden shadow-inner border border-slate-200 dark:border-zinc-700">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.44550742892187!2d-99.5390056666833!3d19.233247339849026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cdf4ae632bbc23%3A0x25189c5fe553fc90!2sMoto%20Servicio%20%22El%20Chino%22!5e0!3m2!1ses!2smx!4v1771651726925!5m2!1ses!2smx" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
                     </div>
@@ -441,14 +441,14 @@
                     <div class="glow-card h-full p-8 text-center flex flex-col justify-center rounded-2xl shadow-sm transition-colors duration-300 relative">
                         
                         @if(auth()->check() && auth()->user()->role === 'barbero')
-                            <button onclick="editarHorarios()" class="absolute top-4 right-4 text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded border border-yellow-300 hover:bg-yellow-200 transition">✏️ Editar</button>
+                            <button onclick="editarHorarios()" class="absolute top-4 right-4 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded border border-blue-300 hover:bg-blue-200 transition">✏️ Editar</button>
                         @endif
 
-                        <h4 class="text-2xl mb-6 font-bold">🕒 Horarios</h4>
+                        <h4 class="text-2xl mb-6 font-bold text-[#3b82f6]">🕒 Horarios</h4>
                         <div class="space-y-5 text-lg text-slate-700 dark:text-slate-300">
-                            <div><strong class="block text-yellow-600 dark:text-yellow-400 font-bold">Lunes – Viernes</strong><br><span id="txt_h_semana">{{ $h_semana }}</span></div>
-                            <div><strong class="block text-yellow-600 dark:text-yellow-400 font-bold">Sábado</strong><br><span id="txt_h_sabado">{{ $h_sabado }}</span></div>
-                            <div><strong class="block text-yellow-600 dark:text-yellow-400 font-bold">Domingo</strong><br><span id="txt_h_domingo">{{ $h_domingo }}</span></div>
+                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Lunes – Viernes</strong><br><span id="txt_h_semana">{{ $h_semana }}</span></div>
+                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Sábado</strong><br><span id="txt_h_sabado">{{ $h_sabado }}</span></div>
+                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Domingo</strong><br><span id="txt_h_domingo">{{ $h_domingo }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -460,26 +460,26 @@
                     <div class="glow-card h-full p-8 rounded-2xl shadow-sm transition-colors duration-300 relative">
                         
                         @if(auth()->check() && auth()->user()->role === 'barbero')
-                            <button onclick="editarPrecios()" class="absolute top-4 right-4 text-xs bg-yellow-100 text-yellow-700 px-2 py-1 rounded border border-yellow-300 hover:bg-yellow-200 transition">✏️ Editar</button>
+                            <button onclick="editarPrecios()" class="absolute top-4 right-4 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded border border-blue-300 hover:bg-blue-200 transition">✏️ Editar</button>
                         @endif
 
-                        <h4 class="text-2xl text-center mb-8 font-bold">💵 Precios</h4>
+                        <h4 class="text-2xl text-center mb-8 font-bold text-[#3b82f6]">💵 Precios</h4>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
                                 <span class="text-lg text-slate-700 dark:text-slate-300">Cortes (Cualquiera)</span>
-                                <span class="text-xl font-bold text-yellow-600 dark:text-yellow-400">$<span id="txt_p_corte">{{ $p_corte }}</span></span>
+                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_corte">{{ $p_corte }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
                                 <span class="text-lg text-slate-700 dark:text-slate-300">Corte + Barba</span>
-                                <span class="text-xl font-bold text-yellow-600 dark:text-yellow-400">$<span id="txt_p_barba">{{ $p_barba }}</span></span>
+                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_barba">{{ $p_barba }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
                                 <span class="text-lg text-slate-700 dark:text-slate-300">Diseño de ceja</span>
-                                <span class="text-xl font-bold text-yellow-600 dark:text-yellow-400">$<span id="txt_p_ceja">{{ $p_ceja }}</span></span>
+                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_ceja">{{ $p_ceja }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
                                 <span class="text-lg text-slate-700 dark:text-slate-300">Corte + Diseño (Greca)</span>
-                                <span class="text-xl font-bold text-yellow-600 dark:text-yellow-400">$<span id="txt_p_greca">{{ $p_greca }}</span></span>
+                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_greca">{{ $p_greca }}</span></span>
                             </div>
                         </div>
                     </div>
@@ -489,7 +489,7 @@
     </div>
 </section>
 
-<section class="py-20 bg-slate-100 dark:bg-zinc-950 transition-colors duration-300">
+<section class="py-20 bg-slate-100 dark:bg-zinc-900 transition-colors duration-300">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12 relative">
              <div class="section-title-wrapper" data-aos="zoom-in">
@@ -503,7 +503,7 @@
                 <div data-aos="fade-up" class="cursor-pointer" onclick="subirFotoGaleria()">
                     <div class="glow-wrapper h-full">
                         <div class="glow-bg glow-gold"></div>
-                        <div class="gallery-img-container border-2 border-dashed border-yellow-500 flex flex-col items-center justify-center bg-yellow-50 dark:bg-yellow-900/10 text-yellow-600 dark:text-yellow-400 transition hover:bg-yellow-100 dark:hover:bg-yellow-900/20">
+                        <div class="gallery-img-container border-2 border-dashed border-[#3b82f6] flex flex-col items-center justify-center bg-blue-50 dark:bg-[#3b82f6]/10 text-blue-600 dark:text-[#3b82f6] transition hover:bg-blue-100 dark:hover:bg-[#3b82f6]/20">
                             <span class="text-6xl mb-3">📸<span class="text-4xl">+</span></span>
                             <span class="font-black text-lg">Subir Nueva Foto</span>
                         </div>
@@ -609,9 +609,9 @@
             title: '🕒 Editar Horarios',
             width: 600,
             html: `
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#1a1a1a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#333' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <label style="color: ${isDark ? '#d4af37' : '#b8860b'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Lunes - Viernes</label>
+                        <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Lunes - Viernes</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
                             <input type="checkbox" id="cerr_sem" ${ce_sem === 'true' ? 'checked' : ''} onchange="document.getElementById('ap_sem').disabled = this.checked; document.getElementById('ci_sem').disabled = this.checked;" style="accent-color: red;"> Cerrado
                         </label>
@@ -628,9 +628,9 @@
                     </div>
                 </div>
 
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#1a1a1a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#333' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <label style="color: ${isDark ? '#d4af37' : '#b8860b'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Sábado</label>
+                        <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Sábado</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
                             <input type="checkbox" id="cerr_sab" ${ce_sab === 'true' ? 'checked' : ''} onchange="document.getElementById('ap_sab').disabled = this.checked; document.getElementById('ci_sab').disabled = this.checked;" style="accent-color: red;"> Cerrado
                         </label>
@@ -647,9 +647,9 @@
                     </div>
                 </div>
 
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#1a1a1a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#333' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
-                        <label style="color: ${isDark ? '#d4af37' : '#b8860b'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Domingo</label>
+                        <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Domingo</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
                             <input type="checkbox" id="cerr_dom" ${ce_dom === 'true' ? 'checked' : ''} onchange="document.getElementById('ap_dom').disabled = this.checked; document.getElementById('ci_dom').disabled = this.checked;" style="accent-color: red;"> Cerrado
                         </label>
@@ -670,8 +670,8 @@
             showCancelButton: true,
             confirmButtonText: 'Guardar Ajustes',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#d4af37',
-            background: isDark ? '#111111' : '#ffffff',
+            confirmButtonColor: '#3b82f6',
+            background: isDark ? '#18181b' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const c_sem = document.getElementById('cerr_sem').checked ? 'true' : 'false';
@@ -742,8 +742,8 @@
             showCancelButton: true,
             confirmButtonText: 'Guardar',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#d4af37',
-            background: isDark ? '#111111' : '#ffffff',
+            confirmButtonColor: '#3b82f6',
+            background: isDark ? '#18181b' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const pCorte = parseFloat(document.getElementById('p_corte').value);
@@ -810,7 +810,7 @@
                     title: '¡Éxito!', 
                     text: data.message, 
                     icon: 'success', 
-                    background: isDark ? '#111111' : '#ffffff', 
+                    background: isDark ? '#18181b' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a' 
                 }).then(() => location.reload()); 
             } else {
@@ -831,8 +831,8 @@
             showCancelButton: true,
             confirmButtonText: 'Subir Imagen',
             cancelButtonText: 'Cancelar',
-            confirmButtonColor: '#d4af37',
-            background: isDark ? '#111111' : '#ffffff',
+            confirmButtonColor: '#3b82f6',
+            background: isDark ? '#18181b' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
         });
 
@@ -869,7 +869,7 @@
                         title: '¡Éxito!', 
                         text: data.message, 
                         icon: 'success', 
-                        background: isDark ? '#111111' : '#ffffff', 
+                        background: isDark ? '#18181b' : '#ffffff', 
                         color: isDark ? '#ffffff' : '#0f172a' 
                     }).then(() => location.reload());
                 } else {
@@ -890,10 +890,10 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#ef4444',
-            cancelButtonColor: isDark ? '#333' : '#cbd5e1',
+            cancelButtonColor: isDark ? '#3f3f46' : '#cbd5e1',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
-            background: isDark ? '#111111' : '#ffffff',
+            background: isDark ? '#18181b' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -918,7 +918,7 @@
                             title: '¡Eliminada!', 
                             text: data.message, 
                             icon: 'success', 
-                            background: isDark ? '#111111' : '#ffffff', 
+                            background: isDark ? '#18181b' : '#ffffff', 
                             color: isDark ? '#ffffff' : '#0f172a' 
                         });
                     } else {

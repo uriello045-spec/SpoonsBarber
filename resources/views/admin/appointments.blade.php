@@ -1,16 +1,18 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen w-full bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-gray-100 p-6 md:p-10 font-sans transition-colors duration-300">
-    <div class="max-w-7xl mx-auto space-y-8">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-6 md:p-10 font-sans transition-colors duration-300 relative overflow-hidden">
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 w-96 h-96 bg-blue-400 dark:bg-[#3b82f6] opacity-[0.02] dark:opacity-[0.05] blur-[120px] pointer-events-none rounded-full"></div>
+
+    <div class="max-w-7xl mx-auto space-y-8 relative z-10">
 
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8" data-aos="fade-down">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-white dark:bg-gradient-to-br dark:from-[#1a1a1a] dark:to-[#0a0a0a] rounded-2xl border border-slate-200 dark:border-[#222] flex items-center justify-center shadow-sm dark:shadow-[0_0_15px_rgba(212,175,55,0.15)]">
+                <div class="w-14 h-14 bg-white dark:bg-gradient-to-br dark:from-zinc-800 dark:to-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-sm dark:shadow-[0_0_15px_rgba(59,130,246,0.15)]">
                     <span class="text-3xl">📅</span>
                 </div>
                 <div>
-                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#d4af37] tracking-tight dark:drop-shadow-md">
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#3b82f6] tracking-tight dark:drop-shadow-md">
                         Agenda Activa
                     </h1>
                     <p class="text-slate-500 dark:text-gray-400 font-medium text-sm mt-1 uppercase tracking-widest">Panel de Trabajo - Spoon's Barber Shop</p>
@@ -18,8 +20,8 @@
             </div>
             
             <div class="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
-                <div class="flex w-full p-1 bg-slate-200 dark:bg-[#1a1a1a] rounded-xl border border-slate-300 dark:border-[#333]">
-                    <button id="btn-calendario" class="flex-1 px-6 py-2 rounded-lg text-sm font-bold transition-all bg-white dark:bg-[#333] shadow-sm text-slate-800 dark:text-white" onclick="cambiarVista('calendario')">
+                <div class="flex w-full p-1 bg-slate-200 dark:bg-zinc-800 rounded-xl border border-slate-300 dark:border-zinc-700">
+                    <button id="btn-calendario" class="flex-1 px-6 py-2 rounded-lg text-sm font-bold transition-all bg-white dark:bg-zinc-700 shadow-sm text-slate-800 dark:text-white" onclick="cambiarVista('calendario')">
                         📅 Calendario
                     </button>
                     <button id="btn-tabla" class="flex-1 px-6 py-2 rounded-lg text-sm font-bold transition-all text-slate-500 dark:text-gray-400 hover:text-slate-800 dark:hover:text-white bg-transparent" onclick="cambiarVista('tabla')">
@@ -27,7 +29,7 @@
                     </button>
                 </div>
 
-                <a href="{{ route('admin.dashboard') }}" class="w-full md:w-auto text-center bg-white dark:bg-[#111] border border-slate-200 dark:border-[#333] hover:bg-slate-100 dark:hover:bg-[#1a1a1a] hover:border-yellow-600 dark:hover:border-[#d4af37] text-slate-800 dark:text-white px-6 py-2.5 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm dark:shadow-lg">
+                <a href="{{ route('admin.dashboard') }}" class="w-full md:w-auto text-center bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 hover:border-blue-600 dark:hover:border-[#3b82f6] text-slate-800 dark:text-white px-6 py-2.5 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm dark:shadow-lg">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                     Volver
                 </a>
@@ -51,10 +53,10 @@
             </div>
         @endif
 
-        <div class="mb-8 bg-gray-800/80 p-5 rounded-xl border border-gray-700 shadow-lg backdrop-blur-sm">
+        <div class="mb-8 bg-zinc-800/80 p-5 rounded-xl border border-zinc-700 shadow-lg backdrop-blur-sm">
             <div class="flex flex-col md:flex-row items-center justify-between gap-4">
                 <div>
-                    <h3 class="text-lg font-bold text-[#d4af37] flex items-center gap-2">
+                    <h3 class="text-lg font-bold text-[#3b82f6] flex items-center gap-2">
                         ⚡ Registrar Corte Express
                     </h3>
                     <p class="text-xs text-gray-400 mt-1">Registra a un cliente físico. Ocupará espacio en la agenda hasta que lo finalices.</p>
@@ -62,7 +64,7 @@
                 
                 <form action="{{ route('admin.appointments.express') }}" method="POST" id="form-express" class="flex flex-col sm:flex-row items-center gap-3 w-full md:w-auto">
                     @csrf
-                    <select name="servicio" required class="bg-gray-900 border border-gray-600 text-white text-sm rounded-lg focus:ring-[#d4af37] focus:border-[#d4af37] block w-full sm:w-80 p-2.5">
+                    <select name="servicio" required class="bg-zinc-900 border border-zinc-600 text-white text-sm rounded-lg focus:ring-[#3b82f6] focus:border-[#3b82f6] block w-full sm:w-80 p-2.5">
                         <option value="" disabled selected>Selecciona el servicio...</option>
                         @foreach($services as $service)
                             <option value="{{ $service->nombre }}">{{ $service->nombre }} ({{ $service->duracion_minutos }} min) - ${{ number_format($service->precio, 2) }}</option>
@@ -76,26 +78,26 @@
             </div>
         </div>
 
-        <div id="vista-calendario" class="bg-white dark:bg-[#111] p-4 md:p-6 rounded-3xl border border-slate-200 dark:border-[#222] shadow-xl transition-all relative z-10">
+        <div id="vista-calendario" class="bg-white dark:bg-zinc-800 p-4 md:p-6 rounded-3xl border border-slate-200 dark:border-zinc-700 shadow-xl transition-all relative z-10">
             <div id="calendar" class="text-slate-800 dark:text-gray-200 min-h-[600px]"></div>
         </div>
 
-        <div id="vista-tabla" class="hidden bg-white dark:bg-[#111] rounded-2xl border border-slate-200 dark:border-[#222] shadow-sm dark:shadow-2xl overflow-hidden transition-all duration-300 relative">
+        <div id="vista-tabla" class="hidden bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-700 shadow-sm dark:shadow-2xl overflow-hidden transition-all duration-300 relative">
             <div class="overflow-x-auto">
                 <table class="w-full text-left border-collapse">
-                    <thead class="bg-slate-50 dark:bg-[#161616] border-b border-slate-200 dark:border-[#333]">
+                    <thead class="bg-slate-50 dark:bg-zinc-900 border-b border-slate-200 dark:border-zinc-700">
                         <tr>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37]">Cliente</th>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37]">Fecha / Hora</th>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37]">Servicio</th>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37]">Duración</th>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37]">Estado</th>
-                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#d4af37] text-center">Acciones</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6]">Cliente</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6]">Fecha / Hora</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6]">Servicio</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6]">Duración</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6]">Estado</th>
+                            <th class="p-5 text-xs font-black uppercase tracking-widest text-slate-500 dark:text-[#3b82f6] text-center">Acciones</th>
                         </tr>
                     </thead>
-                    <tbody class="divide-y divide-slate-100 dark:divide-[#222]">
+                    <tbody class="divide-y divide-slate-100 dark:divide-zinc-700">
                         @forelse($appointments as $cita)
-                            <tr class="hover:bg-slate-50 dark:hover:bg-[#181818] transition-colors">
+                            <tr class="hover:bg-slate-50 dark:hover:bg-zinc-700/50 transition-colors">
                                 <td class="p-5 font-bold text-slate-900 dark:text-white">{{ $cita->user->name ?? 'Cliente Físico' }}</td>
                                 <td class="p-5 text-sm text-slate-600 dark:text-gray-300">
                                     {{ $cita->fecha }} <br>
@@ -107,7 +109,7 @@
                                 </td>
                                 <td class="p-5">
                                     <span class="px-4 py-1.5 rounded-md text-[10px] font-black uppercase tracking-widest border
-                                        {{ $cita->estado == 'pendiente' ? 'bg-amber-100 text-amber-800 border-amber-200 dark:bg-[#332200] dark:text-yellow-400 dark:border-[#664400]' : 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50' }}">
+                                        {{ $cita->estado == 'pendiente' ? 'bg-cyan-100 text-cyan-800 border-cyan-200 dark:bg-cyan-900/30 dark:text-cyan-400 dark:border-cyan-800/50' : 'bg-blue-100 text-blue-800 border-blue-200 dark:bg-blue-900/30 dark:text-blue-400 dark:border-blue-800/50' }}">
                                         {{ $cita->estado }}
                                     </span>
                                 </td>
@@ -176,9 +178,9 @@
         $start = \Carbon\Carbon::parse($cita->fecha . ' ' . $cita->hora);
         $end = $start->copy()->addMinutes($duracion);
         
-        $color = ($cita->estado == 'pendiente') ? '#eab308' : '#3b82f6';
+        // Citas pendientes serán un Azul Claro (cyan) y las confirmadas un Azul Rey
+        $color = ($cita->estado == 'pendiente') ? '#0ea5e9' : '#2563eb'; 
 
-        // 🛡️ BLINDAJE: Verificamos si el usuario existe antes de imprimir su nombre
         $nombreCliente = $cita->user ? $cita->user->name : 'Cliente Físico';
 
         $eventosCalendario[] = [
@@ -212,7 +214,7 @@
         const btnCalendario = document.getElementById('btn-calendario');
         const btnTabla = document.getElementById('btn-tabla');
 
-        const classActive = ['bg-white', 'dark:bg-[#333]', 'shadow-sm', 'text-slate-800', 'dark:text-white'];
+        const classActive = ['bg-white', 'dark:bg-zinc-700', 'shadow-sm', 'text-slate-800', 'dark:text-white'];
         const classInactive = ['text-slate-500', 'dark:text-gray-400', 'hover:text-slate-800', 'dark:hover:text-white', 'bg-transparent'];
 
         if (vista === 'calendario') {
@@ -279,12 +281,12 @@
                     icon: 'warning',
                     showCancelButton: true,
                     confirmButtonColor: '#dc2626', 
-                    cancelButtonColor: isDark ? '#1a1a1a' : '#f1f5f9', 
-                    background: isDark ? '#111111' : '#ffffff', 
+                    cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', 
+                    background: isDark ? '#18181b' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a', 
                     iconColor: isDark ? '#e11d48' : '#e11d48', 
                     customClass: {
-                        popup: isDark ? 'border border-[#333] rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl',
+                        popup: isDark ? 'border border-zinc-700 rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl',
                         cancelButton: isDark ? 'text-white' : 'text-slate-700 border border-slate-300'
                     }
                 };
@@ -311,13 +313,13 @@
 
 <style>
     .fc-theme-standard td, .fc-theme-standard th { border-color: #e2e8f0; }
-    .dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #222; }
+    .dark .fc-theme-standard td, .dark .fc-theme-standard th { border-color: #3f3f46; }
     .dark .fc-col-header-cell-cushion, .dark .fc-timegrid-slot-label-cushion { color: #ccc; }
     .fc-event { border: none; border-radius: 6px; padding: 3px 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); font-weight: 600;}
-    .fc-toolbar-title { font-weight: 900 !important; font-size: 1.5rem !important; color: #d4af37; text-transform: capitalize; }
+    .fc-toolbar-title { font-weight: 900 !important; font-size: 1.5rem !important; color: #3b82f6; text-transform: capitalize; }
     .fc-button-primary { background-color: #f1f5f9 !important; border-color: #cbd5e1 !important; color: #334155 !important; font-weight: bold !important; text-transform: capitalize; transition: all 0.3s;}
-    .dark .fc-button-primary { background-color: #1a1a1a !important; border-color: #333 !important; color: white !important;}
-    .fc-button-primary:hover { background-color: #d4af37 !important; border-color: #d4af37 !important; color: black !important;}
-    .fc-button-active { background-color: #d4af37 !important; border-color: #d4af37 !important; color: black !important; }
+    .dark .fc-button-primary { background-color: #27272a !important; border-color: #3f3f46 !important; color: white !important;}
+    .fc-button-primary:hover { background-color: #3b82f6 !important; border-color: #3b82f6 !important; color: white !important;}
+    .fc-button-active { background-color: #3b82f6 !important; border-color: #3b82f6 !important; color: white !important; }
 </style>
 @endsection

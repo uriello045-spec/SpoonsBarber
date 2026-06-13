@@ -4,7 +4,7 @@
 
 <style>
     /* ==========================================
-       ANIMACIÓN DE ESTRELLAS
+       ANIMACIÓN DE ESTRELLAS (AHORA EN AZUL NEÓN)
        ========================================== */
     .radio {
         display: flex;
@@ -30,7 +30,7 @@
     }
 
     .radio > label > svg {
-        fill: #9ca3af; 
+        fill: #52525b; /* Gris apagado por defecto */
         transition: fill 0.3s ease;
     }
 
@@ -40,7 +40,7 @@
         position: absolute;
         width: 6px;
         height: 6px;
-        background-color: #d4af37;
+        background-color: #3b82f6; /* Azul base */
         border-radius: 50%;
         opacity: 0;
         transform: scale(0);
@@ -64,14 +64,14 @@
 
     .radio > label:hover > svg,
     .radio > label:hover ~ label > svg {
-        fill: #d4af37;
-        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+        fill: #3b82f6; /* Estrella azul al hacer hover */
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
     }
 
     .radio > input:checked ~ label > svg,
     .radio > input:checked + label > svg {
-        fill: #d4af37;
-        filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.7));
+        fill: #3b82f6; /* Estrella azul seleccionada */
+        filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.7));
         animation: pulse 0.8s infinite alternate;
     }
 
@@ -87,11 +87,11 @@
     }
 </style>
 
-<div class="min-h-screen w-full bg-slate-50 dark:bg-[#050505] transition-colors duration-300 py-10 px-4">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 transition-colors duration-300 py-10 px-4">
     <div class="max-w-5xl mx-auto space-y-12">
         
         <div class="text-center" data-aos="fade-down">
-            <h2 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#d4af37] mb-3 tracking-tight">
+            <h2 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#3b82f6] mb-3 tracking-tight">
                 ⭐ Experiencias
             </h2>
             <p class="text-slate-500 dark:text-gray-400 text-lg font-medium">Lo que dicen nuestros clientes en Spoon’s Barber Shop</p>
@@ -113,14 +113,14 @@
         @endif
 
         @if(!auth()->check() || (auth()->check() && auth()->user()->role !== 'barbero' && !auth()->user()->is_superadmin))
-            <div class="bg-white dark:bg-[#111111] rounded-3xl p-8 border border-slate-200 dark:border-[#222] shadow-xl dark:shadow-2xl relative overflow-hidden group transition-colors duration-300" data-aos="fade-up">
-                <div class="hidden dark:block absolute top-0 right-0 w-32 h-32 bg-[#d4af37] opacity-5 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
+            <div class="bg-white dark:bg-zinc-800 rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-xl dark:shadow-2xl relative overflow-hidden group transition-colors duration-300" data-aos="fade-up">
+                <div class="hidden dark:block absolute top-0 right-0 w-32 h-32 bg-[#3b82f6] opacity-10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
                 @if($puedeComentar)
                     <h3 class="text-2xl font-black text-slate-800 dark:text-gray-200 mb-2 flex items-center gap-2">
-                        <span class="text-yellow-500 dark:text-[#d4af37]">✏️</span> Opina sobre tu cita
+                        <span class="text-blue-500 dark:text-[#3b82f6]">✏️</span> Opina sobre tu cita
                     </h3>
-                    <p class="text-slate-500 dark:text-gray-400 mb-6 font-medium">Recientemente completaste tu servicio de <strong class="text-yellow-600 dark:text-[#d4af37] uppercase">{{ $citaElegible->servicio ?? 'Barbería' }}</strong>. ¡Cuéntanos qué tal te pareció!</p>
+                    <p class="text-slate-500 dark:text-gray-400 mb-6 font-medium">Recientemente completaste tu servicio de <strong class="text-blue-600 dark:text-[#3b82f6] uppercase">{{ $citaElegible->servicio ?? 'Barbería' }}</strong>. ¡Cuéntanos qué tal te pareció!</p>
 
                     <form action="{{ route('references.store') }}" method="POST" id="form-resena">
                         @csrf
@@ -130,8 +130,8 @@
                                       minlength="10" maxlength="250" required 
                                       onkeydown="if(['<', '>'].includes(event.key)) event.preventDefault();"
                                       oninput="document.getElementById('char-count').innerText = this.value.length + ' / 250'; if(this.value.length > 250) this.value = this.value.substring(0, 250);"
-                                      class="w-full bg-slate-50 dark:bg-[#0a0a0a] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-6 py-5 
-                                             focus:bg-white dark:focus:bg-[#111] focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-2 focus:ring-yellow-400/20 dark:focus:ring-[#d4af37]/20 outline-none transition-all resize-none text-lg font-medium placeholder-slate-400 dark:placeholder-gray-600"></textarea>
+                                      class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-6 py-5 
+                                             focus:bg-white dark:focus:bg-zinc-800 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all resize-none text-lg font-medium placeholder-slate-400 dark:placeholder-gray-500"></textarea>
                             
                             <div class="absolute bottom-3 right-4">
                                 <span id="char-count" class="text-xs font-bold text-slate-400 dark:text-gray-500">0 / 250</span>
@@ -171,14 +171,14 @@
                                 </div>
                             </div>
 
-                            <button id="btn-publicar" type="submit" class="w-full md:w-auto bg-yellow-400 dark:bg-gradient-to-r dark:from-[#d4af37] dark:to-[#b8860b] hover:bg-yellow-500 dark:hover:from-[#ffd700] dark:hover:to-[#d4af37] text-slate-900 dark:text-black font-black text-lg px-10 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(212,175,55,0.2)] transform hover:-translate-y-1 transition-all duration-300">
+                            <button id="btn-publicar" type="submit" class="w-full md:w-auto bg-blue-600 dark:bg-gradient-to-r dark:from-[#3b82f6] dark:to-[#2563eb] hover:bg-blue-700 dark:hover:from-[#60a5fa] dark:hover:to-[#3b82f6] text-white dark:text-white font-black text-lg px-10 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(59,130,246,0.3)] transform hover:-translate-y-1 transition-all duration-300">
                                 <span id="txt-btn-publicar">Publicar Reseña</span>
                             </button>
                         </div>
                     </form>
                 @else
                     <div class="text-center py-6">
-                        <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-[#1a1a1a] rounded-full flex items-center justify-center mb-6 shadow-inner">
+                        <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-zinc-700 rounded-full flex items-center justify-center mb-6 shadow-inner">
                             <span class="text-4xl opacity-80">🔒</span>
                         </div>
                         <h3 class="text-2xl font-black text-slate-800 dark:text-gray-200 mb-3">Reseñas Bloqueadas</h3>
@@ -187,13 +187,13 @@
                         </p>
                         @guest
                             <div class="mt-6">
-                                <a href="{{ route('login') }}" class="inline-block bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#333] hover:bg-slate-200 dark:hover:bg-[#222] text-slate-700 dark:text-gray-300 font-bold px-6 py-3 rounded-xl transition-all">
+                                <a href="{{ route('login') }}" class="inline-block bg-slate-100 dark:bg-zinc-700 border border-slate-200 dark:border-zinc-600 hover:bg-slate-200 dark:hover:bg-zinc-600 text-slate-700 dark:text-gray-300 font-bold px-6 py-3 rounded-xl transition-all">
                                     Inicia sesión para opinar
                                 </a>
                             </div>
                         @else
                             <div class="mt-6">
-                                <a href="{{ route('appointments.index') }}" class="inline-block bg-yellow-400 dark:bg-[#d4af37] text-black font-black px-6 py-3 rounded-xl hover:bg-yellow-500 transition-all shadow-md transform hover:-translate-y-0.5">
+                                <a href="{{ route('appointments.index') }}" class="inline-block bg-blue-600 dark:bg-[#3b82f6] text-white font-black px-6 py-3 rounded-xl hover:bg-blue-700 transition-all shadow-md transform hover:-translate-y-0.5">
                                     Agendar una cita
                                 </a>
                             </div>
@@ -205,10 +205,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
             @forelse($references as $ref)
-                <div class="bg-white dark:bg-[#0f0f0f] rounded-3xl p-6 border border-slate-200 dark:border-[#222] hover:border-yellow-400 dark:hover:border-[#333] transition-all duration-300 group hover:-translate-y-1 shadow-md dark:shadow-xl">
+                <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6 border border-slate-200 dark:border-zinc-700 hover:border-blue-400 dark:hover:border-zinc-500 transition-all duration-300 group hover:-translate-y-1 shadow-md dark:shadow-xl">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-slate-100 dark:bg-[#1a1a1a] border border-slate-200 dark:border-[#333] rounded-full flex items-center justify-center text-yellow-600 dark:text-[#d4af37] font-black text-xl shadow-inner group-hover:bg-white dark:group-hover:bg-[#222] transition-colors">
+                            <div class="w-14 h-14 bg-slate-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-full flex items-center justify-center text-blue-600 dark:text-[#3b82f6] font-black text-xl shadow-inner group-hover:bg-white dark:group-hover:bg-zinc-800 transition-colors">
                                 {{ strtoupper(substr($ref->user->name, 0, 2)) }}
                             </div>
                             <div>
@@ -216,14 +216,14 @@
                                 <p class="text-xs font-bold text-slate-400 dark:text-gray-500 uppercase tracking-wider mt-1">{{ $ref->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <div class="flex items-center bg-yellow-50 dark:bg-[#1a1500] px-3 py-1.5 rounded-lg border border-yellow-200 dark:border-[#664400]">
-                            <span class="text-yellow-500 dark:text-[#d4af37] mr-1 text-lg">★</span>
-                            <span class="font-black text-yellow-700 dark:text-[#ffb800]">{{ $ref->calificacion }}</span>
-                            <span class="text-yellow-600/50 dark:text-yellow-700 text-xs mt-1 ml-0.5 font-bold">/5</span>
+                        <div class="flex items-center bg-blue-50 dark:bg-blue-900/10 px-3 py-1.5 rounded-lg border border-blue-200 dark:border-blue-900/30">
+                            <span class="text-blue-500 dark:text-[#3b82f6] mr-1 text-lg">★</span>
+                            <span class="font-black text-blue-700 dark:text-blue-400">{{ $ref->calificacion }}</span>
+                            <span class="text-blue-600/50 dark:text-blue-600 text-xs mt-1 ml-0.5 font-bold">/5</span>
                         </div>
                     </div>
                     
-                    <div class="mt-4 bg-slate-50 dark:bg-[#111] p-4 rounded-2xl border border-slate-100 dark:border-[#222]">
+                    <div class="mt-4 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-2xl border border-slate-100 dark:border-zinc-700">
                         @php
                             // 🛡️ DICCIONARIO ANTI-TROLLS CENSURA AUTOMÁTICA
                             $groserias = [
@@ -248,16 +248,16 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-1 md:col-span-2 text-center py-20 border-2 border-dashed border-slate-300 dark:border-[#333] rounded-3xl bg-white dark:bg-[#0f0f0f]">
-                    <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-[#1a1a1a] rounded-full flex items-center justify-center mb-6 shadow-inner">
+                <div class="col-span-1 md:col-span-2 text-center py-20 border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-3xl bg-white dark:bg-zinc-800/50">
+                    <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-6 shadow-inner border border-slate-200 dark:border-zinc-700">
                         <span class="text-4xl opacity-80">💬</span>
                     </div>
-                    <h3 class="text-slate-500 dark:text-gray-400 text-2xl font-black mb-2">Aún no hay reseñas</h3>
+                    <h3 class="text-slate-500 dark:text-gray-300 text-2xl font-black mb-2">Aún no hay reseñas</h3>
                     
                     @if(auth()->check() && (auth()->user()->role === 'barbero' || auth()->user()->is_superadmin))
-                        <p class="text-yellow-600 dark:text-[#d4af37] font-bold">Cuando tus clientes dejen una opinión, aparecerá aquí.</p>
+                        <p class="text-blue-600 dark:text-[#3b82f6] font-bold">Cuando tus clientes dejen una opinión, aparecerá aquí.</p>
                     @else
-                        <p class="text-yellow-600 dark:text-[#d4af37] font-bold">¡Sé el primero en compartir tu experiencia!</p>
+                        <p class="text-blue-600 dark:text-[#3b82f6] font-bold">¡Sé el primero en compartir tu experiencia!</p>
                     @endif
                 </div>
             @endforelse
@@ -290,15 +290,15 @@
                         icon: 'warning',
                         title: 'Calificación requerida',
                         text: 'Por favor, selecciona una calificación de estrellas antes de enviar.',
-                        background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-                        color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                        background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                        color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                     });
                     return false;
                 }
 
                 btnPublicar.disabled = true;
                 btnPublicar.classList.add('opacity-70', 'cursor-wait');
-                btnPublicar.classList.remove('hover:-translate-y-1', 'hover:bg-yellow-500');
+                btnPublicar.classList.remove('hover:-translate-y-1', 'hover:bg-blue-700');
                 txtBtnPublicar.innerText = 'Publicando... ⏳';
             });
         }
@@ -312,10 +312,11 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#e11d48',
+            cancelButtonColor: document.documentElement.classList.contains('dark') ? '#27272a' : '#f1f5f9',
             confirmButtonText: 'Sí, borrar',
             cancelButtonText: 'Cancelar',
-            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+            color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {
                 fetch(`/referencias/${id}`, {
@@ -333,16 +334,16 @@
                             icon: 'success',
                             title: '¡Eliminado!',
                             text: 'La reseña fue borrada de la base de datos.',
-                            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-                            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                            color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                         }).then(() => location.reload());
                     } else {
                         Swal.fire({
                             icon: 'error',
                             title: 'Error',
                             text: data.message || 'No se pudo eliminar la reseña.',
-                            background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-                            color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                            color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                         });
                     }
                 })
@@ -351,8 +352,8 @@
                         icon: 'error',
                         title: 'Error de conexión',
                         text: 'Hubo un problema al intentar comunicarse con el servidor.',
-                        background: document.documentElement.classList.contains('dark') ? '#111' : '#fff',
-                        color: document.documentElement.classList.contains('dark') ? '#fff' : '#000',
+                        background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                        color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                     });
                 });
             }

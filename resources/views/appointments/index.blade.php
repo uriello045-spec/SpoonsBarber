@@ -2,16 +2,16 @@
 
 @section('content')
 
-<div class="min-h-screen w-full bg-slate-50 dark:bg-[#050505] text-slate-900 dark:text-gray-100 p-4 md:p-10 font-sans transition-colors duration-300">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-4 md:p-10 font-sans transition-colors duration-300">
     <div class="max-w-7xl mx-auto space-y-8">
 
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8" data-aos="fade-down">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-slate-100 dark:bg-gradient-to-br dark:from-[#1a1a1a] dark:to-[#0a0a0a] rounded-2xl border border-slate-200 dark:border-[#222] flex items-center justify-center shadow-lg transition-colors">
+                <div class="w-14 h-14 bg-slate-100 dark:bg-gradient-to-br dark:from-zinc-800 dark:to-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-lg transition-colors">
                     <span class="text-3xl">📅</span>
                 </div>
                 <div>
-                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#d4af37] tracking-tight">
+                    <h1 class="text-4xl md:text-5xl font-black text-slate-900 dark:text-[#3b82f6] tracking-tight">
                         Mis Citas
                     </h1>
                     <p class="text-slate-500 dark:text-gray-400 font-medium text-sm mt-1">Spoon's Barber Shop - Tu espacio personal</p>
@@ -19,21 +19,21 @@
             </div>
             
             <a href="{{ url('/dashboard') }}" 
-               class="w-full md:w-auto text-center bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] hover:bg-slate-100 dark:hover:bg-[#1a1a1a] text-slate-800 dark:text-white px-6 py-3 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm">
+               class="w-full md:w-auto text-center bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-800 dark:text-white px-6 py-3 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Volver
             </a>
         </div>
 
         @if(session('success'))
-            <div class="bg-emerald-50 dark:bg-[#003311] border border-emerald-200 dark:border-[#006622] text-emerald-700 dark:text-[#00ff55] px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 shadow-sm">
+            <div class="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-500/50 text-emerald-700 dark:text-[#00ff55] px-6 py-4 rounded-2xl mb-8 flex items-center gap-3 shadow-sm">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>
                 <span class="font-bold">{{ session('success') }}</span>
             </div>
         @endif
 
         @if($errors->any())
-            <div class="bg-rose-50 dark:bg-[#330000] border border-rose-200 dark:border-[#660000] text-rose-700 dark:text-[#ff4444] px-6 py-4 rounded-2xl mb-8 shadow-sm">
+            <div class="bg-rose-50 dark:bg-rose-900/20 border border-rose-200 dark:border-rose-500/50 text-rose-700 dark:text-[#ff4444] px-6 py-4 rounded-2xl mb-8 shadow-sm">
                 <ul class="list-disc pl-5 font-bold text-sm">
                     @foreach($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -42,12 +42,12 @@
             </div>
         @endif
 
-        <div class="bg-white dark:bg-gradient-to-b dark:from-[#111] dark:to-[#0a0a0a] rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-[#222] shadow-sm dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
-            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-yellow-400 dark:via-[#d4af37] to-transparent opacity-50"></div>
+        <div class="bg-white dark:bg-gradient-to-b dark:from-zinc-800 dark:to-zinc-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-zinc-700 shadow-sm dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
+            <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 dark:via-[#3b82f6] to-transparent opacity-50"></div>
 
-            <div class="mb-6 border-b border-slate-100 dark:border-[#222] pb-4">
+            <div class="mb-6 border-b border-slate-100 dark:border-zinc-700 pb-4">
                 <h3 class="text-2xl font-black text-slate-800 dark:text-white">Reserva tu lugar</h3>
-                <p id="texto-horario-dinamico" class="text-slate-500 dark:text-gray-500 text-xs font-bold uppercase tracking-widest mt-1">
+                <p id="texto-horario-dinamico" class="text-slate-500 dark:text-gray-400 text-xs font-bold uppercase tracking-widest mt-1">
                     Selecciona una fecha en el calendario para ver el horario.
                 </p>
             </div>
@@ -58,29 +58,29 @@
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
                         
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">Fecha</label>
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Fecha</label>
                             <input type="date" name="fecha" id="fecha-agendar" required 
-                                   class="w-full bg-slate-50 dark:bg-[#050505] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                          focus:bg-white focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400/50 dark:focus:ring-[#d4af37] outline-none transition-all dark:[color-scheme:dark]">
+                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                          focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
                             
                             <p id="mensaje-error-fecha" class="hidden text-[11px] mt-2 font-black text-red-500 dark:text-[#ff4444] drop-shadow-[0_0_5px_rgba(239,68,68,0.8)] transition-all duration-300"></p>
                         </div>
 
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">Hora</label>
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Hora</label>
                             <input type="time" name="hora" id="hora-agendar" required 
-                                   class="w-full bg-slate-50 dark:bg-[#050505] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                          focus:bg-white focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400/50 dark:focus:ring-[#d4af37] outline-none transition-all dark:[color-scheme:dark]">
+                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                          focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
                             
                             <p id="mensaje-error-hora" class="hidden text-[11px] mt-2 font-black tracking-wide transition-all duration-300"></p>
                         </div>
 
                         <div class="group relative">
-                            <label class="block text-slate-500 dark:text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-yellow-600 dark:group-focus-within:text-[#d4af37] transition-colors">Servicio</label>
+                            <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Servicio</label>
                             <div class="relative">
                                 <select name="servicio" id="servicio-select" required 
-                                        class="w-full bg-slate-50 dark:bg-[#050505] border border-slate-300 dark:border-[#333] text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                               focus:bg-white focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400/50 dark:focus:ring-[#d4af37] outline-none transition-all appearance-none cursor-pointer font-medium">
+                                        class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                               focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all appearance-none cursor-pointer font-medium">
                                     <option value="" disabled selected>Selecciona un servicio...</option>
                                     @foreach($services as $servicio)
                                         <option value="{{ $servicio->nombre }}" data-duration="{{ $servicio->duracion_minutos }}">
@@ -96,13 +96,13 @@
                     </div>
 
                     <div class="mt-6 flex justify-end">
-                        <button type="submit" id="btn-submit-cita" class="w-full md:w-auto bg-yellow-400 hover:bg-yellow-500 dark:bg-gradient-to-r dark:from-[#d4af37] dark:to-[#b8860b] dark:hover:from-[#ffd700] dark:hover:to-[#d4af37] text-slate-900 dark:text-black font-black text-sm uppercase tracking-widest px-10 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(212,175,55,0.2)] transform hover:-translate-y-1 transition-all duration-300">
+                        <button type="submit" id="btn-submit-cita" class="w-full md:w-auto bg-blue-600 hover:bg-blue-700 dark:bg-gradient-to-r dark:from-[#3b82f6] dark:to-[#2563eb] dark:hover:from-[#60a5fa] dark:hover:to-[#3b82f6] text-white dark:text-white font-black text-sm uppercase tracking-widest px-10 py-4 rounded-xl shadow-lg dark:shadow-[0_0_15px_rgba(59,130,246,0.2)] transform hover:-translate-y-1 transition-all duration-300">
                             Confirmar Cita ✨
                         </button>
                     </div>
                 </form>
             @else
-                <div class="bg-rose-50 dark:bg-[#2a1010] border-2 border-dashed border-rose-300 dark:border-red-900 rounded-2xl p-8 md:p-12 text-center my-6">
+                <div class="bg-rose-50 dark:bg-rose-900/10 border-2 border-dashed border-rose-300 dark:border-red-900/50 rounded-2xl p-8 md:p-12 text-center my-6">
                     <div class="text-6xl md:text-7xl mb-6">🛑</div>
                     <h3 class="text-2xl md:text-3xl font-black text-rose-600 dark:text-red-500 mb-3 tracking-tight">Barbería Cerrada Temporalmente</h3>
                     <p class="text-slate-600 dark:text-gray-400 font-medium max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
@@ -118,25 +118,25 @@
                     $estado = strtolower($cita->estado);
                     
                     if($estado == 'pendiente') {
-                        $colorCaja   = 'bg-amber-100 text-amber-700 dark:bg-[#332200] dark:text-[#ffb800]';
-                        $colorBadge  = 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-[#332200] dark:text-[#ffb800] dark:border-[#664400]';
+                        $colorCaja   = 'bg-cyan-100 text-cyan-700 dark:bg-cyan-900/30 dark:text-[#06b6d4]';
+                        $colorBadge  = 'bg-cyan-50 text-cyan-700 border-cyan-200 dark:bg-cyan-900/20 dark:text-[#06b6d4] dark:border-cyan-800/50';
                         $textoEstado = 'PENDIENTE';
                     } elseif($estado == 'confirmada' || $estado == 'aceptada') {
-                        $colorCaja   = 'bg-blue-100 text-blue-700 dark:bg-[#002233] dark:text-[#3399ff]';
-                        $colorBadge  = 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-[#002233] dark:text-[#3399ff] dark:border-[#004466]';
+                        $colorCaja   = 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-[#3b82f6]';
+                        $colorBadge  = 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-900/20 dark:text-[#3b82f6] dark:border-blue-800/50';
                         $textoEstado = 'ACEPTADA';
                     } elseif($estado == 'completada') {
-                        $colorCaja   = 'bg-emerald-100 text-emerald-700 dark:bg-[#003311] dark:text-[#00ff55]';
-                        $colorBadge  = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-[#003311] dark:text-[#00ff55] dark:border-[#006622]';
+                        $colorCaja   = 'bg-emerald-100 text-emerald-700 dark:bg-emerald-900/30 dark:text-[#10b981]';
+                        $colorBadge  = 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-900/20 dark:text-[#10b981] dark:border-emerald-800/50';
                         $textoEstado = 'COMPLETADA';
                     } else {
-                        $colorCaja   = 'bg-rose-100 text-rose-700 dark:bg-[#330000] dark:text-[#ff4444]';
-                        $colorBadge  = 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-[#330000] dark:text-[#ff4444] dark:border-[#660000]';
+                        $colorCaja   = 'bg-rose-100 text-rose-700 dark:bg-rose-900/30 dark:text-[#f43f5e]';
+                        $colorBadge  = 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-900/20 dark:text-[#f43f5e] dark:border-rose-800/50';
                         $textoEstado = 'CANCELADA';
                     }
                 @endphp
 
-                <div class="bg-white dark:bg-[#0f0f0f] rounded-2xl border border-slate-200 dark:border-[#222] p-6 flex flex-col justify-between shadow-sm hover:shadow-lg dark:hover:border-[#333] transition-all duration-300">
+                <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-700 p-6 flex flex-col justify-between shadow-sm hover:shadow-lg dark:hover:border-zinc-500 transition-all duration-300">
                     
                     <div class="flex justify-between items-start mb-6">
                         <div class="flex items-center gap-4">
@@ -144,7 +144,7 @@
                                 {{ \Carbon\Carbon::parse($cita->fecha)->format('d') }}
                             </div>
                             <div class="flex flex-col">
-                                <span class="text-[10px] text-slate-500 dark:text-gray-500 font-bold uppercase tracking-widest mb-0.5">
+                                <span class="text-[10px] text-slate-500 dark:text-gray-400 font-bold uppercase tracking-widest mb-0.5">
                                     {{ \Carbon\Carbon::parse($cita->fecha)->translatedFormat('M Y') }}
                                 </span>
                                 <span class="text-xl text-slate-800 dark:text-white font-black tracking-tight">
@@ -159,30 +159,30 @@
                     </div>
 
                     <div class="mb-6">
-                        <p class="text-[10px] text-slate-500 dark:text-gray-500 font-bold uppercase tracking-widest mb-2">Servicio Reservado</p>
-                        <p class="text-base text-slate-900 dark:text-[#d4af37] font-bold flex items-center gap-2 truncate">
+                        <p class="text-[10px] text-slate-500 dark:text-gray-400 font-bold uppercase tracking-widest mb-2">Servicio Reservado</p>
+                        <p class="text-base text-slate-900 dark:text-[#3b82f6] font-bold flex items-center gap-2 truncate">
                             <span class="text-slate-400 dark:text-gray-500 font-normal">→</span> {{ $cita->servicio }}
                         </p>
                     </div>
 
-                    <div class="pt-5 border-t border-slate-100 dark:border-[#1a1a1a]">
+                    <div class="pt-5 border-t border-slate-100 dark:border-zinc-700">
                         @if($estado == 'pendiente')
                             <div class="flex gap-3">
                                 <a href="{{ route('appointments.edit', $cita->id) }}" 
-                                   class="flex-1 bg-blue-50 dark:bg-[#101827] border border-blue-200 dark:border-[#1e3a8a]/50 hover:bg-blue-600 hover:text-white dark:hover:bg-[#1e3a8a]/40 text-blue-600 dark:text-[#60a5fa] text-sm font-bold py-3.5 rounded-xl text-center transition-colors">
+                                   class="flex-1 bg-blue-50 dark:bg-blue-900/10 border border-blue-200 dark:border-[#3b82f6]/30 hover:bg-blue-600 hover:text-white dark:hover:bg-[#3b82f6]/20 text-blue-600 dark:text-[#60a5fa] text-sm font-bold py-3.5 rounded-xl text-center transition-colors">
                                     Editar Cita
                                 </a>
                                 
                                 <form action="{{ route('appointments.update', $cita->id) }}" method="POST" class="m-0 form-accion-cita">
                                     @csrf @method('PUT')
                                     <input type="hidden" name="estado" value="cancelada">
-                                    <button type="submit" class="w-[52px] h-[52px] bg-rose-50 dark:bg-[#2a1010] border border-rose-200 dark:border-[#7f1d1d]/50 hover:bg-rose-600 hover:text-white dark:hover:bg-[#7f1d1d]/40 text-rose-600 dark:text-[#f87171] rounded-xl flex items-center justify-center transition-colors" data-accion="cancelar" title="Cancelar Cita">
+                                    <button type="submit" class="w-[52px] h-[52px] bg-rose-50 dark:bg-rose-900/10 border border-rose-200 dark:border-[#f43f5e]/30 hover:bg-rose-600 hover:text-white dark:hover:bg-[#f43f5e]/20 text-rose-600 dark:text-[#fb7185] rounded-xl flex items-center justify-center transition-colors" data-accion="cancelar" title="Cancelar Cita">
                                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
                                     </button>
                                 </form>
                             </div>
                         @else
-                            <div class="w-full bg-slate-50 dark:bg-[#111] text-slate-500 dark:text-gray-600 text-[10px] font-black py-4 rounded-xl text-center border border-slate-200 dark:border-[#222] uppercase tracking-widest flex justify-between items-center px-4">
+                            <div class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-500 dark:text-gray-400 text-[10px] font-black py-4 rounded-xl text-center border border-slate-200 dark:border-zinc-700 uppercase tracking-widest flex justify-between items-center px-4">
                                 <span>Cita {{ $textoEstado }}</span>
                                 @if($estado == 'cancelada' || $estado == 'completada')
                                     <form action="{{ route('appointments.destroy', $cita->id) }}" method="POST" class="m-0 inline-block form-accion-cita">
@@ -199,12 +199,12 @@
                 </div>
             @empty
                 <div class="col-span-1 md:col-span-2 lg:col-span-3 py-20">
-                    <div class="bg-white dark:bg-[#0f0f0f] rounded-2xl border border-slate-200 dark:border-[#222] border-dashed p-12 text-center flex flex-col items-center justify-center transition-colors">
-                        <div class="w-20 h-20 bg-slate-50 dark:bg-[#1a1a1a] rounded-2xl flex items-center justify-center mb-6 border border-slate-100 dark:border-[#333]">
+                    <div class="bg-white dark:bg-zinc-800/50 rounded-2xl border border-slate-200 dark:border-zinc-700 border-dashed p-12 text-center flex flex-col items-center justify-center transition-colors">
+                        <div class="w-20 h-20 bg-slate-50 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 border border-slate-100 dark:border-zinc-700">
                             <svg class="w-10 h-10 text-slate-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         <h3 class="text-2xl font-bold text-slate-800 dark:text-gray-300 mb-2">Aún no tienes citas</h3>
-                        <p class="text-slate-500 dark:text-gray-500 font-medium">Usa el formulario de arriba para agendar tu primer corte.</p>
+                        <p class="text-slate-500 dark:text-gray-400 font-medium">Usa el formulario de arriba para agendar tu primer corte.</p>
                     </div>
                 </div>
             @endforelse
@@ -231,7 +231,6 @@
         const btnSubmit = document.getElementById("btn-submit-cita");
         const txtHorarioDinamico = document.getElementById("texto-horario-dinamico");
 
-        // 🌟 AHORA LO LEEMOS DESDE EL HTML Y VS CODE NO SE QUEJA 🌟
         const horariosBD = JSON.parse(document.getElementById("datos-horarios").textContent);
 
         function getLocalTodayStr() {
@@ -247,13 +246,12 @@
             inputFecha.setAttribute("max", nextYear.toISOString().split("T")[0]); 
         }
 
-        // 🧠 MAGIA: EL FORMULARIO DETECTA EL DÍA Y SE ADAPTA EN TIEMPO REAL
         function actualizarConfiguracionPorDia() {
             if (!inputFecha.value) return;
 
             const dateParts = inputFecha.value.split('-');
             const dateObj = new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
-            const day = dateObj.getDay(); // 0 = Domingo, 6 = Sábado
+            const day = dateObj.getDay(); 
 
             let confDia;
             let nombreDia = "";
@@ -271,7 +269,7 @@
                 btnSubmit.disabled = true;
             } else {
                 txtHorarioDinamico.innerHTML = `Horario para ${nombreDia}: ${confDia.texto}`;
-                txtHorarioDinamico.className = 'text-slate-500 dark:text-gray-500 text-xs font-bold uppercase tracking-widest mt-1';
+                txtHorarioDinamico.className = 'text-slate-500 dark:text-gray-400 text-xs font-bold uppercase tracking-widest mt-1';
                 inputHora.disabled = false;
                 inputHora.min = confDia.apertura;
                 inputHora.max = confDia.cierre;
@@ -314,7 +312,7 @@
             }
 
             mensajeErrorHora.innerHTML = '⏳ Verificando disponibilidad...';
-            mensajeErrorHora.className = 'text-[11px] mt-2 font-black text-blue-500 dark:text-[#3399ff] transition-all duration-300';
+            mensajeErrorHora.className = 'text-[11px] mt-2 font-black text-blue-500 dark:text-[#3b82f6] transition-all duration-300';
             mensajeErrorHora.classList.remove('hidden');
             btnSubmit.disabled = true;
             btnSubmit.classList.add('opacity-50', 'cursor-not-allowed');
@@ -368,9 +366,9 @@
                 const isDark = document.documentElement.classList.contains('dark');
                 let swalConfig = {
                     icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', 
-                    cancelButtonColor: isDark ? '#1a1a1a' : '#f1f5f9', background: isDark ? '#111111' : '#ffffff', 
-                    color: isDark ? '#ffffff' : '#0f172a', iconColor: isDark ? '#d4af37' : '#ca8a04', 
-                    customClass: { popup: isDark ? 'border border-[#333] rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl', cancelButton: isDark ? 'text-white' : 'text-slate-700 border border-slate-300' }
+                    cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', background: isDark ? '#18181b' : '#ffffff', 
+                    color: isDark ? '#ffffff' : '#0f172a', iconColor: isDark ? '#3b82f6' : '#2563eb', 
+                    customClass: { popup: isDark ? 'border border-zinc-700 rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl', cancelButton: isDark ? 'text-white' : 'text-slate-700 border border-slate-300' }
                 };
 
                 if(tipoAccion === 'borrar') {

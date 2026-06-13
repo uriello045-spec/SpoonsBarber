@@ -1,13 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-[#0a0a0a] text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-yellow-400 dark:bg-[#d4af37] opacity-[0.02] dark:opacity-[0.03] blur-[100px] pointer-events-none"></div>
+<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-blue-500 dark:bg-[#3b82f6] opacity-[0.02] dark:opacity-[0.03] blur-[100px] pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto space-y-8 relative z-10">
         
         <div class="mb-2">
-            <a href="{{ route('admin.barbers.index') }}" class="text-slate-500 dark:text-gray-400 hover:text-yellow-600 dark:hover:text-[#d4af37] transition-colors font-bold flex items-center gap-2 w-max">
+            <a href="{{ route('admin.barbers.index') }}" class="text-slate-500 dark:text-gray-400 hover:text-blue-600 dark:hover:text-[#3b82f6] transition-colors font-bold flex items-center gap-2 w-max">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clip-rule="evenodd" />
                 </svg>
@@ -18,13 +18,13 @@
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
                 <h2 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight flex items-center gap-3">
-                    <span class="text-yellow-600 dark:text-[#d4af37]">✏️</span> Editar Barbero
+                    <span class="text-blue-600 dark:text-[#3b82f6]">✏️</span> Editar Barbero
                 </h2>
                 <p class="text-slate-500 dark:text-gray-400 text-sm mt-1 uppercase tracking-widest font-medium">Modifica los datos de {{ $barber->name }}</p>
             </div>
         </div>
 
-        <div class="bg-white dark:bg-[#111] border border-slate-200 dark:border-[#222] rounded-3xl p-8 shadow-sm dark:shadow-2xl relative overflow-hidden">
+        <div class="bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-3xl p-8 shadow-sm dark:shadow-2xl relative overflow-hidden">
             <form action="{{ route('admin.barbers.update', $barber->id) }}" method="POST" class="space-y-6" id="form-editar-barbero">
                 @csrf 
                 @method('PUT')
@@ -34,7 +34,7 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Nombre Completo</label>
                         <input type="text" name="name" id="input-nombre" value="{{ old('name', $barber->name) }}" required
-                            class="w-full bg-slate-50 dark:bg-[#1a1a1a] text-slate-900 dark:text-white border border-slate-200 dark:border-[#333] rounded-xl p-3.5 focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400 dark:focus:ring-[#d4af37] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         
                         <span id="error-nombre" class="hidden text-rose-500 dark:text-red-500 text-xs font-bold mt-1">Solo se permiten letras y espacios.</span>
                         @error('name') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
@@ -43,14 +43,14 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Correo Electrónico</label>
                         <input type="email" name="email" value="{{ old('email', $barber->email) }}" required
-                            class="w-full bg-slate-50 dark:bg-[#1a1a1a] text-slate-900 dark:text-white border border-slate-200 dark:border-[#333] rounded-xl p-3.5 focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400 dark:focus:ring-[#d4af37] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         @error('email') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Teléfono <span class="text-slate-400 dark:text-gray-600">(Opcional, 10 dígitos)</span></label>
                         <input type="text" name="phone" id="input-telefono" value="{{ old('phone', $barber->phone) }}" maxlength="10"
-                            class="w-full bg-slate-50 dark:bg-[#1a1a1a] text-slate-900 dark:text-white border border-slate-200 dark:border-[#333] rounded-xl p-3.5 focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400 dark:focus:ring-[#d4af37] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         
                         <span id="error-telefono" class="hidden text-rose-500 dark:text-red-500 text-xs font-bold mt-1">Solo números, máximo 10 dígitos.</span>
                         @error('phone') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
@@ -59,10 +59,10 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Nueva Contraseña</label>
                         <input type="password" name="password" id="input-password" minlength="8" maxlength="20" placeholder="Déjalo en blanco para no cambiarla"
-                            class="w-full bg-slate-50 dark:bg-[#1a1a1a] text-slate-900 dark:text-white border border-slate-200 dark:border-[#333] rounded-xl p-3.5 focus:border-yellow-400 dark:focus:border-[#d4af37] focus:ring-1 focus:ring-yellow-400 dark:focus:ring-[#d4af37] transition-all outline-none placeholder-slate-400 dark:placeholder-gray-600">
+                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none placeholder-slate-400 dark:placeholder-gray-600">
                         
                         <div id="meter-container" class="hidden mt-2">
-                            <div class="h-1.5 w-full bg-slate-200 dark:bg-zinc-800 rounded-full overflow-hidden">
+                            <div class="h-1.5 w-full bg-slate-200 dark:bg-zinc-700 rounded-full overflow-hidden">
                                 <div id="meter-fill-edit" class="h-full bg-red-500 w-0 transition-all duration-300"></div>
                             </div>
                             <p id="password-feedback-edit" class="text-[11px] mt-1.5 font-semibold text-slate-500 dark:text-gray-400">Mín. 8, Máx. 20 caracteres.</p>
@@ -72,11 +72,11 @@
                     </div>
                 </div>
 
-                <div class="border-t border-slate-100 dark:border-[#222] pt-6 mt-8 flex flex-col md:flex-row gap-4 justify-end">
-                    <a href="{{ route('admin.barbers.index') }}" class="text-center px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-transparent border border-slate-200 dark:border-[#333] text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#1a1a1a] hover:text-slate-900 dark:hover:text-white font-bold transition-all">
+                <div class="border-t border-slate-100 dark:border-zinc-700 pt-6 mt-8 flex flex-col md:flex-row gap-4 justify-end">
+                    <a href="{{ route('admin.barbers.index') }}" class="text-center px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-slate-900 dark:hover:text-white font-bold transition-all">
                         Cancelar
                     </a>
-                    <button type="submit" id="btn-submit" class="text-center bg-gradient-to-r from-yellow-400 to-yellow-500 dark:from-[#d4af37] dark:to-[#b8962e] hover:from-yellow-500 hover:to-yellow-600 dark:hover:from-[#e0c15a] dark:hover:to-[#c9a43b] text-slate-900 dark:text-black font-black px-8 py-3.5 rounded-xl transition-all shadow-md dark:shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                    <button type="submit" id="btn-submit" class="text-center bg-gradient-to-r from-blue-500 to-blue-600 dark:from-[#3b82f6] dark:to-[#2563eb] hover:from-blue-600 hover:to-blue-700 dark:hover:from-[#60a5fa] dark:hover:to-[#3b82f6] text-white dark:text-white font-black px-8 py-3.5 rounded-xl transition-all shadow-md dark:shadow-[0_0_15px_rgba(59,130,246,0.4)]">
                         💾 Guardar Cambios
                     </button>
                 </div>
@@ -112,12 +112,12 @@
             if (inputNombre.value.length > 0 && !regexLetras.test(inputNombre.value)) {
                 errorNombre.classList.remove('hidden');
                 inputNombre.classList.add('border-rose-500', 'ring-rose-500');
-                inputNombre.classList.remove('border-slate-200', 'dark:border-[#333]');
+                inputNombre.classList.remove('border-slate-200', 'dark:border-zinc-700');
                 isValid = false;
             } else {
                 errorNombre.classList.add('hidden');
                 inputNombre.classList.remove('border-rose-500', 'ring-rose-500');
-                inputNombre.classList.add('border-slate-200', 'dark:border-[#333]');
+                inputNombre.classList.add('border-slate-200', 'dark:border-zinc-700');
             }
 
             // Validar Teléfono en tiempo real (si está lleno)
@@ -125,17 +125,17 @@
                 if (!regexNumeros.test(inputTelefono.value) || inputTelefono.value.length !== 10) {
                     errorTelefono.classList.remove('hidden');
                     inputTelefono.classList.add('border-rose-500', 'ring-rose-500');
-                    inputTelefono.classList.remove('border-slate-200', 'dark:border-[#333]');
+                    inputTelefono.classList.remove('border-slate-200', 'dark:border-zinc-700');
                     isValid = false;
                 } else {
                     errorTelefono.classList.add('hidden');
                     inputTelefono.classList.remove('border-rose-500', 'ring-rose-500');
-                    inputTelefono.classList.add('border-slate-200', 'dark:border-[#333]');
+                    inputTelefono.classList.add('border-slate-200', 'dark:border-zinc-700');
                 }
             } else {
                 errorTelefono.classList.add('hidden');
                 inputTelefono.classList.remove('border-rose-500', 'ring-rose-500');
-                inputTelefono.classList.add('border-slate-200', 'dark:border-[#333]');
+                inputTelefono.classList.add('border-slate-200', 'dark:border-zinc-700');
             }
 
             // 🔒 Validar Contraseña (Solo si el usuario intenta cambiarla)
@@ -190,7 +190,7 @@
 
                 if (strength === 1 || strength === 2) {
                     message = "Fuerza: Media (Añade letras, números o símbolos)";
-                    colorClass = "bg-yellow-400";
+                    colorClass = "bg-blue-400";
                     widthClass = "w-1/2";
                 } else if (strength >= 3) {
                     message = "Fuerza: Alta (Segura 🔒)";
@@ -210,7 +210,7 @@
             if(strength >= 3) {
                 feedbackText.className = "text-[11px] mt-1.5 font-bold text-green-600 dark:text-green-400";
             } else if (strength === 1 || strength === 2) {
-                feedbackText.className = "text-[11px] mt-1.5 font-bold text-yellow-600 dark:text-yellow-400";
+                feedbackText.className = "text-[11px] mt-1.5 font-bold text-blue-600 dark:text-blue-400";
             } else {
                 feedbackText.className = "text-[11px] mt-1.5 font-semibold text-slate-500 dark:text-gray-400";
             }
