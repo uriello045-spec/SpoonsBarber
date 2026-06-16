@@ -18,9 +18,9 @@
 
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white border-b border-blue-500 pb-2">2. Política de Citas y Cancelaciones</h3>
                 <ul class="list-disc pl-5 space-y-2">
-                    <li><strong>Puntualidad:</strong> Te pedimos llegar con 5 minutos de anticipación. Hay una tolerancia máxima de 10 minutos; pasado este tiempo, la cita podrá ser cancelada para no afectar a los siguientes clientes.</li>
-                    <li><strong>Cancelaciones:</strong> Si no puedes asistir, por favor cancela tu cita desde tu panel de usuario con al menos 2 horas de anticipación.</li>
-                    <li><strong>Penalizaciones:</strong> La acumulación de citas no asistidas sin cancelación previa podrá resultar en la suspensión temporal o definitiva de tu cuenta en el sistema.</li>
+                    <li><strong>Puntualidad:</strong> Te pedimos llegar con <strong>5 minutos de anticipación</strong>. Hay una <strong>tolerancia máxima de 10 minutos</strong>; pasado este tiempo, la cita <strong>podrá ser cancelada</strong> para no afectar a los siguientes clientes.</li>
+                    <li><strong>Cancelaciones:</strong> Si no puedes asistir, por favor cancela tu cita desde tu panel de usuario con <strong>al menos 1 hora de anticipación</strong>.</li>
+                    <li><strong>Penalizaciones:</strong> La acumulación de citas no asistidas sin cancelación previa podrá resultar en la <strong>suspensión temporal o definitiva de tu cuenta</strong> en el sistema.</li>
                 </ul>
 
                 <h3 class="text-xl font-bold text-slate-900 dark:text-white border-b border-blue-500 pb-2">3. Cuentas de Usuario</h3>
