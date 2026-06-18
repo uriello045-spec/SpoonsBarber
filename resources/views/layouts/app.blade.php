@@ -16,45 +16,15 @@
         .btn-salir:hover { transform: scale(1.05); }
         
         /* ==========================================================
-           🌟 TÍTULO ANIMADO (ESTILO BRUTALISTA / GLITCH DORADO) 🌟
+           🌟 TÍTULO ESTÁTICO (TEXTO PLANO Y SIN SOMBRAS) 🌟
            ========================================================== */
         .logo-text { 
             font-weight: 900; 
             color: #3b82f6; 
             position: relative;
             letter-spacing: 1px;
-            animation: textChaosGold 4s ease-in-out infinite;
             user-select: none;
         }
-
-        .logo-text::before {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0;
-            color: rgba(59, 130, 246, 0.5); 
-            animation: textGhost 2s linear infinite;
-            z-index: -1;
-        }
-
-        .logo-text::after {
-            content: attr(data-text);
-            position: absolute;
-            top: 0; left: 0;
-            color: rgba(59, 130, 246, 0.4); 
-            animation: textGhost2 1.5s linear infinite reverse;
-            z-index: -1;
-        }
-
-        @keyframes textChaosGold {
-            0%, 85%, 100% { transform: translate(0) scale(1); filter: saturate(1); text-shadow: 2px 2px 0 #000, 4px 4px 0 rgba(59, 130, 246, 0.5), 6px 6px 0 rgba(59, 130, 246, 0.3), 0 0 15px rgba(212, 175, 55, 0.6); }
-            5% { transform: translate(-2px, 1px) scale(0.98); filter: saturate(1.5); text-shadow: 3px 1px 0 #000, 5px 3px 0 rgba(59, 130, 246, 0.7), 7px 5px 0 rgba(59, 130, 246, 0.5), 0 0 25px rgba(59, 130, 246, 0.9); }
-            10% { transform: translate(2px, -2px) scale(1.02); filter: saturate(1.8); text-shadow: 1px 3px 0 #000, 3px 5px 0 rgba(255, 200, 0, 0.7), 5px 7px 0 rgba(59, 130, 246, 0.5), 0 0 20px rgba(255, 200, 0, 0.8); }
-            15% { transform: translate(-1px, 2px) scale(0.99); filter: saturate(1.3); text-shadow: 3px 2px 0 #000, 5px 4px 0 rgba(59, 130, 246, 0.7), 7px 6px 0 rgba(59, 130, 246, 0.5), 0 0 18px rgba(255, 165, 0, 0.9); }
-            20% { transform: translate(1px, -1px) scale(1.01); filter: saturate(1.1); text-shadow: 2px 3px 0 #000, 4px 5px 0 rgba(212, 175, 55, 0.6), 6px 7px 0 rgba(59, 130, 246, 0.4), 0 0 15px rgba(212, 175, 55, 0.8); }
-        }
-
-        @keyframes textGhost { 0% { transform: translate(0); opacity: 0.3; } 25% { transform: translate(1px, -1px); opacity: 0.6; } 50% { transform: translate(-1px, 1px); opacity: 0.2; } 75% { transform: translate(2px, 1px); opacity: 0.5; } 100% { transform: translate(0); opacity: 0.3; } }
-        @keyframes textGhost2 { 0% { transform: translate(0); opacity: 0.2; } 33% { transform: translate(-2px, 1px); opacity: 0.5; } 66% { transform: translate(1px, -2px); opacity: 0.1; } 100% { transform: translate(0); opacity: 0.2; } }
 
         /* ==========================================================
            🌟 BOTONES NEÓN DORADOS (INICIO, CITAS, RESEÑAS) 🌟

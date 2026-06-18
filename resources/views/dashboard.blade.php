@@ -66,39 +66,6 @@
     }
 
     /* ==========================================================
-       🌟 EFECTO 1: TÍTULO ANIMADO (LÁSER DORADO Y BLANCO) 🌟
-       ========================================================== */
-    .title-container {
-        width: 100%;
-        max-width: 900px;
-        margin: 0 auto;
-        cursor: default;
-    }
-    
-    .hero-svg-text {
-        font-size: 75px;
-        font-weight: 900;
-        transition: all 0.4s ease-in-out;
-    }
-
-    .tspan-white { fill: #000000; transition: all 0.4s ease; }
-    .dark .tspan-white { fill: #ffffff; }
-    .tspan-blue { fill: #3b82f6; transition: all 0.4s ease; }
-
-    .title-container:hover .tspan-white,
-    .title-container:hover .tspan-blue {
-        fill: transparent; 
-        stroke: url(#blue-white-gradient); 
-        stroke-dasharray: 80 30; 
-        animation: drawStroke 3s linear infinite;
-    }
-
-    @keyframes drawStroke {
-        0% { stroke-dashoffset: 0; }
-        100% { stroke-dashoffset: -220; }
-    }
-
-    /* ==========================================================
        🌟 EFECTO 2: AURA DE COLORES EN TARJETAS Y GALERÍA 🌟
        ========================================================== */
     .glow-wrapper {
@@ -142,7 +109,7 @@
         border: 1px solid rgba(0,0,0,0.05);
     }
     .dark .glow-card { 
-        background-color: #18181b; 
+        background-color: #2a2a2a; /* Tarjetón sutilmente más claro que el fondo para que resalte */
         border: 1px solid rgba(255,255,255,0.05);
     }
     .glow-wrapper:hover .glow-card {
@@ -169,7 +136,7 @@
         flex-direction: column; position: relative; text-decoration: none; cursor: pointer; margin-top: 20px;
     }
     .dark .wrap {
-        --bg: #18181b;
+        --bg: #222222;
     }
 
     .wrap::before {
@@ -234,12 +201,12 @@
         background-color: #d1d5db; position: absolute; inset: -7px; border-radius: calc(var(--radius) * 1.25);
         box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.1); transition: all 0.3s ease; overflow: hidden; z-index: 1;
     }
-    .dark .bg { background-color: #18181b; box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.3); }
+    .dark .bg { background-color: #222222; box-shadow: 0 20px 10px -10px rgba(0, 0, 0, 0.3); }
 
     .bg::before {
         content: ""; position: absolute; border-radius: inherit; box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px rgba(0,0,0,0.1), inset 0 0 0 1px rgba(0,0,0,0.05); inset: 0; z-index: 1;
     }
-    .dark .bg::before { box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px #18181b, inset 0 0 0 1px #18181b; }
+    .dark .bg::before { box-shadow: inset 0 -2px 0px -1px rgb(120 176 255 / 32%), inset 0 0 5px 1px #222222, inset 0 0 0 1px #222222; }
 
     .bg .shine-1, .bg .shine-2::before {
         content: ""; position: absolute; z-index: 0; transition: all 0.3s ease; background: rgb(59, 130, 246); width: 10px; height: 10px;
@@ -272,7 +239,7 @@
     /* Active States */
     .wrap:active .button { transform: scale(0.98); filter: contrast(1.1); }
     .wrap:active .button::before { box-shadow: 0 -10px 10px 10px rgba(0,0,0,0.1); }
-    .dark .wrap:active .button::before { box-shadow: 0 -10px 10px 10px #18181b; }
+    .dark .wrap:active .button::before { box-shadow: 0 -10px 10px 10px #222222; }
     
     .wrap:active .button .inner {
         background: linear-gradient(180deg, #e5e7eb 5%, #d1d5db 100%);
@@ -294,10 +261,10 @@
         border: none;
         border-radius: 10px;
         transition: 0.5s;
-        background: #18181b;
+        background: #222222;
         cursor: pointer;
         color: #3b82f6;
-        box-shadow: 0 0 10px #27272a, inset 0 0 10px #27272a;
+        box-shadow: 0 0 10px #1a1a1a, inset 0 0 10px #1a1a1a;
         display: inline-block;
         letter-spacing: 1px;
     }
@@ -338,7 +305,7 @@
     .dark .swal2-popup .swal2-textarea, 
     .dark .swal2-popup .swal2-file {
         color: #ffffff !important; 
-        background-color: #27272a !important; 
+        background-color: #2a2a2a !important; 
         border: 1px solid #3f3f46 !important; 
     }
 
@@ -352,34 +319,27 @@
 
 </style>
 
-<div class="relative overflow-hidden bg-slate-50 dark:bg-zinc-900 transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
+{{-- APLICACIÓN DEL FONDO GRIS OSCURO EXACTO (#222222) EN LAS SECCIONES --}}
+<div class="relative overflow-hidden bg-slate-50 dark:bg-[#222222] transition-colors duration-300" style="min-height: 70vh; display: flex; align-items: center;">
     <div class="absolute inset-0">
         {{-- 🛡️ FOTO ESTÁTICA: Usamos asset() puro porque debe ir en public/img/galeria/ --}}
         <img src="{{ asset('img/galeria/foto11.jpeg') }}" 
              class="w-full h-full object-cover opacity-20 dark:opacity-20 transition-opacity duration-300" 
              alt="Barber Shop">
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-zinc-900 dark:via-zinc-900/10 dark:to-zinc-900/50 transition-colors duration-300"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-50 via-transparent to-transparent dark:from-[#222222] dark:via-[#222222]/10 dark:to-[#222222]/50 transition-colors duration-300"></div>
     </div>
 
     <div class="relative container mx-auto px-4 flex flex-col items-center text-center py-20" data-aos="fade-down">
         
-        <div class="title-container mb-6">
-            <svg class="w-full h-auto drop-shadow-sm" viewBox="0 0 800 120">
-                <defs>
-                    <linearGradient id="blue-white-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                        <stop offset="0%" stop-color="#ffffff" />
-                        <stop offset="50%" stop-color="#3b82f6" />
-                        <stop offset="100%" stop-color="#ffffff" />
-                    </linearGradient>
-                </defs>
-                <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="hero-svg-text" style="font-family: inherit;">
-                    <tspan class="tspan-white">Spoon’s </tspan>
-                    <tspan class="tspan-blue">Barber Shop</tspan>
-                </text>
-            </svg>
+        {{-- TÍTULO CORREGIDO: HTML PURO, SÓLIDO Y LIMPIO SIN ANIMACIONES QUE LO PIERDAN --}}
+        <div class="mb-4 md:mb-6">
+            <h1 class="text-6xl md:text-7xl lg:text-[5.5rem] font-black tracking-tight drop-shadow-sm">
+                <span class="text-black dark:text-white transition-colors duration-300">Spoon’s</span> 
+                <span class="text-blue-500 transition-colors duration-300">Barber Shop</span>
+            </h1>
         </div>
         
-        <p class="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-slate-600 dark:text-slate-300 font-medium">
+        <p class="text-xl md:text-2xl mb-12 max-w-2xl mx-auto text-black dark:text-white font-medium">
             Estilo, precisión y una experiencia de lujo en cada corte.
         </p>
         
@@ -413,11 +373,11 @@
     </div>
 </div>
 
-<section class="py-20 bg-slate-50 dark:bg-zinc-900 transition-colors duration-300">
+<section class="py-20 bg-slate-50 dark:bg-[#222222] transition-colors duration-300">
     <div class="container mx-auto px-4 max-w-6xl">
         <div class="text-center">
             <div class="section-title-wrapper" data-aos="zoom-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">💈 Nuestra Barbería</h2>
+                <h2 class="text-3xl md:text-4xl font-black tracking-wide text-black dark:text-white">💈 Nuestra Barbería</h2>
             </div>
         </div>
 
@@ -426,8 +386,8 @@
                 <div class="glow-wrapper">
                     <div class="glow-bg glow-purple-cyan"></div>
                     <div class="glow-card h-full p-6 flex flex-col items-center text-center rounded-2xl shadow-sm transition-colors duration-300 relative">
-                        <h4 class="text-2xl mb-4 font-bold text-[#3b82f6]">📍 Ubicación</h4>
-                        <p class="mb-6 text-lg text-slate-600 dark:text-slate-300">Av. Hermenegildo Galeana #150<br>Metepec, Estado de México</p>
+                        <h4 class="text-2xl mb-4 font-bold text-blue-700 dark:text-blue-400">📍 Ubicación</h4>
+                        <p class="mb-6 text-lg text-black dark:text-white">Av. Hermenegildo Galeana #150<br>Metepec, Estado de México</p>
                         <div class="w-full aspect-video rounded-lg overflow-hidden shadow-inner border border-slate-200 dark:border-zinc-700">
                             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d235.44550742892187!2d-99.5390056666833!3d19.233247339849026!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85cdf4ae632bbc23%3A0x25189c5fe553fc90!2sMoto%20Servicio%20%22El%20Chino%22!5e0!3m2!1ses!2smx!4v1771651726925!5m2!1ses!2smx" width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
                         </div>
@@ -444,11 +404,11 @@
                             <button onclick="editarHorarios()" class="absolute top-4 right-4 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded border border-blue-300 hover:bg-blue-200 transition">✏️ Editar</button>
                         @endif
 
-                        <h4 class="text-2xl mb-6 font-bold text-[#3b82f6]">🕒 Horarios</h4>
-                        <div class="space-y-5 text-lg text-slate-700 dark:text-slate-300">
-                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Lunes – Viernes</strong><br><span id="txt_h_semana">{{ $h_semana }}</span></div>
-                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Sábado</strong><br><span id="txt_h_sabado">{{ $h_sabado }}</span></div>
-                            <div><strong class="block text-blue-600 dark:text-[#3b82f6] font-bold">Domingo</strong><br><span id="txt_h_domingo">{{ $h_domingo }}</span></div>
+                        <h4 class="text-2xl mb-6 font-bold text-blue-700 dark:text-blue-400">🕒 Horarios</h4>
+                        <div class="space-y-5 text-lg text-black dark:text-white">
+                            <div><strong class="block text-blue-700 dark:text-blue-400 font-bold">Lunes – Viernes</strong><br><span id="txt_h_semana">{{ $h_semana }}</span></div>
+                            <div><strong class="block text-blue-700 dark:text-blue-400 font-bold">Sábado</strong><br><span id="txt_h_sabado">{{ $h_sabado }}</span></div>
+                            <div><strong class="block text-blue-700 dark:text-blue-400 font-bold">Domingo</strong><br><span id="txt_h_domingo">{{ $h_domingo }}</span></div>
                         </div>
                     </div>
                 </div>
@@ -463,23 +423,23 @@
                             <button onclick="editarPrecios()" class="absolute top-4 right-4 text-xs bg-blue-100 text-blue-700 px-2 py-1 rounded border border-blue-300 hover:bg-blue-200 transition">✏️ Editar</button>
                         @endif
 
-                        <h4 class="text-2xl text-center mb-8 font-bold text-[#3b82f6]">💵 Precios</h4>
+                        <h4 class="text-2xl text-center mb-8 font-bold text-blue-700 dark:text-blue-400">💵 Precios</h4>
                         <div class="space-y-4">
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
-                                <span class="text-lg text-slate-700 dark:text-slate-300">Cortes (Cualquiera)</span>
-                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_corte">{{ $p_corte }}</span></span>
+                                <span class="text-lg text-black dark:text-white">Cortes (Cualquiera)</span>
+                                <span class="text-xl font-bold text-blue-700 dark:text-blue-400">$<span id="txt_p_corte">{{ $p_corte }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
-                                <span class="text-lg text-slate-700 dark:text-slate-300">Corte + Barba</span>
-                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_barba">{{ $p_barba }}</span></span>
+                                <span class="text-lg text-black dark:text-white">Corte + Barba</span>
+                                <span class="text-xl font-bold text-blue-700 dark:text-blue-400">$<span id="txt_p_barba">{{ $p_barba }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
-                                <span class="text-lg text-slate-700 dark:text-slate-300">Diseño de ceja</span>
-                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_ceja">{{ $p_ceja }}</span></span>
+                                <span class="text-lg text-black dark:text-white">Diseño de ceja</span>
+                                <span class="text-xl font-bold text-blue-700 dark:text-blue-400">$<span id="txt_p_ceja">{{ $p_ceja }}</span></span>
                             </div>
                             <div class="flex justify-between items-center border-b border-slate-100 dark:border-zinc-800 pb-2">
-                                <span class="text-lg text-slate-700 dark:text-slate-300">Corte + Diseño (Greca)</span>
-                                <span class="text-xl font-bold text-blue-600 dark:text-[#3b82f6]">$<span id="txt_p_greca">{{ $p_greca }}</span></span>
+                                <span class="text-lg text-black dark:text-white">Corte + Diseño (Greca)</span>
+                                <span class="text-xl font-bold text-blue-700 dark:text-blue-400">$<span id="txt_p_greca">{{ $p_greca }}</span></span>
                             </div>
                         </div>
                     </div>
@@ -489,11 +449,11 @@
     </div>
 </section>
 
-<section class="py-20 bg-slate-100 dark:bg-zinc-900 transition-colors duration-300">
+<section class="py-20 bg-slate-100 dark:bg-[#222222] transition-colors duration-300">
     <div class="container mx-auto px-4">
         <div class="text-center mb-12 relative">
              <div class="section-title-wrapper" data-aos="zoom-in">
-                <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white">📸 Galería de Cortes</h2>
+                <h2 class="text-3xl md:text-4xl font-black tracking-wide text-black dark:text-white">📸 Galería de Cortes</h2>
             </div>
         </div>
 
@@ -609,7 +569,7 @@
             title: '🕒 Editar Horarios',
             width: 600,
             html: `
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#2a2a2a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Lunes - Viernes</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
@@ -628,7 +588,7 @@
                     </div>
                 </div>
 
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#2a2a2a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Sábado</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
@@ -647,7 +607,7 @@
                     </div>
                 </div>
 
-                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#18181b' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
+                <div style="text-align: left; margin-bottom: 15px; background: ${isDark ? '#2a2a2a' : '#f8fafc'}; padding: 15px; border-radius: 10px; border: 1px solid ${isDark ? '#3f3f46' : '#e2e8f0'};">
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
                         <label style="color: ${isDark ? '#3b82f6' : '#2563eb'}; font-size: 15px; font-weight: 900; text-transform: uppercase;">Domingo</label>
                         <label style="font-size: 12px; color: #ff4444; font-weight: bold; cursor: pointer;">
@@ -671,7 +631,7 @@
             confirmButtonText: 'Guardar Ajustes',
             cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3b82f6',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const c_sem = document.getElementById('cerr_sem').checked ? 'true' : 'false';
@@ -743,7 +703,7 @@
             confirmButtonText: 'Guardar',
             cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3b82f6',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const pCorte = parseFloat(document.getElementById('p_corte').value);
@@ -810,7 +770,7 @@
                     title: '¡Éxito!', 
                     text: data.message, 
                     icon: 'success', 
-                    background: isDark ? '#18181b' : '#ffffff', 
+                    background: isDark ? '#222222' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a' 
                 }).then(() => location.reload()); 
             } else {
@@ -832,7 +792,7 @@
             confirmButtonText: 'Subir Imagen',
             cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3b82f6',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
         });
 
@@ -869,7 +829,7 @@
                         title: '¡Éxito!', 
                         text: data.message, 
                         icon: 'success', 
-                        background: isDark ? '#18181b' : '#ffffff', 
+                        background: isDark ? '#222222' : '#ffffff', 
                         color: isDark ? '#ffffff' : '#0f172a' 
                     }).then(() => location.reload());
                 } else {
@@ -893,7 +853,7 @@
             cancelButtonColor: isDark ? '#3f3f46' : '#cbd5e1',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonText: 'Cancelar',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -918,7 +878,7 @@
                             title: '¡Eliminada!', 
                             text: data.message, 
                             icon: 'success', 
-                            background: isDark ? '#18181b' : '#ffffff', 
+                            background: isDark ? '#222222' : '#ffffff', 
                             color: isDark ? '#ffffff' : '#0f172a' 
                         });
                     } else {

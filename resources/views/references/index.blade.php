@@ -87,7 +87,7 @@
     }
 </style>
 
-<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 transition-colors duration-300 py-10 px-4">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-[#222222] transition-colors duration-300 py-10 px-4">
     <div class="max-w-5xl mx-auto space-y-12">
         
         <div class="text-center" data-aos="fade-down">
@@ -113,7 +113,7 @@
         @endif
 
         @if(!auth()->check() || (auth()->check() && auth()->user()->role !== 'barbero' && !auth()->user()->is_superadmin))
-            <div class="bg-white dark:bg-zinc-800 rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-xl dark:shadow-2xl relative overflow-hidden group transition-colors duration-300" data-aos="fade-up">
+            <div class="bg-white dark:bg-[#2a2a2a] rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-xl dark:shadow-2xl relative overflow-hidden group transition-colors duration-300" data-aos="fade-up">
                 <div class="hidden dark:block absolute top-0 right-0 w-32 h-32 bg-[#3b82f6] opacity-10 rounded-full blur-3xl -mr-16 -mt-16 pointer-events-none"></div>
 
                 @if($puedeComentar)
@@ -130,8 +130,8 @@
                                       minlength="10" maxlength="250" required 
                                       onkeydown="if(['<', '>'].includes(event.key)) event.preventDefault();"
                                       oninput="document.getElementById('char-count').innerText = this.value.length + ' / 250'; if(this.value.length > 250) this.value = this.value.substring(0, 250);"
-                                      class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-6 py-5 
-                                             focus:bg-white dark:focus:bg-zinc-800 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all resize-none text-lg font-medium placeholder-slate-400 dark:placeholder-gray-500"></textarea>
+                                      class="w-full bg-slate-50 dark:bg-[#222222] border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-6 py-5 
+                                             focus:bg-white dark:focus:bg-[#2a2a2a] focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-2 focus:ring-blue-500/20 dark:focus:ring-[#3b82f6]/20 outline-none transition-all resize-none text-lg font-medium placeholder-slate-400 dark:placeholder-gray-500"></textarea>
                             
                             <div class="absolute bottom-3 right-4">
                                 <span id="char-count" class="text-xs font-bold text-slate-400 dark:text-gray-500">0 / 250</span>
@@ -178,7 +178,7 @@
                     </form>
                 @else
                     <div class="text-center py-6">
-                        <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-zinc-700 rounded-full flex items-center justify-center mb-6 shadow-inner">
+                        <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-[#222222] rounded-full flex items-center justify-center mb-6 shadow-inner">
                             <span class="text-4xl opacity-80">🔒</span>
                         </div>
                         <h3 class="text-2xl font-black text-slate-800 dark:text-gray-200 mb-3">Reseñas Bloqueadas</h3>
@@ -187,7 +187,7 @@
                         </p>
                         @guest
                             <div class="mt-6">
-                                <a href="{{ route('login') }}" class="inline-block bg-slate-100 dark:bg-zinc-700 border border-slate-200 dark:border-zinc-600 hover:bg-slate-200 dark:hover:bg-zinc-600 text-slate-700 dark:text-gray-300 font-bold px-6 py-3 rounded-xl transition-all">
+                                <a href="{{ route('login') }}" class="inline-block bg-slate-100 dark:bg-[#222222] border border-slate-200 dark:border-zinc-600 hover:bg-slate-200 dark:hover:bg-zinc-600 text-slate-700 dark:text-gray-300 font-bold px-6 py-3 rounded-xl transition-all">
                                     Inicia sesión para opinar
                                 </a>
                             </div>
@@ -205,10 +205,10 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
             @forelse($references as $ref)
-                <div class="bg-white dark:bg-zinc-800 rounded-3xl p-6 border border-slate-200 dark:border-zinc-700 hover:border-blue-400 dark:hover:border-zinc-500 transition-all duration-300 group hover:-translate-y-1 shadow-md dark:shadow-xl">
+                <div class="bg-white dark:bg-[#2a2a2a] rounded-3xl p-6 border border-slate-200 dark:border-zinc-700 hover:border-blue-400 dark:hover:border-zinc-500 transition-all duration-300 group hover:-translate-y-1 shadow-md dark:shadow-xl">
                     <div class="flex items-start justify-between mb-4">
                         <div class="flex items-center gap-4">
-                            <div class="w-14 h-14 bg-slate-100 dark:bg-zinc-900 border border-slate-200 dark:border-zinc-700 rounded-full flex items-center justify-center text-blue-600 dark:text-[#3b82f6] font-black text-xl shadow-inner group-hover:bg-white dark:group-hover:bg-zinc-800 transition-colors">
+                            <div class="w-14 h-14 bg-slate-100 dark:bg-[#222222] border border-slate-200 dark:border-zinc-700 rounded-full flex items-center justify-center text-blue-600 dark:text-[#3b82f6] font-black text-xl shadow-inner group-hover:bg-white dark:group-hover:bg-[#2a2a2a] transition-colors">
                                 {{ strtoupper(substr($ref->user->name, 0, 2)) }}
                             </div>
                             <div>
@@ -223,7 +223,7 @@
                         </div>
                     </div>
                     
-                    <div class="mt-4 bg-slate-50 dark:bg-zinc-900/50 p-4 rounded-2xl border border-slate-100 dark:border-zinc-700">
+                    <div class="mt-4 bg-slate-50 dark:bg-[#222222] p-4 rounded-2xl border border-slate-100 dark:border-zinc-700">
                         @php
                             // 🛡️ DICCIONARIO ANTI-TROLLS CENSURA AUTOMÁTICA
                             $groserias = [
@@ -248,8 +248,8 @@
                     </div>
                 </div>
             @empty
-                <div class="col-span-1 md:col-span-2 text-center py-20 border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-3xl bg-white dark:bg-zinc-800/50">
-                    <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-zinc-800 rounded-full flex items-center justify-center mb-6 shadow-inner border border-slate-200 dark:border-zinc-700">
+                <div class="col-span-1 md:col-span-2 text-center py-20 border-2 border-dashed border-slate-300 dark:border-zinc-700 rounded-3xl bg-white dark:bg-[#2a2a2a]">
+                    <div class="w-20 h-20 mx-auto bg-slate-100 dark:bg-[#222222] rounded-full flex items-center justify-center mb-6 shadow-inner border border-slate-200 dark:border-zinc-700">
                         <span class="text-4xl opacity-80">💬</span>
                     </div>
                     <h3 class="text-slate-500 dark:text-gray-300 text-2xl font-black mb-2">Aún no hay reseñas</h3>
@@ -290,7 +290,7 @@
                         icon: 'warning',
                         title: 'Calificación requerida',
                         text: 'Por favor, selecciona una calificación de estrellas antes de enviar.',
-                        background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                        background: document.documentElement.classList.contains('dark') ? '#222222' : '#ffffff',
                         color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                     });
                     return false;
@@ -312,10 +312,10 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#e11d48',
-            cancelButtonColor: document.documentElement.classList.contains('dark') ? '#27272a' : '#f1f5f9',
+            cancelButtonColor: document.documentElement.classList.contains('dark') ? '#2a2a2a' : '#f1f5f9',
             confirmButtonText: 'Sí, borrar',
             cancelButtonText: 'Cancelar',
-            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+            background: document.documentElement.classList.contains('dark') ? '#222222' : '#ffffff',
             color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {
@@ -334,7 +334,7 @@
                             icon: 'success',
                             title: '¡Eliminado!',
                             text: 'La reseña fue borrada de la base de datos.',
-                            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                            background: document.documentElement.classList.contains('dark') ? '#222222' : '#ffffff',
                             color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                         }).then(() => location.reload());
                     } else {
@@ -342,7 +342,7 @@
                             icon: 'error',
                             title: 'Error',
                             text: data.message || 'No se pudo eliminar la reseña.',
-                            background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                            background: document.documentElement.classList.contains('dark') ? '#222222' : '#ffffff',
                             color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                         });
                     }
@@ -352,7 +352,7 @@
                         icon: 'error',
                         title: 'Error de conexión',
                         text: 'Hubo un problema al intentar comunicarse con el servidor.',
-                        background: document.documentElement.classList.contains('dark') ? '#18181b' : '#ffffff',
+                        background: document.documentElement.classList.contains('dark') ? '#222222' : '#ffffff',
                         color: document.documentElement.classList.contains('dark') ? '#ffffff' : '#0f172a',
                     });
                 });

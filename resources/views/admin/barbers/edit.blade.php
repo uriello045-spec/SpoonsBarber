@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
+<div class="min-h-screen bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-blue-500 dark:bg-[#3b82f6] opacity-[0.02] dark:opacity-[0.03] blur-[100px] pointer-events-none"></div>
 
     <div class="max-w-4xl mx-auto space-y-8 relative z-10">
@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div class="bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-3xl p-8 shadow-sm dark:shadow-2xl relative overflow-hidden">
+        <div class="bg-white dark:bg-[#2a2a2a] border border-slate-200 dark:border-zinc-700 rounded-3xl p-8 shadow-sm dark:shadow-2xl relative overflow-hidden">
             <form action="{{ route('admin.barbers.update', $barber->id) }}" method="POST" class="space-y-6" id="form-editar-barbero">
                 @csrf 
                 @method('PUT')
@@ -34,7 +34,7 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Nombre Completo</label>
                         <input type="text" name="name" id="input-nombre" value="{{ old('name', $barber->name) }}" required
-                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         
                         <span id="error-nombre" class="hidden text-rose-500 dark:text-red-500 text-xs font-bold mt-1">Solo se permiten letras y espacios.</span>
                         @error('name') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
@@ -43,14 +43,14 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Correo Electrónico</label>
                         <input type="email" name="email" value="{{ old('email', $barber->email) }}" required
-                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         @error('email') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
                     </div>
 
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Teléfono <span class="text-slate-400 dark:text-gray-600">(Opcional, 10 dígitos)</span></label>
                         <input type="text" name="phone" id="input-telefono" value="{{ old('phone', $barber->phone) }}" maxlength="10"
-                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
+                            class="w-full bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none">
                         
                         <span id="error-telefono" class="hidden text-rose-500 dark:text-red-500 text-xs font-bold mt-1">Solo números, máximo 10 dígitos.</span>
                         @error('phone') <span class="text-rose-500 text-xs font-bold mt-1 block">{{ $message }}</span> @enderror
@@ -59,10 +59,10 @@
                     <div>
                         <label class="block text-[10px] font-black uppercase tracking-widest text-slate-500 dark:text-gray-500 mb-2">Nueva Contraseña</label>
                         <input type="password" name="password" id="input-password" minlength="8" maxlength="20" placeholder="Déjalo en blanco para no cambiarla"
-                            class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none placeholder-slate-400 dark:placeholder-gray-600">
+                            class="w-full bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-white border border-slate-200 dark:border-zinc-700 rounded-xl p-3.5 focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500 dark:focus:ring-[#3b82f6] transition-all outline-none placeholder-slate-400 dark:placeholder-gray-600">
                         
                         <div id="meter-container" class="hidden mt-2">
-                            <div class="h-1.5 w-full bg-slate-200 dark:bg-zinc-700 rounded-full overflow-hidden">
+                            <div class="h-1.5 w-full bg-slate-200 dark:bg-[#2a2a2a] rounded-full overflow-hidden">
                                 <div id="meter-fill-edit" class="h-full bg-red-500 w-0 transition-all duration-300"></div>
                             </div>
                             <p id="password-feedback-edit" class="text-[11px] mt-1.5 font-semibold text-slate-500 dark:text-gray-400">Mín. 8, Máx. 20 caracteres.</p>
@@ -73,7 +73,7 @@
                 </div>
 
                 <div class="border-t border-slate-100 dark:border-zinc-700 pt-6 mt-8 flex flex-col md:flex-row gap-4 justify-end">
-                    <a href="{{ route('admin.barbers.index') }}" class="text-center px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-zinc-700 hover:text-slate-900 dark:hover:text-white font-bold transition-all">
+                    <a href="{{ route('admin.barbers.index') }}" class="text-center px-6 py-3.5 rounded-xl bg-slate-100 dark:bg-[#2a2a2a] border border-slate-200 dark:border-zinc-700 text-slate-600 dark:text-gray-300 hover:bg-slate-200 dark:hover:bg-[#333333] hover:text-slate-900 dark:hover:text-white font-bold transition-all">
                         Cancelar
                     </a>
                     <button type="submit" id="btn-submit" class="text-center bg-gradient-to-r from-blue-500 to-blue-600 dark:from-[#3b82f6] dark:to-[#2563eb] hover:from-blue-600 hover:to-blue-700 dark:hover:from-[#60a5fa] dark:hover:to-[#3b82f6] text-white dark:text-white font-black px-8 py-3.5 rounded-xl transition-all shadow-md dark:shadow-[0_0_15px_rgba(59,130,246,0.4)]">

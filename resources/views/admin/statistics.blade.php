@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-4 md:p-10 transition-colors duration-300 relative">
+<div class="min-h-screen bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-gray-100 p-4 md:p-10 transition-colors duration-300 relative">
     
     <div class="max-w-7xl mx-auto space-y-8 relative z-10">
 
@@ -13,7 +13,7 @@
                 <p class="text-slate-500 dark:text-gray-400 font-medium mt-2 uppercase tracking-widest text-sm">Reporte financiero y métricas de negocio</p>
             </div>
 
-            <a href="{{ route('admin.dashboard') }}" class="w-full md:w-auto text-center bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 hover:border-blue-600 dark:hover:border-[#3b82f6] text-slate-800 dark:text-white px-6 py-3.5 rounded-2xl transition-all shadow-sm dark:shadow-lg font-bold flex items-center justify-center gap-2">
+            <a href="{{ route('admin.dashboard') }}" class="w-full md:w-auto text-center bg-white dark:bg-[#2a2a2a] border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 hover:border-blue-600 dark:hover:border-[#3b82f6] text-slate-800 dark:text-white px-6 py-3.5 rounded-2xl transition-all shadow-sm dark:shadow-lg font-bold flex items-center justify-center gap-2">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Volver al Panel
             </a>
@@ -21,7 +21,7 @@
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10" data-aos="fade-up">
             
-            <div class="bg-gradient-to-br from-emerald-50 to-white dark:from-[#0a1a10] dark:to-zinc-800 p-8 rounded-3xl border border-emerald-200 dark:border-emerald-900/30 shadow-sm dark:shadow-[0_10px_40px_rgba(16,185,129,0.05)] relative overflow-hidden group">
+            <div class="bg-gradient-to-br from-emerald-50 to-white dark:from-[#2a2a2a] dark:to-[#222222] p-8 rounded-3xl border border-emerald-200 dark:border-emerald-900/30 shadow-sm dark:shadow-[0_10px_40px_rgba(16,185,129,0.05)] relative overflow-hidden group">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-emerald-100 dark:bg-emerald-900/20 rounded-full blur-2xl group-hover:bg-emerald-200 dark:group-hover:bg-emerald-900/40 transition-all duration-700"></div>
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest relative z-10">Ingresos Estimados</h3>
                 <p class="text-4xl md:text-5xl font-black text-emerald-600 dark:text-[#00ff55] mt-3 relative z-10 drop-shadow-sm">${{ number_format($ingresos) }}</p>
@@ -31,7 +31,7 @@
                 </p>
             </div>
 
-            <div class="bg-gradient-to-br from-rose-50 to-white dark:from-[#1a0a0a] dark:to-zinc-800 p-8 rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-sm dark:shadow-[0_10px_40px_rgba(244,63,94,0.05)] relative overflow-hidden group">
+            <div class="bg-gradient-to-br from-rose-50 to-white dark:from-[#2a2a2a] dark:to-[#222222] p-8 rounded-3xl border border-rose-200 dark:border-rose-900/30 shadow-sm dark:shadow-[0_10px_40px_rgba(244,63,94,0.05)] relative overflow-hidden group">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-rose-100 dark:bg-rose-900/20 rounded-full blur-2xl group-hover:bg-rose-200 dark:group-hover:bg-rose-900/40 transition-all duration-700"></div>
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest relative z-10">Pérdidas Estimadas</h3>
                 <p class="text-4xl md:text-5xl font-black text-rose-600 dark:text-[#ff4444] mt-3 relative z-10 drop-shadow-sm">-${{ number_format($perdidas ?? 0) }}</p>
@@ -41,7 +41,7 @@
                 </p>
             </div>
 
-            <div class="bg-gradient-to-br from-blue-50 to-white dark:from-blue-900/10 dark:to-zinc-800 p-8 rounded-3xl border border-blue-200 dark:border-blue-500/30 shadow-sm relative overflow-hidden group">
+            <div class="bg-gradient-to-br from-blue-50 to-white dark:from-[#2a2a2a] dark:to-[#222222] p-8 rounded-3xl border border-blue-200 dark:border-blue-500/30 shadow-sm relative overflow-hidden group">
                 <div class="absolute -right-6 -top-6 w-32 h-32 bg-blue-100 dark:bg-blue-500/10 rounded-full blur-2xl group-hover:bg-blue-200 dark:group-hover:bg-blue-500/20 transition-all duration-700"></div>
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest relative z-10 flex items-center gap-1">Cliente Estrella <span class="text-blue-500 text-lg ml-1 drop-shadow-sm dark:drop-shadow-md">⭐</span></h3>
                 @if($topCliente)
@@ -53,17 +53,17 @@
                 @endif
             </div>
 
-            <div class="bg-white dark:bg-zinc-800 p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-emerald-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
+            <div class="bg-white dark:bg-[#2a2a2a] p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-emerald-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest">Cortes Finalizados</h3>
                 <p class="text-4xl md:text-5xl font-black text-slate-800 dark:text-white mt-3">{{ $citasCompletadas }}</p>
             </div>
 
-            <div class="bg-white dark:bg-zinc-800 p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-rose-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
+            <div class="bg-white dark:bg-[#2a2a2a] p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-rose-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest">Citas Canceladas</h3>
                 <p class="text-4xl md:text-5xl font-black text-slate-800 dark:text-white mt-3">{{ $citasCanceladas ?? 0 }}</p>
             </div>
 
-            <div class="bg-white dark:bg-zinc-800 p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-blue-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
+            <div class="bg-white dark:bg-[#2a2a2a] p-8 rounded-3xl border border-slate-200 dark:border-zinc-700 border-l-4 border-l-blue-500 shadow-sm flex flex-col justify-center hover:border-slate-300 dark:hover:border-zinc-600 transition-colors">
                 <h3 class="text-slate-500 dark:text-gray-400 text-[10px] font-black uppercase tracking-widest">Total Citas Históricas</h3>
                 <p class="text-4xl md:text-5xl font-black text-slate-800 dark:text-white mt-3">{{ $totalCitas }}</p>
             </div>
@@ -72,17 +72,17 @@
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8" data-aos="fade-up" data-aos-delay="100">
             
-            <div class="lg:col-span-2 bg-white dark:bg-zinc-800 rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-sm relative">
+            <div class="lg:col-span-2 bg-white dark:bg-[#2a2a2a] rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-sm relative">
                 <div class="flex justify-between items-center mb-8">
                     <h3 class="text-lg font-black text-slate-800 dark:text-white uppercase tracking-widest">📉 Ingresos Mensuales</h3>
-                    <span class="text-xs font-bold text-slate-500 bg-slate-100 dark:bg-zinc-900 px-3 py-1 rounded-md">Últimos 6 meses</span>
+                    <span class="text-xs font-bold text-slate-500 bg-slate-100 dark:bg-[#222222] px-3 py-1 rounded-md">Últimos 6 meses</span>
                 </div>
                 <div class="relative h-72 w-full">
                     <canvas id="ingresosChart"></canvas>
                 </div>
             </div>
 
-            <div class="bg-white dark:bg-zinc-800 rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-sm relative">
+            <div class="bg-white dark:bg-[#2a2a2a] rounded-3xl p-8 border border-slate-200 dark:border-zinc-700 shadow-sm relative">
                 <h3 class="text-lg font-black text-slate-800 dark:text-white mb-8 uppercase tracking-widest text-center">🎯 Estado de Agenda</h3>
                 <div class="relative h-64 w-full flex justify-center">
                     <canvas id="estadosChart"></canvas>
@@ -147,7 +147,7 @@
                 plugins: {
                     legend: { display: false },
                     tooltip: {
-                        backgroundColor: isDark ? '#27272a' : '#fff',
+                        backgroundColor: isDark ? '#2a2a2a' : '#fff',
                         titleColor: isDark ? '#fff' : '#333',
                         bodyColor: '#10b981',
                         borderColor: isDark ? '#3f3f46' : '#e2e8f0',
@@ -198,7 +198,7 @@
                     data: finalValues,
                     backgroundColor: finalColors,
                     borderWidth: isDark ? 4 : 2,
-                    borderColor: isDark ? '#18181b' : '#fff',
+                    borderColor: isDark ? '#2a2a2a' : '#fff',
                     hoverOffset: 4
                 }]
             },
@@ -212,7 +212,7 @@
                         labels: { color: textColor, padding: 20, font: { weight: 'bold', size: 11 }, usePointStyle: true, pointStyle: 'circle' }
                     },
                     tooltip: {
-                        backgroundColor: isDark ? '#27272a' : '#fff',
+                        backgroundColor: isDark ? '#2a2a2a' : '#fff',
                         titleColor: isDark ? '#fff' : '#333',
                         bodyColor: isDark ? '#d4d4d8' : '#666',
                         borderColor: isDark ? '#3f3f46' : '#e2e8f0',

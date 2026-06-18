@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
+<div class="min-h-screen bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-gray-100 p-6 md:p-10 transition-colors duration-300 relative overflow-hidden">
     <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-64 bg-blue-500 dark:bg-[#3b82f6] opacity-[0.02] dark:opacity-[0.03] blur-[100px] pointer-events-none"></div>
 
     <div class="max-w-7xl mx-auto space-y-8 relative z-10">
@@ -33,8 +33,8 @@
         </div>
 
         @if ($barbers->isEmpty())
-            <div class="bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 rounded-3xl p-16 text-center shadow-sm dark:shadow-2xl">
-                <div class="w-20 h-20 mx-auto bg-slate-50 dark:bg-zinc-900 rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-zinc-700">
+            <div class="bg-white dark:bg-[#2a2a2a] border border-slate-200 dark:border-zinc-700 rounded-3xl p-16 text-center shadow-sm dark:shadow-2xl">
+                <div class="w-20 h-20 mx-auto bg-slate-50 dark:bg-[#222222] rounded-full flex items-center justify-center mb-4 border border-slate-100 dark:border-zinc-700">
                     <span class="text-3xl opacity-50">👥</span>
                 </div>
                 <p class="text-slate-500 dark:text-gray-400 text-lg font-bold">Aún no hay otros barberos registrados.</p>
@@ -53,7 +53,7 @@
                         @continue
                     @endif
 
-                    <div id="tarjeta-barbero-{{ $barber->id }}" class="bg-white dark:bg-zinc-800 p-6 rounded-3xl border {{ $isSuperAdminCard ? 'border-blue-500 dark:border-[#3b82f6]' : 'border-slate-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-[#3b82f6]/50' }} shadow-sm dark:shadow-lg hover:shadow-md dark:hover:shadow-[0_10px_30px_rgba(59,130,246,0.1)] transition-all duration-300 group flex flex-col relative overflow-hidden">
+                    <div id="tarjeta-barbero-{{ $barber->id }}" class="bg-white dark:bg-[#2a2a2a] p-6 rounded-3xl border {{ $isSuperAdminCard ? 'border-blue-500 dark:border-[#3b82f6]' : 'border-slate-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-[#3b82f6]/50' }} shadow-sm dark:shadow-lg hover:shadow-md dark:hover:shadow-[0_10px_30px_rgba(59,130,246,0.1)] transition-all duration-300 group flex flex-col relative overflow-hidden">
                         
                         {{-- Brillo sutil de fondo si es el SuperAdmin --}}
                         @if($isSuperAdminCard)
@@ -61,7 +61,7 @@
                         @endif
 
                         <div class="flex justify-between items-start mb-4 relative z-10">
-                            <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-gradient-to-br dark:from-zinc-700 dark:to-zinc-800 flex items-center justify-center text-blue-600 dark:text-[#3b82f6] font-black text-2xl border {{ $isSuperAdminCard ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]' : 'border-slate-200 dark:border-zinc-700' }} shadow-inner group-hover:scale-105 transition-transform">
+                            <div class="w-14 h-14 rounded-2xl bg-slate-50 dark:bg-gradient-to-br dark:from-[#2a2a2a] dark:to-[#222222] flex items-center justify-center text-blue-600 dark:text-[#3b82f6] font-black text-2xl border {{ $isSuperAdminCard ? 'border-blue-500 shadow-[0_0_15px_rgba(59,130,246,0.3)]' : 'border-slate-200 dark:border-zinc-700' }} shadow-inner group-hover:scale-105 transition-transform">
                                 {{ substr($barber->name, 0, 1) }}
                             </div>
                             
@@ -80,7 +80,7 @@
                         <p class="text-slate-500 dark:text-gray-400 text-sm font-medium mt-1 truncate relative z-10">{{ $barber->email }}</p>
                         
                         @if ($barber->phone)
-                            <p class="text-slate-600 dark:text-gray-300 text-sm font-bold mt-4 flex items-center gap-2 bg-slate-50 dark:bg-zinc-900 p-2.5 rounded-lg border border-slate-100 dark:border-zinc-700 relative z-10">
+                            <p class="text-slate-600 dark:text-gray-300 text-sm font-bold mt-4 flex items-center gap-2 bg-slate-50 dark:bg-[#222222] p-2.5 rounded-lg border border-slate-100 dark:border-zinc-700 relative z-10">
                                 📞 {{ $barber->phone }}
                             </p>
                         @endif
@@ -88,7 +88,7 @@
                         <div class="mt-auto pt-5 relative z-10">
                             <div class="flex justify-between items-center mb-4">
                                 <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400 dark:text-gray-500">Ingreso:</span>
-                                <span class="text-xs text-slate-600 dark:text-gray-300 font-bold bg-slate-50 dark:bg-zinc-900 px-2 py-1 rounded border border-slate-100 dark:border-zinc-700">{{ $barber->created_at->format('d/m/Y') }}</span>
+                                <span class="text-xs text-slate-600 dark:text-gray-300 font-bold bg-slate-50 dark:bg-[#222222] px-2 py-1 rounded border border-slate-100 dark:border-zinc-700">{{ $barber->created_at->format('d/m/Y') }}</span>
                             </div>
 
                             <div class="flex gap-2 border-t border-slate-100 dark:border-zinc-700 pt-4">
@@ -100,7 +100,7 @@
                                     </button>
                                 @else
                                     {{-- Botones normales para los barberos --}}
-                                    <a href="{{ route('admin.barbers.edit', $barber->id) }}" class="flex-1 bg-slate-50 dark:bg-zinc-800 hover:bg-blue-500 dark:hover:bg-[#3b82f6] text-slate-600 dark:text-gray-300 hover:text-white dark:hover:text-white font-bold py-2 rounded-lg text-xs text-center transition-all border border-slate-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-[#3b82f6]">
+                                    <a href="{{ route('admin.barbers.edit', $barber->id) }}" class="flex-1 bg-slate-50 dark:bg-[#2a2a2a] hover:bg-blue-500 dark:hover:bg-[#3b82f6] text-slate-600 dark:text-gray-300 hover:text-white dark:hover:text-white font-bold py-2 rounded-lg text-xs text-center transition-all border border-slate-200 dark:border-zinc-700 hover:border-blue-500 dark:hover:border-[#3b82f6]">
                                         ✏️ Editar
                                     </a>
                                     
@@ -136,10 +136,10 @@
             icon: 'info',
             showCancelButton: true,
             confirmButtonColor: '#3b82f6', 
-            cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', 
+            cancelButtonColor: isDark ? '#2a2a2a' : '#f1f5f9', 
             confirmButtonText: 'Verificar y Editar',
             cancelButtonText: 'Cancelar',
-            background: isDark ? '#18181b' : '#ffffff', 
+            background: isDark ? '#222222' : '#ffffff', 
             color: isDark ? '#ffffff' : '#0f172a', 
             iconColor: '#3b82f6', 
             customClass: {
@@ -192,10 +192,10 @@
             icon: 'warning',
             showCancelButton: true,
             confirmButtonColor: '#e11d48', 
-            cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', 
+            cancelButtonColor: isDark ? '#2a2a2a' : '#f1f5f9', 
             confirmButtonText: 'Autorizar y Eliminar',
             cancelButtonText: 'Cancelar',
-            background: isDark ? '#18181b' : '#ffffff', 
+            background: isDark ? '#222222' : '#ffffff', 
             color: isDark ? '#ffffff' : '#0f172a', 
             iconColor: isDark ? '#3b82f6' : '#2563eb', 
             customClass: {
@@ -231,7 +231,7 @@
                     title: '¡Eliminado!',
                     text: result.value.message,
                     icon: 'success',
-                    background: isDark ? '#18181b' : '#ffffff', 
+                    background: isDark ? '#222222' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a',
                     customClass: { popup: isDark ? 'border border-zinc-700 rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl' }
                 });

@@ -58,7 +58,7 @@
         overflow: hidden;
     }
     .dark .glow-card {
-        background-color: #18181b; /* Gris plata oscuro */
+        background-color: #2a2a2a; /* Tarjetón gris oscuro */
         border: 1px solid rgba(255,255,255,0.05);
     }
     .glow-wrapper:hover .glow-card {
@@ -76,17 +76,17 @@
         font-weight: bold;
         border-radius: 10px;
         transition: 0.5s;
-        background: #18181b;
+        background: #222222;
         cursor: pointer;
         color: #3b82f6;
-        box-shadow: 0 0 10px #27272a, inset 0 0 10px #27272a;
+        box-shadow: 0 0 10px #1a1a1a, inset 0 0 10px #1a1a1a;
         display: inline-block;
         text-transform: uppercase;
         text-decoration: none;
     }
 
     .jelly-button:hover {
-        background: #111827;
+        background: #2a2a2a;
         color: #fff;
         box-shadow: 0 0 15px #3b82f6;
     }
@@ -106,7 +106,7 @@
 
     html.dark .swal2-popup .swal2-input, html.dark .swal2-popup .swal2-textarea, html.dark .swal2-popup .swal2-select {
         color: #ffffff !important; 
-        background-color: #27272a !important; 
+        background-color: #2a2a2a !important; 
         border: 1px solid #3f3f46 !important;
     }
 
@@ -119,7 +119,7 @@
     }
 </style>
 
-<div class="bg-slate-50 dark:bg-zinc-900 transition-colors duration-300 min-h-screen pt-20 pb-20">
+<div class="bg-slate-50 dark:bg-[#222222] transition-colors duration-300 min-h-screen pt-20 pb-20">
     
     <div class="container mx-auto px-4 text-center mb-16">
         <div class="section-title-wrapper" data-aos="zoom-in">
@@ -215,7 +215,7 @@
                                 </div>
                             @endif
 
-                            <div class="h-56 overflow-hidden relative z-10 bg-zinc-800">
+                            <div class="h-56 overflow-hidden relative z-10 bg-[#2a2a2a]">
                                 <img src="{{ $s['img'] }}" 
                                      onerror="this.onerror=null; this.src='{{ $fallbackCorte }}';"
                                      class="w-full h-full object-cover transition-transform duration-500 hover:scale-110" 
@@ -323,7 +323,7 @@
             confirmButtonText: 'Guardar',
             cancelButtonText: 'Cancelar',
             confirmButtonColor: '#3b82f6',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
             preConfirm: () => {
                 const nombre = document.getElementById('swal-nombre').value.trim();
@@ -410,7 +410,7 @@
             confirmButtonColor: '#e11d48',
             confirmButtonText: 'Sí, eliminar',
             cancelButtonColor: isDark ? '#3f3f46' : '#cbd5e1',
-            background: isDark ? '#18181b' : '#ffffff',
+            background: isDark ? '#222222' : '#ffffff',
             color: isDark ? '#ffffff' : '#0f172a',
         }).then((result) => {
             if (result.isConfirmed) {

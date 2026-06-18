@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="min-h-screen bg-slate-50 dark:bg-zinc-900 py-20 transition-colors duration-300">
+<div class="min-h-screen bg-slate-50 dark:bg-[#222222] py-20 transition-colors duration-300">
     <div class="container mx-auto px-4 max-w-4xl">
-        <div class="bg-white dark:bg-zinc-800 p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-zinc-700">
+        <div class="bg-white dark:bg-[#2a2a2a] p-8 md:p-12 rounded-3xl shadow-xl border border-slate-200 dark:border-zinc-700">
             
             <div class="text-center mb-10">
                 <h1 class="text-3xl md:text-4xl font-black text-slate-900 dark:text-white mb-4">Aviso de Privacidad</h1>

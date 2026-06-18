@@ -2,12 +2,12 @@
 
 @section('content')
 
-<div class="min-h-screen w-full bg-slate-50 dark:bg-zinc-900 text-slate-900 dark:text-gray-100 p-4 md:p-10 font-sans transition-colors duration-300">
+<div class="min-h-screen w-full bg-slate-50 dark:bg-[#222222] text-slate-900 dark:text-gray-100 p-4 md:p-10 font-sans transition-colors duration-300">
     <div class="max-w-7xl mx-auto space-y-8">
 
         <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-8" data-aos="fade-down">
             <div class="flex items-center gap-4">
-                <div class="w-14 h-14 bg-slate-100 dark:bg-gradient-to-br dark:from-zinc-800 dark:to-zinc-900 rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-lg transition-colors">
+                <div class="w-14 h-14 bg-slate-100 dark:bg-[#2a2a2a] rounded-2xl border border-slate-200 dark:border-zinc-700 flex items-center justify-center shadow-lg transition-colors">
                     <span class="text-3xl">📅</span>
                 </div>
                 <div>
@@ -19,7 +19,7 @@
             </div>
             
             <a href="{{ url('/dashboard') }}" 
-               class="w-full md:w-auto text-center bg-white dark:bg-zinc-800 border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-800 dark:text-white px-6 py-3 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm">
+               class="w-full md:w-auto text-center bg-white dark:bg-[#2a2a2a] border border-slate-200 dark:border-zinc-700 hover:bg-slate-100 dark:hover:bg-zinc-700 text-slate-800 dark:text-white px-6 py-3 rounded-xl transition-all font-bold flex items-center justify-center gap-2 shadow-sm">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path></svg>
                 Volver
             </a>
@@ -42,7 +42,7 @@
             </div>
         @endif
 
-        <div class="bg-white dark:bg-gradient-to-b dark:from-zinc-800 dark:to-zinc-900 rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-zinc-700 shadow-sm dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
+        <div class="bg-white dark:bg-[#2a2a2a] rounded-3xl p-6 md:p-8 border border-slate-200 dark:border-zinc-700 shadow-sm dark:shadow-2xl relative overflow-hidden transition-colors duration-300">
             <div class="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-blue-500 dark:via-[#3b82f6] to-transparent opacity-50"></div>
 
             <div class="mb-6 border-b border-slate-100 dark:border-zinc-700 pb-4">
@@ -60,8 +60,8 @@
                         <div class="group relative">
                             <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Fecha</label>
                             <input type="date" name="fecha" id="fecha-agendar" required 
-                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                          focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
+                                   class="w-full bg-slate-50 dark:bg-[#222222] border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                          focus:bg-white dark:focus:bg-[#2a2a2a] focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
                             
                             <p id="mensaje-error-fecha" class="hidden text-[11px] mt-2 font-black text-red-500 dark:text-[#ff4444] drop-shadow-[0_0_5px_rgba(239,68,68,0.8)] transition-all duration-300"></p>
                         </div>
@@ -69,8 +69,8 @@
                         <div class="group relative">
                             <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Hora</label>
                             <input type="time" name="hora" id="hora-agendar" required 
-                                   class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                          focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
+                                   class="w-full bg-slate-50 dark:bg-[#222222] border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                          focus:bg-white dark:focus:bg-[#2a2a2a] focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all dark:[color-scheme:dark]">
                             
                             <p id="mensaje-error-hora" class="hidden text-[11px] mt-2 font-black tracking-wide transition-all duration-300"></p>
                         </div>
@@ -79,8 +79,8 @@
                             <label class="block text-slate-500 dark:text-gray-400 text-[10px] font-bold uppercase tracking-widest mb-2 group-focus-within:text-blue-600 dark:group-focus-within:text-[#3b82f6] transition-colors">Servicio</label>
                             <div class="relative">
                                 <select name="servicio" id="servicio-select" required 
-                                        class="w-full bg-slate-50 dark:bg-zinc-900 border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
-                                               focus:bg-white focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all appearance-none cursor-pointer font-medium">
+                                        class="w-full bg-slate-50 dark:bg-[#222222] border border-slate-300 dark:border-zinc-600 text-slate-900 dark:text-white rounded-xl px-4 py-3.5 
+                                               focus:bg-white dark:focus:bg-[#2a2a2a] focus:border-blue-500 dark:focus:border-[#3b82f6] focus:ring-1 focus:ring-blue-500/50 dark:focus:ring-[#3b82f6]/50 outline-none transition-all appearance-none cursor-pointer font-medium">
                                     <option value="" disabled selected>Selecciona un servicio...</option>
                                     @foreach($services as $servicio)
                                         <option value="{{ $servicio->nombre }}" data-duration="{{ $servicio->duracion_minutos }}">
@@ -136,7 +136,7 @@
                     }
                 @endphp
 
-                <div class="bg-white dark:bg-zinc-800 rounded-2xl border border-slate-200 dark:border-zinc-700 p-6 flex flex-col justify-between shadow-sm hover:shadow-lg dark:hover:border-zinc-500 transition-all duration-300">
+                <div class="bg-white dark:bg-[#2a2a2a] rounded-2xl border border-slate-200 dark:border-zinc-700 p-6 flex flex-col justify-between shadow-sm hover:shadow-lg dark:hover:border-zinc-500 transition-all duration-300">
                     
                     <div class="flex justify-between items-start mb-6">
                         <div class="flex items-center gap-4">
@@ -182,7 +182,7 @@
                                 </form>
                             </div>
                         @else
-                            <div class="w-full bg-slate-50 dark:bg-zinc-900 text-slate-500 dark:text-gray-400 text-[10px] font-black py-4 rounded-xl text-center border border-slate-200 dark:border-zinc-700 uppercase tracking-widest flex justify-between items-center px-4">
+                            <div class="w-full bg-slate-50 dark:bg-[#222222] text-slate-500 dark:text-gray-400 text-[10px] font-black py-4 rounded-xl text-center border border-slate-200 dark:border-zinc-700 uppercase tracking-widest flex justify-between items-center px-4">
                                 <span>Cita {{ $textoEstado }}</span>
                                 @if($estado == 'cancelada' || $estado == 'completada')
                                     <form action="{{ route('appointments.destroy', $cita->id) }}" method="POST" class="m-0 inline-block form-accion-cita">
@@ -199,8 +199,8 @@
                 </div>
             @empty
                 <div class="col-span-1 md:col-span-2 lg:col-span-3 py-20">
-                    <div class="bg-white dark:bg-zinc-800/50 rounded-2xl border border-slate-200 dark:border-zinc-700 border-dashed p-12 text-center flex flex-col items-center justify-center transition-colors">
-                        <div class="w-20 h-20 bg-slate-50 dark:bg-zinc-800 rounded-2xl flex items-center justify-center mb-6 border border-slate-100 dark:border-zinc-700">
+                    <div class="bg-white dark:bg-[#2a2a2a] rounded-2xl border border-slate-200 dark:border-zinc-700 border-dashed p-12 text-center flex flex-col items-center justify-center transition-colors">
+                        <div class="w-20 h-20 bg-slate-50 dark:bg-[#222222] rounded-2xl flex items-center justify-center mb-6 border border-slate-100 dark:border-zinc-700">
                             <svg class="w-10 h-10 text-slate-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
                         </div>
                         <h3 class="text-2xl font-bold text-slate-800 dark:text-gray-300 mb-2">Aún no tienes citas</h3>
@@ -366,7 +366,7 @@
                 const isDark = document.documentElement.classList.contains('dark');
                 let swalConfig = {
                     icon: 'warning', showCancelButton: true, confirmButtonColor: '#dc2626', 
-                    cancelButtonColor: isDark ? '#27272a' : '#f1f5f9', background: isDark ? '#18181b' : '#ffffff', 
+                    cancelButtonColor: isDark ? '#2a2a2a' : '#f1f5f9', background: isDark ? '#222222' : '#ffffff', 
                     color: isDark ? '#ffffff' : '#0f172a', iconColor: isDark ? '#3b82f6' : '#2563eb', 
                     customClass: { popup: isDark ? 'border border-zinc-700 rounded-2xl shadow-2xl' : 'border border-slate-200 rounded-2xl shadow-xl', cancelButton: isDark ? 'text-white' : 'text-slate-700 border border-slate-300' }
                 };
